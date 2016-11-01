@@ -1,0 +1,21 @@
+﻿@model IEnumerable<BugTracker2.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>User List</h2>
+
+@foreach (var item in Model)
+{
+
+    <p>
+        @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+    </p>
+
+    <p>
+        @Html.ActionLink("Assign User Roles", "EditUser", "Admin")  |
+        @Html.ActionLink("Assign Users to Projects", "ProjectUser", "Admin")
+    </p>
+}
+

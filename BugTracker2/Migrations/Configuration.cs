@@ -1,0 +1,153 @@
+namespace BugTracker2.Migrations
+{
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Models;
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
+        internal sealed class Configuration : DbMigrationsConfiguration<BugTracker2.Models.ApplicationUser.ApplicationDbContext>
+    {
+        public Configuration()
+        {
+            AutomaticMigrationsEnabled = true;
+        }
+
+        protected override void Seed(ApplicationUser.ApplicationDbContext context)
+        {
+            {
+                var roleManager = new RoleManager<IdentityRole>(
+                    new RoleStore<IdentityRole>(context));
+
+                if (!context.Roles.Any(r => r.Name == "Admin"))
+                {
+                    roleManager.Create(new IdentityRole { Name = "Admin" });
+                }
+
+                var userManager = new UserManager<ApplicationUser>(
+                    new UserStore<ApplicationUser>(context));
+
+                if (!context.Users.Any(u => u.Email == "mahburns@gmail.com"))
+                {
+                    userManager.Create(new ApplicationUser
+                    {
+                        UserName = "mahburns@gmail.com",
+                        Email = "mahburns@gmail.com",
+                        FirstName = "Mary",
+                        LastName = "Burns",
+                        DisplayName = "Mary Burns"
+                    }, "redhead46");
+                }
+
+                var userId = userManager.FindByEmail("mahburns@gmail.com").Id;
+                userManager.AddToRole(userId, "Admin");
+            }
+
+            {
+                var roleManager = new RoleManager<IdentityRole>(
+                    new RoleStore<IdentityRole>(context));
+
+                if (!context.Roles.Any(r => r.Name == "ProjectManager"))
+                {
+                    roleManager.Create(new IdentityRole { Name = "ProjectManager" });
+                }
+
+                var userManager = new UserManager<ApplicationUser>(
+                    new UserStore<ApplicationUser>(context));
+
+                if (!context.Users.Any(u => u.Email == "projectManager@coderfoundry.com"))
+                {
+                    userManager.Create(new ApplicationUser
+                    {
+                        UserName = "projectManager@coderfoundry.com",
+                        Email = "projectManager@coderfoundry.com",
+                        FirstName = "ProjectManager",
+                        LastName = "ProjectManager",
+                        DisplayName = "ProjectManager"
+                    }, "Password-2");
+                }
+
+                var userId = userManager.FindByEmail("projectManager@coderfoundry.com").Id;
+                userManager.AddToRole(userId, "ProjectManager");
+            }
+
+            {
+                var roleManager = new RoleManager<IdentityRole>(
+                    new RoleStore<IdentityRole>(context));
+
+                if (!context.Roles.Any(r => r.Name == "Developer"))
+                {
+                    roleManager.Create(new IdentityRole { Name = "Developer" });
+                }
+
+                var userManager = new UserManager<ApplicationUser>(
+                    new UserStore<ApplicationUser>(context));
+
+                if (!context.Users.Any(u => u.Email == "developer@coderfoundry.com"))
+                {
+                    userManager.Create(new ApplicationUser
+                    {
+                        UserName = "developer@coderfoundry.com",
+                        Email = "developer@coderfoundry.com",
+                        FirstName = "Developer",
+                        LastName = "Developer",
+                        DisplayName = "Developer"
+                    }, "Password-1");
+                }
+
+                var userId = userManager.FindByEmail("developer@coderfoundry.com").Id;
+                userManager.AddToRole(userId, "Developer");
+            }
+
+            {
+                var roleManager = new RoleManager<IdentityRole>(
+                    new RoleStore<IdentityRole>(context));
+
+                if (!context.Roles.Any(r => r.Name == "Submitter"))
+                {
+                    roleManager.Create(new IdentityRole { Name = "Submitter" });
+                }
+
+                var userManager = new UserManager<ApplicationUser>(
+                    new UserStore<ApplicationUser>(context));
+
+                if (!context.Users.Any(u => u.Email == "submitter@coderfoundry.com"))
+                {
+                    userManager.Create(new ApplicationUser
+                    {
+                        UserName = "submitter@coderfoundry.com",
+                        Email = "submitter@coderfoundry.com",
+                        FirstName = "Submitter",
+                        LastName = "Submitter",
+                        DisplayName = "Submitter"
+                    }, "Password-3");
+                }
+
+                var userId = userManager.FindByEmail("submitter@coderfoundry.com").Id;
+                userManager.AddToRole(userId, "Submitter");
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+    //  This method will be called after migrating to the latest version.
+
+    //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+    //  to avoid creating duplicate seed data. E.g.
+    //
+    //    context.People.AddOrUpdate(
+    //      p => p.FullName,
+    //      new Person { FullName = "Andrew Peters" },
+    //      new Person { FullName = "Brice Lambson" },
+    //      new Person { FullName = "Rowan Miller" }
+    //    );
+    //
+

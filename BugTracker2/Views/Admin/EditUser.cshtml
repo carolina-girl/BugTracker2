@@ -1,0 +1,19 @@
+﻿@model BugTracker2.Models.AdminUserViewModel
+@{
+    ViewBag.Title = "EditUser";
+}
+
+
+
+<h2>Edituser - @Model.User.FirstName @Model.User.LastName</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.User.Id)
+
+    @Html.AntiForgeryToken()
+    @Html.ListBox("SelectedRoles", Model.Roles)
+
+    <input type="submit" value="Save" class="btn btn-default" />
+}
+
