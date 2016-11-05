@@ -16,12 +16,11 @@ namespace BugTracker2.Models
 
         public int Id { get; set; }
         public int OwnerId { get; set; }
-        public DateTimeOffset CreatedDate { get; set; }
-        public DateTimeOffset? UpdatedDate { get; set; }
+        public DateTimeOffset Created { get; set; }
+        public DateTimeOffset? Updated { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
 
-        public virtual ApplicationUser Project { get; set; }
         public virtual TicketType Type { get; set; }
         public virtual TicketStatus Status { get; set; }
         public virtual TicketPriority Priority { get; set; }

@@ -1,20 +1,27 @@
-﻿@model BugTracker2.Models.AdminProjectUserAssignViewModel
-@{
-    ViewBag.Title = "ProjectUser";
-}
+﻿@model IEnumerable<BugTracker2.Models.AdminProjectUserAssignViewModel>
 
 
 
-<h2>Project List</h2>
+<h2>Assign Users to Projects</h2>
 
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(model => model.User.Id)
+    
 
     @Html.AntiForgeryToken()
-    @Html.ListBox("AddSelectedProjectUsers", Model.Users)
-    @Html.ListBox("RemoveSelectedProjectUsers", Model.Users)
+    @Html.ListBox("SelectedProjects", Model.Projects)
 
-    <input type="submit" value="Save" class="btn btn-default" />
+    <input type="submit" value="Add" class="btn btn-default" />
+
+    <input type="submit" value="Remove" class="btn btn-default" />
 }
 
+
+@foreach (var item in Model)
+{
+
+    <p>
+        @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+   </p>
+}

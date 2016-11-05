@@ -12,7 +12,6 @@ namespace BugTracker2.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         UserRoleAssignHelper userRole = new UserRoleAssignHelper();
-        AdminProjectUserAssignViewModel projectUser = new AdminProjectUserAssignViewModel();
 
 
         // GET: Admin
@@ -22,7 +21,7 @@ namespace BugTracker2.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,ProjectManager")]
         //GET: Admin/SelectRole/5
         public ActionResult EditUser(string Id)
         {
@@ -35,12 +34,12 @@ namespace BugTracker2.Controllers
             return View(AdminModel);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,ProjectManager")]
         [HttpPost]
         public ActionResult EditUser(AdminUserViewModel model)
         {
             var user = db.Users.Find(model.User.Id);
-            foreach (var rolermv in db.Roles.Select(r => r.Id).ToList())
+            foreach (var rolermv in db.Roles.Select(r => r.Name).ToList())
             {
                 userRole.RemoveUserFromRole(user.Id, rolermv);
             }
@@ -52,38 +51,38 @@ namespace BugTracker2.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Admin, ProjectManager")]
+
+        [Authorize(Roles = "Admin,ProjectManager")]
         //GET: Admin/SelectProject/5
-        public ActionResult ProjectUser([Bind(Include = "Title,UserId,Id")] Projects projects)
+        public ActionResult ProjectUser(string Id)
         {
-            var project = db.Projects.Find(Id);
+            var user = db.Users.Find(Id);
             AdminProjectUserAssignViewModel AdminProjectModel = new AdminProjectUserAssignViewModel();
             var selected = db.Projects.ToList();
-            AdminProjectModel.Users = new MultiSelectList(db.Users, "FirstName", "LastName", selected);
-            AdminProjectModel.Projects = projects;
-            {
-                return View(AdminProjectModel);
-            }
+            AdminProjectModel.Projects = new MultiSelectList(db.Projects, "Id", "Title", selected);
+            AdminProjectModel.User = user;
+            return View(AdminProjectModel);
         }
 
-        [Authorize(Roles = "Admin, ProjectManager")]
+        [Authorize(Roles = "Admin,ProjectManager")]
         [HttpPost]
         public ActionResult ProjectUser(AdminProjectUserAssignViewModel model)
         {
-            var project = db.Projects.Find(model.Projects.Id);
-            foreach (var useradd in db.Users.Select(u => u.Id).ToList())
+            var user = db.Users.Find(model.User.Id);
+           foreach (var x in model.SelectedProjects)
             {
-                Projects.user.Add(User);
+                var project = db.Projects.Find(x);
+                project.Users.Add(user);
             }
-
-            foreach (var userrmv in model.SelectedUsers)
+            foreach (var x in db.Projects.Select(r => r.Id).ToList())
             {
-                Projects.user.Remove(User);
+                var project = db.Projects.Find(x);
+                project.Users.Remove(user);
             }
-            db.Projects.Attach(project);
-            db.SaveChanges();
+           db.SaveChanges();
             return RedirectToAction("ProjectUser", "Admin");
-        }
+           }
+
 
         protected override void Dispose(bool disposing)
         {

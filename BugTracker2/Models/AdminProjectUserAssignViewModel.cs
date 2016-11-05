@@ -11,6 +11,8 @@ namespace BugTracker2.Models
         public ApplicationUser User { get; set; }
         public MultiSelectList Projects { get; set; }
         public MultiSelectList Users { get; set; }
-        public string[] SelectedUsers { get; set; }
+        public Projects Project { get; set; }
+        public int[] SelectedProjects { get; set; }
+      
     }
 }

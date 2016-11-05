@@ -28,35 +28,34 @@ namespace BugTracker2.Models
             // Add custom user claims here
             return userIdentity;
         }
+    }
 
-        public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    {
+        public ApplicationDbContext()
+                : base("DefaultConnection", throwIfV1Schema: false)
         {
-            public ApplicationDbContext()
-                    : base("DefaultConnection", throwIfV1Schema: false)
-            {
-            }
-
-            public static ApplicationDbContext Create()
-            {
-                return new ApplicationDbContext();
-            }
-
-            public DbSet<Comments> Comments { get; set; }
-
-            public DbSet<Attachments> Attachments { get; set; }
-
-            public DbSet<Projects> Projects { get; set; }
-
-            public DbSet<TicketHistory> TicketHistories { get; set; }
-
-            public DbSet<TicketPriority> TicketPriorities { get; set; }
-
-            public DbSet<Tickets> Tickets { get; set; }
-
-            public DbSet<TicketStatus> TicketStatus { get; set; }
-
-            public DbSet<TicketType> TicketTypes { get; set; }
-
         }
+
+        public static ApplicationDbContext Create()
+        {
+            return new ApplicationDbContext();
+        }
+
+        public DbSet<Comments> Comments { get; set; }
+
+        public DbSet<Attachments> Attachments { get; set; }
+
+        public DbSet<Projects> Projects { get; set; }
+
+        public DbSet<TicketHistory> TicketHistories { get; set; }
+
+        public DbSet<TicketPriority> TicketPriorities { get; set; }
+
+        public DbSet<Tickets> Tickets { get; set; }
+
+        public DbSet<TicketStatus> TicketStatus { get; set; }
+
+        public DbSet<TicketType> TicketTypes { get; set; }
     }
 }

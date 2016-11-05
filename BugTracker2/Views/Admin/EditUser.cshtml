@@ -9,11 +9,14 @@
 
 @using (Html.BeginForm())
 {
+
     @Html.HiddenFor(model => model.User.Id)
 
     @Html.AntiForgeryToken()
     @Html.ListBox("SelectedRoles", Model.Roles)
 
+
     <input type="submit" value="Save" class="btn btn-default" />
 }
 
+@Html.ActionLink("Assign Project", "ProjectUser", "Admin")
