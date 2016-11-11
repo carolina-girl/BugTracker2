@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -15,7 +16,14 @@ namespace BugTracker2.Models
         }
 
         public int Id { get; set; }
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
+        public string AssignedUserId { get; set; }
+        public int? ProjectId { get; set; }
+        public int? TypeId { get; set; }
+        public int? StatusId { get; set; }
+        public int? PriorityId { get; set; }
+
+
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset? Updated { get; set; }
         public string Title { get; set; }
@@ -27,6 +35,8 @@ namespace BugTracker2.Models
         public virtual ICollection<Comments> Comments { get; set; }
         public virtual ICollection<Attachments> Attachments { get; set; }
         public virtual ICollection<TicketHistory> History { get; set; }
-
+        public virtual Projects Project { get; set; }
+        public virtual ApplicationUser AssignedUser { get; set; }
+        public virtual ApplicationUser Owner { get; set; }
     }
 }

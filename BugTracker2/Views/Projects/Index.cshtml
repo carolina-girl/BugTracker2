@@ -10,45 +10,67 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table id="mytable" class="table">
+<table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Created)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Updated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Body)
-        </th>
-        <th></th>
-    </tr>
-        </thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Updated)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Body)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Users)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
     <tbody>
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Updated)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Body)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-</tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Updated)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Body)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Users)
+                </td>*@
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                </td>
+
+            </tr>
+        }
+    </tbody>
+
+    <p>
+        @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+        {
+            @Html.ActionLink("Assign Projects To Users", "Index", "Admin")
+        }
+    </p>
+    <p>
+        @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+            {
+            @Html.ActionLink("See All Projects", "FullList", "Projects")
+        }
+    </p>
 </table>
+

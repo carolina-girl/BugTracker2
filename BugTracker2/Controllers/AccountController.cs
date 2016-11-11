@@ -53,7 +53,7 @@ namespace BugTracker2.Controllers
             }
         }
 
-        //
+        
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -62,7 +62,7 @@ namespace BugTracker2.Controllers
             return View();
         }
 
-        //
+        
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -71,7 +71,7 @@ namespace BugTracker2.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Admin");
+                return View("Index","Home");
             }
 
             // This doesn't count login failures towards account lockout
@@ -80,7 +80,7 @@ namespace BugTracker2.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index","Admin");
+                    return RedirectToAction("Index","Home");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -88,7 +88,7 @@ namespace BugTracker2.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                    return RedirectToAction("Index","Home");
             }
         }
 

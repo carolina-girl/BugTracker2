@@ -7,18 +7,61 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker2.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker2.Controllers
 {
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        [Authorize(Roles = "Admin, ProjectManager")]
+
         // GET: Projects
+        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         public ActionResult Index()
         {
-            return View();
-        }
+            List<Projects> projects = new List<Projects>();
+
+            if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
+            {
+                var UserId = User.Identity.GetUserId();
+                projects = db.Projects.Where(p => p.Users.Any(u => u.Id == UserId)).ToList();
+            }
+            
+                return View(projects);
+            }
+        
+
+        // GET: Projects
+        [Authorize(Roles = "Admin,ProjectManager")]
+        public ActionResult FullList()
+        {
+            List<Projects> projects = new List<Projects>();
+            if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+                projects = db.Projects.ToList();
+            }
+            
+                return View(projects);
+            }
+        
+
+        //        projects = db.Projects.ToList();
+        //    else
+        //    {
+
+        //    }
+        //    return View();
+
+        //    if  (User.IsInRole("Submitter") || User.IsInRole("Developer"))
+        //    {
+        //        var UserId = User.Identity.GetUserId();
+        //        projects = db.Projects.Where(p => p.Users.Any(u => u.Id == UserId)).ToList();
+        //    }
+        //    else
+        //    {
+        //        return View(projects);
+        //    }
+        //}
 
         [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         // GET: Projects/Details/5
@@ -35,22 +78,29 @@ namespace BugTracker2.Controllers
             }
             return View(projects);
         }
-        [Authorize(Roles = "Admin,ProjectManager")]
+
+
+
         // GET: Projects/Create
+        [Authorize(Roles = "Admin,ProjectManager")]
         public ActionResult Create()
         {
             return View();
         }
-        [Authorize(Roles = "Admin,ProjectManager")]
+
+
+
         // POST: Projects/Create
+        [Authorize(Roles = "Admin,ProjectManager")]
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see http://go.microsoft.com/fwlin.k/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Title,Created,Updated,Body")] Projects projects)
         {
             if (ModelState.IsValid)
             {
+                string userId = User.Identity.GetUserId();
                 db.Projects.Add(projects);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -58,8 +108,10 @@ namespace BugTracker2.Controllers
 
             return View(projects);
         }
-        [Authorize(Roles = "Admin,ProjectManager")]
+
+
         // GET: Projects/Edit/5
+        [Authorize(Roles = "Admin,ProjectManager")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -74,7 +126,9 @@ namespace BugTracker2.Controllers
             return View(projects);
         }
 
+
         // POST: Projects/Edit/5
+        [Authorize(Roles = "Admin,ProjectManager")]
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -108,9 +162,9 @@ namespace BugTracker2.Controllers
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int Id)
         {
-            Projects projects = db.Projects.Find(id);
+            Projects projects = db.Projects.Find(Id);
             db.Projects.Remove(projects);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -126,3 +180,5 @@ namespace BugTracker2.Controllers
         }
     }
 }
+    
+

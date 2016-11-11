@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title - Mary Ann Burns BugTracker</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Theme CSS -->
+    <link href="~/Content/mab.css" rel="stylesheet" />
+    <link href="~/Template/css/freelancer.min.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="~/Template/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container body-content">
+        <hr />
+        <!-- Navigation -->
+        <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" href="#page-top"></a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="hidden">
+                            <a href="#page-top"></a>
+                        </li>
+                        <li class="page-scroll">
+                            @Html.ActionLink("Home", "Index", "Home")
+                        </li>
+                        <li class="page-scroll">
+                            @Html.ActionLink("About", "About", "Home")
+                        </li>
+                        <li class="page-scroll">
+                            @Html.ActionLink("Contact", "Contact", "Home")
+                        </li>
+                        <li class="page-scroll">
+                            @Html.Partial("_LoginPartial")
+                        </li>
+                    </div>
+                </ul>
+           </div>   
+       </nav>
+  </div>
+        
+      @RenderBody()
+       <footer>
+           <p>&copy; @DateTime.Now.Year - Mary Ann Burns</p>
+       </footer>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+       
+        <!-- jQuery -->
+        <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+        @*<script src="~/Template/vendor/jquery/jquery.min.js"></script>*@
+        <!-- Bootstrap Core JavaScript -->
+        <script src="~/Scripts/mab.js"></script>
+        <script src="~/Template/vendor/bootstrap/js/bootstrap.min.js"></script>
+        <!-- Plugin JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+        <!-- Contact Form JavaScript -->
+        <script src="~/Template/js/jqBootstrapValidation.js"></script>
+        <script src="~/Template/js/contact_me.js"></script>
+        <!-- Theme JavaScript -->
+        <script src="~/Template/js/freelancer.min.js"></script>
+        @RenderSection("scripts", required: false)
+</body>
+</html>

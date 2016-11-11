@@ -20,7 +20,7 @@ namespace BugTracker2.Models
         }
         public ICollection<string> ListUserRoles(string userId)
         {
-            return userManager.GetRoles(userId, roleName);
+            return userManager.GetRoles(userId);
         }
         public bool AddUserToRole(string userId, string roleName)
         {
@@ -43,17 +43,27 @@ namespace BugTracker2.Models
             }
             return resultList;
         }
-    
-    public ICollection<ApplicationUser> UsersNotInRole(string roleName)
-    {
-        var resultList = new List<ApplicationUser>();
-        var List = userManager.Users.ToList();
-        foreach (var user in List)
+
+        public ICollection<ApplicationUser> UsersNotInRole(string roleName)
         {
-            if (IsUserInRole(user.Id, roleName))
-                resultList.Add(user);
+            var resultList = new List<ApplicationUser>();
+            var List = userManager.Users.ToList();
+            foreach (var user in List)
+            {
+                if (IsUserInRole(user.Id, roleName))
+                    resultList.Add(user);
+            }
+            return resultList;
         }
-        return resultList;
-         }
-    }
-}
+
+        //public void AssignUser(string userId, int projectId)
+        //{
+        //    if (!HasProject(userId, projectId))
+        //    {
+        //        var user = db.Users.Find(userId);
+        //        var project = db.Projects.Find(projectId);
+        //        project.Users.Add(user);
+            }
+        }
+  
+

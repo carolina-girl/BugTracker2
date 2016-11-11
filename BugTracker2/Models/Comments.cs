@@ -12,7 +12,9 @@ namespace BugTracker2.Models
         public string UserId { get; set; }
         public string Body { get; set; }
         public string UpdatedReason { get; set; }
-        public DateTimeOffset CreatedDate { get; set; }
-        public DateTimeOffset UpdatedDate { get; set; }
+        public DateTimeOffset Created { get; set; }
+        public DateTimeOffset Updated { get; set; }
+        public virtual Tickets Tickets { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

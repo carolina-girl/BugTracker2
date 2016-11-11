@@ -11,14 +11,14 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.OwnerId)
+            @Html.DisplayNameFor(model => model.Owner)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.OwnerId)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Created)
         </dt>
 
@@ -32,7 +32,7 @@
 
         <dd>
             @Html.DisplayFor(model => model.Updated)
-        </dd>
+        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Title)
@@ -50,9 +50,62 @@
             @Html.DisplayFor(model => model.Body)
         </dd>
 
+        <dd>
+            @Html.DisplayNameFor(model => model.Status)
+        </dd>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
     @Html.ActionLink("Back to List", "Index")
 </p>
+@*@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="New Comment" class="btn btn-default" />
+        <input type="submit" value="New Attachment" class="btn btn-default" />
+    </div>
+    if (User.IsInRole("Administrator") || User.IsInRole("Project Manager") || User.IsInRole("Developer"))
+    @*{ <a href="#changelog" class="section-scroll"><i class="fa fa-angle-down"></i> Change Log</a> }*@
+    @*<a href="#comments" class="section-scroll"><i class="fa fa-angle-down"></i> Comments</a>
+    <a href="#attachments" class="section-scroll"><i class="fa fa-angle-down"></i> Attachments</a>
+    
+    <a href=@Url.Action("Create", "Attachments", new { id = Model.Id }) class="btn btn-warning"><i class="fa fa-plus"></i> Attachment</a>
+    }*@
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<fieldset>
+    <legend>Assign Developer</legend>
+
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AssignedUser.DisplayName)
+    </div>
+
+    @Html.DropDownListFor(model => model.AssignedUser.Id, new SelectList(
+                      new List<object>{
+                       new { value = 1 , text = "Dev1"  },
+                       new { value = 2 , text = "Dev2" },
+                       new { value = 3 , text = "Dev3"}
+                        },
+                      "value",
+                      "text",
+                       2))
+
+
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+
+</fieldset>
+}

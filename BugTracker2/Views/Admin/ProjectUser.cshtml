@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BugTracker2.Models.AdminProjectUserAssignViewModel>
+﻿@model BugTracker2.Models.AdminProjectUserAssignViewModel
 
 
 
@@ -15,13 +15,5 @@
     <input type="submit" value="Add" class="btn btn-default" />
 
     <input type="submit" value="Remove" class="btn btn-default" />
-}
-
-
-@foreach (var item in Model)
-{
-
-    <p>
-        @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
-   </p>
+    @Html.ActionLink("Return", "Index", "Admin")
 }

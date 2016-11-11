@@ -1,0 +1,15 @@
+﻿body {
+}
+.searchBox {
+    float: right;
+    margin-right: 0;
+    margin-top: 0;
+}
+.nav navbar-nav navbar-right {
+    float: right;
+    margin-right: 0;
+    margin-top: 0;
+}
+header {
+    margin-top: 0;
+}

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using static BugTracker2.Models.ApplicationUser;
 
 namespace BugTracker2.Controllers
 {
@@ -13,13 +12,14 @@ namespace BugTracker2.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         UserRoleAssignHelper userRole = new UserRoleAssignHelper();
 
-
+        [Authorize(Roles = "Admin,ProjectManager")]
         // GET: Admin
         public ActionResult Index()
         {
             var model = db.Users.ToList();
             return View(model);
         }
+
 
         [Authorize(Roles = "Admin,ProjectManager")]
         //GET: Admin/SelectRole/5
@@ -58,30 +58,41 @@ namespace BugTracker2.Controllers
         {
             var user = db.Users.Find(Id);
             AdminProjectUserAssignViewModel AdminProjectModel = new AdminProjectUserAssignViewModel();
-            var selected = db.Projects.ToList();
+             var selected = db.Projects.ToList();
             AdminProjectModel.Projects = new MultiSelectList(db.Projects, "Id", "Title", selected);
             AdminProjectModel.User = user;
             return View(AdminProjectModel);
         }
 
-        [Authorize(Roles = "Admin,ProjectManager")]
         [HttpPost]
         public ActionResult ProjectUser(AdminProjectUserAssignViewModel model)
         {
             var user = db.Users.Find(model.User.Id);
-           foreach (var x in model.SelectedProjects)
+            var currentProjects = (from p in db.Projects
+                                       where p.Users.Any(r => r.Id == user.Id)
+                                       select p.Id).ToArray();
+             
+             foreach (var x in model.SelectedProjects)
+
             {
-                var project = db.Projects.Find(x);
-                project.Users.Add(user);
+                var projects = db.Projects.Find(x);
+                projects.Users.Add(user);
             }
-            foreach (var x in db.Projects.Select(r => r.Id).ToList())
+            foreach (var z in currentProjects)
             {
-                var project = db.Projects.Find(x);
-                project.Users.Remove(user);
+                var project = db.Projects.Find(z);
+
+                foreach (var x in model.SelectedProjects)
+                {
+                    if (x != z)
+                    {
+                        project.Users.Remove(user);
+                    }
+                }
             }
-           db.SaveChanges();
+            db.SaveChanges();
             return RedirectToAction("ProjectUser", "Admin");
-           }
+            }
 
 
         protected override void Dispose(bool disposing)
