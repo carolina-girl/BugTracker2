@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -20,6 +21,7 @@ namespace BugTracker2.Models
         public string AssignedUserId { get; set; }
         public int? ProjectId { get; set; }
         public int? TypeId { get; set; }
+        [Display(Name = "Status")]
         public int? StatusId { get; set; }
         public int? PriorityId { get; set; }
 

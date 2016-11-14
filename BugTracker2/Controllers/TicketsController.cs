@@ -89,14 +89,6 @@ namespace BugTracker2.Controllers
             List<Tickets> Ticket = new List<Tickets>();
             var assignedUser = tickets.AssignedUserId;
             ViewBag.AssignedUserId = new SelectList(db.Users, "Developer", "FirstName");
-            //TicketStatus status = db.TicketStatus.FirstOrDefault(s => s.Status == "Pending");
-            var pending = db.TicketStatus.FirstOrDefault(s => s.Status == "Pending");
-            if (tickets.StatusId == pending.Id && tickets.AssignedUserId != null)
-                tickets.StatusId = db.TicketStatus.FirstOrDefault(t => t.Status == "Pending").Id;
-
-            //var resolvedStatus = db.TicketStatus.FirstOrDefault(s => s.Status == "Closed");
-            //if (tickets.StatusId == resolvedStatus.Id)
-
             tickets.Updated = DateTimeOffset.Now;
             db.SaveChanges();
             return View();
@@ -140,6 +132,8 @@ namespace BugTracker2.Controllers
         public ActionResult Edit(int? id)
         {
             ViewBag.StatusId = new SelectList(db.TicketStatus, "Id", "Status", "tickets.Status");
+            ViewBag.AssignedUserId = new SelectList(db.Users, "Id", "DisplayName");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -157,95 +151,25 @@ namespace BugTracker2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,OwnerId,CreatedDate,UpdatedDate,Title,Body,AssignedUser,StatusId")] Tickets tickets)
+        public ActionResult Edit([Bind(Include = "Id,OwnerId,CreatedDate,UpdatedDate,Title,Body,AssignedUser,StatusId,tickets.AssignedUserId")] Tickets tickets)
         {
             if (ModelState.IsValid)
             {
-
-                //var pending = db.TicketStatus.FirstOrDefault(s => s.Status == "Pending");
-                //if (tickets.StatusId== pending.Id && tickets.AssignedUserId != null)
-                //    tickets.StatusId = db.TicketStatus.FirstOrDefault(t => t.Status == "Pending").Id;
-
-                //var resolvedStatus = db.TicketStatus.FirstOrDefault(s => s.Status == "Closed");
-                //if (tickets.StatusId == resolvedStatus.Id)
-
                 tickets.Updated = DateTimeOffset.Now;
                 db.Entry(tickets).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
-             }
-                ViewBag.StatusId = new SelectList(db.TicketStatus, "Id", "Status", "tickets.Status");
-                return RedirectToAction("Index");
-             }
-        
-
-
-
-        // GET: Tickets/CommentsAttachments/5
-        public ActionResult CommentsAttachments(int? id)
-        {
-            var userId = User.Identity.GetUserId();
-        var tickets = new List<Tickets>();
-        var attachments = new List<Attachments>();
-        var comments = new List<Comments>();
-        int projects = 0;
-          
-
-            if (User.IsInRole("Administrator"))
-            {
-                tickets = db.Tickets.ToList();
-                attachments = db.Attachments.ToList();
-                foreach (var ticket in tickets)
-                    foreach (var comment in ticket.Comments)
-                        comments.Add(comment);
             }
-            else if (User.IsInRole("Project Manager"))
-            {
-                tickets = db.Tickets.Where(t => t.OwnerId == userId).ToList();
-                foreach (var ticket in tickets)
-                    foreach (var attach in ticket.Attachments)
-                        attachments.Add(attach);
-                foreach (var ticket in tickets)
-                    foreach (var comment in ticket.Comments)
-                        comments.Add(comment);
-                projects = userId.ToList().Count();
-}
-            else if (User.IsInRole("Developer") && User.IsInRole("Project Manager"))
-            {
-                tickets = db.Tickets.Where(t => t.Project.Users.Contains(db.Users.Find(userId))).ToList();
-                foreach (var ticket in tickets)
-                    foreach (var attach in ticket.Attachments)
-                        attachments.Add(attach);
-                foreach (var ticket in tickets)
-                    foreach (var comment in ticket.Comments)
-                        comments.Add(comment);
-                projects = userId.ToList().Count();
-            }
-            else if (User.IsInRole("Developer"))
-            {
-                tickets = db.Tickets.Where(t => t.AssignedUserId == userId).ToList();
-                foreach (var ticket in tickets)
-                    foreach (var attach in ticket.Attachments)
-                         attachments.Add(attach);
-                foreach (var ticket in tickets)
-                    foreach (var comment in ticket.Comments)
-                        comments.Add(comment);
-                projects = userId.ToList().Count();
-            }
-
-            var model = new DashboardViewModel()
-            {
-                Tickets = tickets,
-                Attachments = attachments,
-                Comments = comments.Take(5),
-                ProjectsAmt = projects
-            };
-
-            return View();
+            ViewBag.StatusId = new SelectList(db.TicketStatus, "Id", "Status", "tickets.Status");
+            return RedirectToAction("Index");
         }
 
-        //GET: Tickets/Delete/5
-        public ActionResult Delete(int? id)
+
+
+
+
+//GET: Tickets/Delete/5
+public ActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -281,5 +205,8 @@ namespace BugTracker2.Controllers
         }
     }
 }
+        
+    
+
 
 

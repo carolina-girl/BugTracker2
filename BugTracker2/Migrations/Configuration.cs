@@ -7,7 +7,7 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 
 
-namespace BugTracker2.Migrations
+    namespace BugTracker2.Migrations
     {
         internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
         {
@@ -133,7 +133,6 @@ namespace BugTracker2.Migrations
                  new TicketStatus() { Status = "Pending" },
                  new TicketStatus() { Status = "Closed" }
                  );
-
             }
         }
     }

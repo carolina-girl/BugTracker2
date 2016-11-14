@@ -71,7 +71,7 @@ namespace BugTracker2.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("Index","Home");
+                return View(model);
             }
 
             // This doesn't count login failures towards account lockout
@@ -80,7 +80,7 @@ namespace BugTracker2.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToAction("Index","Home");
+                    return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -88,13 +88,13 @@ namespace BugTracker2.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
-                    return RedirectToAction("Index","Home");
+                    return View(model);
             }
         }
 
-        //
-        // GET: /Account/VerifyCode
-        [AllowAnonymous]
+//
+// GET: /Account/VerifyCode
+[AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
             // Require that the user has already logged in via username/password or external login

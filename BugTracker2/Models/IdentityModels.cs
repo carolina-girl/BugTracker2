@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace BugTracker2.Models
 {
@@ -57,5 +58,6 @@ namespace BugTracker2.Models
         public DbSet<TicketStatus> TicketStatus { get; set; }
 
         public DbSet<TicketType> TicketTypes { get; set; }
+        public IEnumerable ApplicationUsers { get; internal set; }
     }
 }

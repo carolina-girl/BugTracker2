@@ -13,7 +13,6 @@ namespace BugTracker2.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        [Authorize(Roles = "Administrator, Project Manager, Developer")]
         public ActionResult Index()
         {
             return View();
