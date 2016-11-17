@@ -44,24 +44,6 @@ namespace BugTracker2.Controllers
             }
         
 
-        //        projects = db.Projects.ToList();
-        //    else
-        //    {
-
-        //    }
-        //    return View();
-
-        //    if  (User.IsInRole("Submitter") || User.IsInRole("Developer"))
-        //    {
-        //        var UserId = User.Identity.GetUserId();
-        //        projects = db.Projects.Where(p => p.Users.Any(u => u.Id == UserId)).ToList();
-        //    }
-        //    else
-        //    {
-        //        return View(projects);
-        //    }
-        //}
-
         [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         // GET: Projects/Details/5
         public ActionResult Details(int? id)
@@ -99,6 +81,7 @@ namespace BugTracker2.Controllers
         {
             if (ModelState.IsValid)
             {
+                projects.Updated = DateTimeOffset.Now;
                 string userId = User.Identity.GetUserId();
                 db.Projects.Add(projects);
                 db.SaveChanges();
@@ -136,6 +119,7 @@ namespace BugTracker2.Controllers
         {
             if (ModelState.IsValid)
             {
+                projects.Updated = DateTimeOffset.Now;
                 db.Entry(projects).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -161,9 +145,9 @@ namespace BugTracker2.Controllers
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int Id)
+        public ActionResult DeleteConfirmed(int? id)
         {
-            Projects projects = db.Projects.Find(Id);
+            Projects projects = db.Projects.Find(id);
             db.Projects.Remove(projects);
             db.SaveChanges();
             return RedirectToAction("Index");

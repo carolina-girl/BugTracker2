@@ -2,51 +2,57 @@
 
 
 <h2>@Model.Title</h2>
-<div class="row">
-    <div class="col-md-4">
+<div>
+    <h4>Attachment</h4>
+    @Html.HiddenFor(model => model.TicketsId)
+    <hr />
         <dl class="dl-horizontal">
-            <dt>
-                Submitted On:
+            @*<dt>
+                @Html.DisplayNameFor(model => model.Created)
             </dt>
+
             <dd>
                 @Html.DisplayFor(model => model.Created)
             </dd>
+
             <dt>
-                Submitted By:
+                @Html.DisplayNameFor(model => model.SubmitterId)
             </dt>
+
             <dd>
                 @Html.DisplayFor(model => model.SubmitterId)
-            </dd>
-        </dl>
-    </div>
-    <div class="col-md-4">
-        <dl class="dl-horizontal">
-            @if (Model.Body != null)
-            {
-                <dt>
-                    Body
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Body)
-                </dd>
-            }
-        </dl>
-    </div>
+            </dd>*@
 
-    <div class="col-md-4">
-        <div class="pull-right">
-            <a href=@Url.Action("Details", "Tickets", new { id = Model.TicketsId }) class="btn btn-warning text-white">Ticket Details</a>
-            <a href=@Url.Action("UserTickets", "Tickets") class="btn btn-warning text-white">My Tickets</a>
-            @if (User.IsInRole("Administrator"))
-            { <a href=@Url.Action("Index", "Tickets") class="btn btn-warning text-white">All Tickets</a>
-            }
-        </div>
-        <div class="clearfix"></div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <img id="attachmentImg" src="@Url.Content(Model.MediaUrl)" alt="@Model.Title" />
-    </div>
-</div>
+            <dt>
+                @Html.DisplayNameFor(model => model.Body)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Body)
+            </dd>
+
+            @*<dt>
+                @Html.DisplayNameFor(model => model.Owner.FirstName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Owner.FirstName)
+            </dd>*@
+
+            <dt>
+                @Html.DisplayNameFor(model => model.MediaUrl)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MediaUrl)
+            </dd>
+
+          </dl>
+     </div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
 

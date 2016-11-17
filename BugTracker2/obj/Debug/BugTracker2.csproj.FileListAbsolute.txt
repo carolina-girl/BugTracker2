@@ -79,4 +79,7 @@ C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTra
 C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.dll
 C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.pdb
+C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.Migrations.Initial.resources
+C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.csproj.GenerateResource.Cache
+C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.Migrations.Initial1.resources
 C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.csprojResolveAssemblyReference.cache

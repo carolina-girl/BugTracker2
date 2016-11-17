@@ -11,14 +11,14 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.OwnerId)
+            @Html.DisplayNameFor(model => model.Owner)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.OwnerId)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Created)
         </dt>
 
@@ -32,7 +32,7 @@
 
         <dd>
             @Html.DisplayFor(model => model.Updated)
-        </dd>
+        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Title)
@@ -62,5 +62,8 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index") |
+    @Html.ActionLink("View Attachments", "Index", "Attachments") |
+    @Html.ActionLink("View Comments", "Index", "Comments")
 </p>
+

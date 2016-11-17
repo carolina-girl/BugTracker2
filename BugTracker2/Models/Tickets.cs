@@ -17,12 +17,16 @@ namespace BugTracker2.Models
         }
 
         public int Id { get; set; }
+        [Display(Name = "Owner")]
         public string OwnerId { get; set; }
         public string AssignedUserId { get; set; }
+        public string Email { get; set; }
         public int? ProjectId { get; set; }
+        [Display(Name = "Type")]
         public int? TypeId { get; set; }
         [Display(Name = "Status")]
         public int? StatusId { get; set; }
+        [Display(Name = "Priority")]
         public int? PriorityId { get; set; }
 
 

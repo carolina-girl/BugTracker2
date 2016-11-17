@@ -27,11 +27,12 @@ namespace BugTracker2.Controllers
                 tickets = db.Tickets.ToList();
             }
 
-            if (User.IsInRole("Project Manager"))
+            if (User.IsInRole("ProjectManager"))
             {
-                var mytickets = (from p in db.Projects
-                                 where p.Users.Any(r => r.Id == userId)
-                                 select p).ToList();
+                var mytickets = (from b in db.Tickets
+                                 where b.OwnerId == userId
+                                 select b).ToList();
+
 
                 foreach (var p in mytickets)
                 {
@@ -66,6 +67,21 @@ namespace BugTracker2.Controllers
             }
         }
 
+
+        // GET: Tickets/FullList/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult FullList()
+        {
+            List<Tickets> tickets = new List<Tickets>();
+            if (User.IsInRole("Admin"))
+            {
+                tickets = db.Tickets.ToList();
+            }
+
+            return View(tickets);
+        }
+
+
         // GET: Tickets/Details/5
         public ActionResult Details(int? id)
         {
@@ -95,14 +111,20 @@ namespace BugTracker2.Controllers
         }
 
         // GET: Tickets/Create
-        [Authorize(Roles = "Submitter, Admin")]
-        public ActionResult Create()
+        //[Authorize(Roles = "Submitter,Admin")]
+        public ActionResult Create(int? id)
         {
-            ViewBag.AssignedUserId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.CreatedUserId = new SelectList(db.Users, "Id", "FirstName");
+            ViewBag.StatusId = new SelectList(db.TicketStatus, "Id", "Status");
+
+            ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority");
+
+            ViewBag.TypeId = new SelectList(db.TicketTypes, "Id", "Type");
+
+            ViewBag.CreatedUserId = new SelectList(db.Users, "Id", "DisplayName");
+
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
-            ViewBag.ProjectId = new SelectList(user.Projects, "Id", "Title");
+            //ViewBag.ProjectId = new SelectList(user.Projects, "Id", "Title");
             return View();
         }
 
@@ -111,39 +133,60 @@ namespace BugTracker2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,OwnerId,Body,ProjectId")] Tickets tickets)
+        public ActionResult Create([Bind(Include = "Id,Title,Body,ProjectId")] Tickets ticket)
         {
             if (ModelState.IsValid)
             {
-                tickets.Created = DateTimeOffset.Now;
+
+                ticket.Created = DateTimeOffset.Now;
+                List<Projects> Project = new List<Projects>();
+                var ticketId = db.Projects.FirstOrDefault(p => p.Id == ticket.Id);
+
                 List<Tickets> Ticket = new List<Tickets>();
-                tickets.OwnerId = User.Identity.GetUserId();
-                db.Tickets.Add(tickets);
-                tickets.Status = db.TicketStatus.FirstOrDefault(s => s.Status == "Open");
+
+                var ticketPriority = db.TicketPriorities.FirstOrDefault(t => t.Id == ticket.Id);
+                ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority", ticket.Priority);
+
+                var ticketType = db.TicketTypes.FirstOrDefault(t => t.Id == ticket.Id);
+                ViewBag.TypeId = new SelectList(db.TicketTypes, "Id", "Type", ticket.Type);
+
+                ticket.Status = db.TicketStatus.FirstOrDefault(s => s.Status == "Open");
+                ticket.OwnerId = User.Identity.GetUserId();
+                db.Tickets.Add(ticket);
+             
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(tickets);
+            return View();
         }
 
         // GET: Tickets/Edit/5
-        [Authorize(Roles = "Submitter, Admin")]
+        [Authorize(Roles = "Admin, ProjectManager, Submitter, Developer")]
         public ActionResult Edit(int? id)
         {
-            ViewBag.StatusId = new SelectList(db.TicketStatus, "Id", "Status", "tickets.Status");
-            ViewBag.AssignedUserId = new SelectList(db.Users, "Id", "DisplayName");
+            Tickets ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+
+            var devId = db.Roles.FirstOrDefault(d => string.Compare("Developer", d.Name, true) == 0).Id;
+            var developers = db.Users.Where(r => r.Roles.Any(a => a.RoleId == devId));
+            ViewBag.AssignedUserId = new SelectList(developers,"Id", "FirstName", ticket.AssignedUserId);
+
+            ViewBag.StatusId = new SelectList(db.TicketStatus, "Id", "Status", ticket.Status);
+            
+            ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority", ticket.Priority);
+
+            ViewBag.TypeId = new SelectList(db.TicketTypes, "Id", "Type", ticket.Type);
 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tickets tickets = db.Tickets.Find(id);
-            if (tickets == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tickets);
+            
+            return View(ticket);
         }
 
         // POST: Tickets/Edit/5
@@ -151,25 +194,52 @@ namespace BugTracker2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,OwnerId,CreatedDate,UpdatedDate,Title,Body,AssignedUser,StatusId,tickets.AssignedUserId")] Tickets tickets)
+        public ActionResult Edit([Bind(Include = "Id,OwnerId,Created,Updated,Title,Body,StatusId,AssignedUserId,StatusId,PriorityId,TypeId,ProjectId")] Tickets ticket)
         {
+            var devId = db.Roles.FirstOrDefault(d => string.Compare("Developer", d.Name, true) == 0).Id;
+            var developers = db.Users.Where(r => r.Roles.Any(a => a.RoleId == devId));
+
             if (ModelState.IsValid)
             {
-                tickets.Updated = DateTimeOffset.Now;
-                db.Entry(tickets).State = EntityState.Modified;
+                ViewBag.StatusId = new SelectList(db.TicketStatus, "Id", "Status", "tickets.Status");
+                List<Tickets> projects = new List<Tickets>();
+                if (User.IsInRole("Admin"))
+                {
+                    var UserId = User.Identity.GetUserId();
+                    ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority", "tickets.Priority");
+                } 
+                    
+                if (User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
+                {
+                    var UserId = User.Identity.GetUserId();
+                    ViewBag.PriorityId = new SelectList(db.TicketPriorities.Where(p => p.Priority == UserId)).ToList();   
+                }
+                ViewBag.TypeId = new SelectList(db.TicketTypes, "Id", "Type", "tickets.Type");
+
+                ticket.Updated = DateTimeOffset.Now;
+                List<Projects> Project = new List<Projects>();
+                var ticketId = db.Projects.FirstOrDefault(p => p.Id == ticket.Id);
+                db.Tickets.Attach(ticket);
+                //tickets.OwnerId = User.Identity.GetUserId();
+                db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.StatusId = new SelectList(db.TicketStatus, "Id", "Status", "tickets.Status");
-            return RedirectToAction("Index");
+            ViewBag.StatusId = new SelectList(db.TicketStatus, "Id", "Status", ticket.Status);
+            ViewBag.AssignedUserId = new SelectList(developers, "Id", "DisplayName", ticket.AssignedUserId);
+            ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority", ticket.Priority);
+            ViewBag.TypeId = new SelectList(db.TicketTypes, "Id", "Type", ticket.Type);
+            return View(ticket);
+           }
+
+        //GET: Tickets/History/5
+        public ActionResult History()
+        {
+            return View();
         }
 
-
-
-
-
-//GET: Tickets/Delete/5
-public ActionResult Delete(int? id)
+        //GET: Tickets/Delete/5
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {

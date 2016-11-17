@@ -5,18 +5,17 @@
 }
 
 <h2>Details</h2>
-
 <div>
     <h4>Tickets</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Owner)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.OwnerId)
-        </dd>
+        </dd>*@
 
         @*<dt>
             @Html.DisplayNameFor(model => model.Created)
@@ -60,22 +59,46 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit") |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
 
-    <div class="form-actions no-color">
-        <input type="submit" value="New Comment" class="btn btn-default" />
-        <input type="submit" value="New Attachment" class="btn btn-default" />
-    </div>
-    if (User.IsInRole("Administrator") || User.IsInRole("Project Manager") || User.IsInRole("Developer"))
-    {<a href="#comments" class="section-scroll"><i class="fa fa-angle-down"></i>Comments</a>
-    <a href="#attachments" class="section-scroll"><i class="fa fa-angle-down"></i>Attachments</a>
 
-    <a href=@Url.Action("Create", "Attachments", new { id = Model.Id }) class="btn btn-warning"><i class="fa fa-plus"></i>Attachments</a>
+<div class="col-md-offset-2 col-md-10">
+    @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+    {
+        <input type="hidden" name="TicketsId" value="@Model.Id" />
+        <textarea class="commentBox" name="Body" placeholder="Add a comment..."></textarea><br />
+                <input type="submit" id="submitComment" />
+
     }
-}
+    @foreach (var comment in Model.Comments)
+    {
+        <ul>
+            <li>Posted by @comment.User.DisplayName at @comment.Created</li>
+            <li>@comment.Body</li>
+        </ul>
+        <p>
+            @Html.ActionLink("Edit", "Edit", "Comments", new { id = comment.Id }, null) |
+            @Html.ActionLink("Delete", "Delete", "Comments", new { id = comment.Id }, null)
+        </p>
+    }
+</div>
+
+
+<div class="col-md-offset-2 col-md-10">
+        @using (Html.BeginForm("Create", "Attachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+        {
+            <input type="hidden" id="TicketsId" name="TicketsId" value="@Model.Id" />
+            <input name="image" type="file" class="form-control" id="image" />
+            <textarea id="Body" name="Body"></textarea>
+            <input type="submit" value="Create" class="btn btn-default" />
+        }
+     @foreach (var attachment in Model.Attachments)
+     {
+        @*<div> Posted by @attachment.User.FirstName at @attachment.Created</div>*@
+        <img src="@attachment.MediaUrl" alt="Attachment Photo" style="max-width:150px" /> 
+      }
+</div>
+        <p>
+            @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id })*@ 
+            @Html.ActionLink("Back to List", "Index", "Tickets")
+            @Html.ActionLink("History", "History", "Tickets", new { id = Model.Id }, null)
+        </p>

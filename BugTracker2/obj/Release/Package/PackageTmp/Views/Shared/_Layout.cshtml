@@ -48,18 +48,24 @@
                         <li class="page-scroll">
                             @Html.ActionLink("Home", "Index", "Home")
                         </li>
-                        <li class="page-scroll">
+                        @*<li class="page-scroll">
                             @Html.ActionLink("About", "About", "Home")
                         </li>
                         <li class="page-scroll">
                             @Html.ActionLink("Contact", "Contact", "Home")
+                        </li>*@
+                        <li class="page-scroll">
+                            @Html.ActionLink("Projects", "Index", "Projects")
+                        </li>
+                        <li class="page-scroll">
+                            @Html.ActionLink("Tickets", "Index", "Tickets")
                         </li>
                         <li class="page-scroll">
                             @Html.Partial("_LoginPartial")
                         </li>
-                    </div>
-                </ul>
-           </div>   
+                    </ul>
+                 </div>
+            </div>   
        </nav>
   </div>
         

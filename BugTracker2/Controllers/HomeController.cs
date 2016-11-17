@@ -13,12 +13,22 @@ namespace BugTracker2.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        //GET: Index
         public ActionResult Index()
         {
-            return View();
-        }
+            List<Projects> projects = new List<Projects>();
+            ViewBag.Projects = new SelectList(db.Projects, "Id", "Projects");
+            if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
+            {
+                var UserId = User.Identity.GetUserId();
+                projects = db.Projects.Where(p => p.Users.Any(u => u.Id == UserId)).ToList();
+            }
+                    return View();
+                }
+            
 
-
+        
+      
 
         public ActionResult About()
         {

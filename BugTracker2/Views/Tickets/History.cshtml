@@ -1,0 +1,30 @@
+﻿@model BugTracker2.Models.Tickets
+@{
+    ViewBag.Title = "History";
+}
+
+
+    <h4>Ticket History</h4>
+    <hr />
+             <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd
+><div>
+    <dl class="dl-horizontal">
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+
+        <dd>
+            @Html.DisplayFor(model => model.Body)
+        </dd>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>

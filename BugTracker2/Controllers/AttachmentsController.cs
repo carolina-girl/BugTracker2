@@ -20,69 +20,12 @@ namespace BugTracker2.Controllers
         // GET: Attachments
         public ActionResult Index()
         {
-            var attachments = db.Attachments.Include(a => a.Owner).Include(a => a.Tickets);
+            var attachments = db.Attachments.Include(a => a.User).Include(a => a.Tickets);
             return View(attachments.ToList());
         }
-
-
-        // GET: Attachments
-        public new ActionResult View()
-        {
-            var attachments = db.Attachments.Include(a => a.Owner).Include(a => a.Tickets);
-            return View(attachments.ToList());
-        }
-
-
 
         // GET: Attachments/Details/5
-        public ActionResult Details(int? Id)
-        {
-            if (Id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Attachments attachments = db.Attachments.Find(Id);
-            if (attachments == null)
-            {
-                return HttpNotFound();
-            }
-            return View(attachments);
-        }
-
-        // GET: Attachments/Create
-        public ActionResult Create(string Id)
-        {
-            var tickets = db.Tickets.Find(Id);
-            var attachments = new Attachments();
-            attachments.Tickets = tickets;
-            //attachments.TicketsId = tickets.Id;
-
-            return View(attachments);
-        }
-
-        // POST: Attachments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketsId,Body,SubmitterId,Title,MediaUrl,Submitted")] Attachments attachments, HttpPostedFileBase image)
-        {
-            if (ModelState.IsValid)
-            {
-                attachments.Created = DateTimeOffset.Now;
-                attachments.SubmitterId = User.Identity.GetUserId();
-
-                db.Attachments.Add(attachments);
-                db.SaveChanges();
-
-                return RedirectToAction("Details", "Tickets", new { Id = attachments.SubmitterId });
-            }
-            return RedirectToAction("Details", "Tickets", new { Id = attachments.SubmitterId });
-        }
-
-
-        // GET: Attachments/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -93,7 +36,64 @@ namespace BugTracker2.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.OwnerId = new SelectList(db.ApplicationUsers, "Id", "FirstName", attachments.SubmitterId);
+            return View(attachments);
+        }
+
+        // GET: Attachments/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Attachments/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public ActionResult Create([Bind(Include = "TicketsId")] Attachments attachment, HttpPostedFileBase image)
+        {
+            if (ModelState.IsValid)
+            {
+                attachment.Created = DateTimeOffset.Now;
+                attachment.SubmitterId = User.Identity.GetUserId();
+
+            if (image != null && image.ContentLength > 0)
+            {
+                    //relative server path
+                    var filePath = "/fileUpload/";
+                    //path on physical drive on server
+                    var absPath = Server.MapPath("~" + filePath);
+                    // media url for relative path
+                    attachment.MediaUrl = filePath + image.FileName;
+                    //save image
+                    image.SaveAs(Path.Combine(absPath, image.FileName));
+
+                    //check the file name to make sure its an image
+                    var ext = Path.GetExtension(image.FileName).ToLower();
+                    if (ext != ".png" && ext != ".jpg" && ext != ".jpeg" && ext != ".gif" && ext != ".bmp")
+                    ModelState.AddModelError("image", "Invalid Format.");
+                    
+                    
+                    db.Attachments.Add(attachment);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Tickets", new { id = attachment.TicketsId });
+                    }
+                  }
+                    return View(attachment);
+              }
+
+     // GET: Attachments/Edit/5
+        public ActionResult Edit(int? Id)
+        {
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Attachments attachments = db.Attachments.Find(Id);
+            if (attachments == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", attachments.SubmitterId);
             ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachments.TicketsId);
             return View(attachments);
         }
@@ -111,19 +111,19 @@ namespace BugTracker2.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.OwnerId = new SelectList(db.ApplicationUsers, "Id", "FirstName", attachments.SubmitterId);
+            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", attachments.SubmitterId);
             ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachments.TicketsId);
             return View(attachments);
         }
 
         // GET: Attachments/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Attachments attachments = db.Attachments.Find(id);
+            Attachments attachments = db.Attachments.Find(Id);
             if (attachments == null)
             {
                 return HttpNotFound();
@@ -134,9 +134,9 @@ namespace BugTracker2.Controllers
         // POST: Attachments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int Id)
         {
-            Attachments attachments = db.Attachments.Find(id);
+            Attachments attachments = db.Attachments.Find(Id);
             db.Attachments.Remove(attachments);
             db.SaveChanges();
             return RedirectToAction("Index");

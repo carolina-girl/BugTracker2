@@ -16,7 +16,6 @@ namespace BugTracker2.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Comments
-        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var comments = db.Comments.Include(c => c.User);
@@ -24,13 +23,13 @@ namespace BugTracker2.Controllers
         }
 
         // GET: Comments/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comments comments = db.Comments.Find(id);
+            Comments comments = db.Comments.Find(Id);
             if (comments == null)
             {
                 return HttpNotFound();
@@ -41,7 +40,9 @@ namespace BugTracker2.Controllers
         // GET: Comments/Create
         public ActionResult Create()
         {
-            //ViewBag.UserId = new SelectList(db.ApplicationUsers, "Id", "FirstName");
+            //Projects project = db.Projects.Find(id);
+            //ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "Title");
+            //ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName");
             return View();
         }
 
@@ -49,34 +50,36 @@ namespace BugTracker2.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketsId,SubmitterId,Title,Body,Submitted")] Comments comments)
+        public ActionResult Create([Bind(Include = "Id,Body,TicketsId")] Comments comment)
         {
             if (ModelState.IsValid)
             {
-                comments.Created = DateTimeOffset.Now;
-                comments.SubmitterId = User.Identity.GetUserId();
-
-                db.Comments.Add(comments);
-                db.SaveChanges();
-                return RedirectToAction("Details", "Tickets", new { Id = comments.SubmitterId });
-            }
-            return RedirectToAction("Details", "Tickets", new { Id = comments.SubmitterId });
-        }
-
-        // GET: Comments/Edit/5
-        public ActionResult Edit(int? id)
+                        comment.Created = DateTimeOffset.Now;
+                        comment.UserId = User.Identity.GetUserId();
+                        db.Comments.Add(comment);
+                        db.SaveChanges();
+                        var com = db.Tickets.FirstOrDefault(p => p.Id == comment.TicketsId).Id;
+                        var ticket = db.Projects.Find(comment.TicketsId);
+                        return RedirectToAction("Details", "Tickets", new { id = comment.Tickets.Id });
+                    }
+                    return View(comment);
+                }
+ 
+                
+          
+// GET: Comments/Edit/5
+public ActionResult Edit(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comments comments = db.Comments.Find(id);
+            Comments comments = db.Comments.Find(Id);
             if (comments == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.ApplicationUsers, "Id", "FirstName", comments.UserId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", comments.UserId);
             return View(comments);
         }
 
@@ -93,18 +96,18 @@ namespace BugTracker2.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.ApplicationUsers, "Id", "FirstName", comments.UserId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", comments.UserId);
             return View(comments);
         }
 
         // GET: Comments/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comments comments = db.Comments.Find(id);
+            Comments comments = db.Comments.Find(Id);
             if (comments == null)
             {
                 return HttpNotFound();
@@ -114,9 +117,9 @@ namespace BugTracker2.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int Id)
         {
-            Comments comments = db.Comments.Find(id);
+            Comments comments = db.Comments.Find(Id);
             db.Comments.Remove(comments);
             db.SaveChanges();
             return RedirectToAction("Index");

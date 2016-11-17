@@ -15,14 +15,15 @@ namespace BugTracker2.Controllers
         [Authorize(Roles = "Admin,ProjectManager")]
         // GET: Admin
         public ActionResult Index()
-        {
+        { 
             var model = db.Users.ToList();
             return View(model);
         }
 
 
-        [Authorize(Roles = "Admin,ProjectManager")]
+
         //GET: Admin/SelectRole/5
+        [Authorize(Roles = "Admin")]
         public ActionResult EditUser(string Id)
         {
             var user = db.Users.Find(Id);
@@ -34,7 +35,7 @@ namespace BugTracker2.Controllers
             return View(AdminModel);
         }
 
-        [Authorize(Roles = "Admin,ProjectManager")]
+
         [HttpPost]
         public ActionResult EditUser(AdminUserViewModel model)
         {

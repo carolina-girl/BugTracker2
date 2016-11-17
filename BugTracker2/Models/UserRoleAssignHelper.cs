@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using static BugTracker2.Models.ApplicationUser;
 
@@ -56,14 +57,10 @@ namespace BugTracker2.Models
             return resultList;
         }
 
-        //public void AssignUser(string userId, int projectId)
-        //{
-        //    if (!HasProject(userId, projectId))
-        //    {
-        //        var user = db.Users.Find(userId);
-        //        var project = db.Projects.Find(projectId);
-        //        project.Users.Add(user);
-            }
-        }
-  
+    }
+}
+
+
+
+
 

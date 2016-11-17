@@ -1,4 +1,78 @@
-﻿@{
+﻿@model BugTracker2.Models.DashboardViewModel
+@{
     ViewBag.Title = "Home Page";
 }
 
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <img class="img-responsive" src="~/Template/img/profile.png" alt="">
+                <div class="intro-text">
+                    <span class="name">Bug Tracker</span>
+                    <hr class="star-light">
+                    <span class="skills">Project developed by Mary Ann Burns for Coder Foundry 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<h1>BugTracker</h1>
+<h2>Dashboard</h2>
+<div class = "container">
+     <div class = "row">
+          <div class = "col-md-12 content"></div>
+    <div class ="col-md-6">
+        <h2>
+            Assigned Projects
+        </h2>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="/Projects/Details/5">Interview day!</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="/Projects/Details/5">Hump Day!!!!!!!!</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+  <p>
+      <a href="/Projects">View Projects</a>
+ </p>
+      </div>
+         <div class="col-md-6">
+<h2>
+    Recent Tickets
+</h2>
+     <table class="table table-striped">
+         <tbody>
+             <tr>
+                 <td>
+                     <a href="/Tickets/Details/1">Happy Day!</a>
+                 </td>
+             </tr>
+             <tr>
+                 <td>
+                     <a href="/Tickets/Details/6">One more</a>
+                 </td>
+             </tr>
+             <tr>
+                 <td>
+                     <a href="/Tickets/Details/9">Test 1</a>
+                 </td>
+             </tr>
+         </tbody>
+         </table>
+              <p>
+                 <a href="/Tickets">View Tickets</a>
+             </p>
+         </div>
+    </div>
+ </div>
+
+
+             @*Account dropdown with LogOff and Manage(goes to manage your account page)*@

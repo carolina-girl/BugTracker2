@@ -1,4 +1,4 @@
-﻿@model BugTracker2.Models.DashboardViewModel
+﻿@model IEnumerable<BugTracker2.Models.DashboardViewModel>
 @{
     ViewBag.Title = "Home Page";
 }
@@ -26,20 +26,16 @@
         <h2>
             Assigned Projects
         </h2>
-        <table class="table table-striped">
-            <tbody>
+        @*<table class="table">
+@foreach (var item in Model)
+{
                 <tr>
                     <td>
-                        <a href="/Projects/Details/5">Celebrate</a>
+                        @Html.DisplayFor(modelItem => item.Projects)
                     </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="/Projects/Details/5">Coding is awesome!</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                 </tr>
+                }
+        </table>*@
   <p>
       <a href="/Projects">View Projects</a>
  </p>
@@ -48,27 +44,18 @@
 <h2>
     Recent Tickets
 </h2>
-     <table class="table table-striped">
-         <tbody>
+     @*<table class="table">
+@foreach (var item in Model)
+{
              <tr>
                  <td>
-                     <a href="/Tickets/Details/1">Learning To Code</a>
+                     @Html.DisplayFor(modelItem => item.Tickets)
                  </td>
              </tr>
-             <tr>
-                 <td>
-                     <a href="/Tickets/Details/6">test 20</a>
-                 </td>
-             </tr>
-             <tr>
-                 <td>
-                     <a href="/Tickets/Details/9">another one</a>
-                 </td>
-             </tr>
-         </tbody>
-         </table>
+            }
+         </table>*@
               <p>
-                 <a href="/Tickets">View All Tickets</a>
+                 <a href="/Tickets">View Tickets</a>
              </p>
          </div>
     </div>
