@@ -10,28 +10,28 @@
     <hr />
     <dl class="dl-horizontal">
         @*<dt>
-            @Html.DisplayNameFor(model => model.Owner)
-        </dt>
+                @Html.DisplayNameFor(model => model.Owner)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.OwnerId)
-        </dd>*@
+            <dd>
+                @Html.DisplayFor(model => model.OwnerId)
+            </dd>*@
 
         @*<dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Created)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Updated)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>*@
+            <dd>
+                @Html.DisplayFor(model => model.Updated)
+            </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Title)
@@ -49,9 +49,9 @@
             @Html.DisplayFor(model => model.Body)
         </dd>
 
-        <dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Status)
-        </dd>
+        </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Status)
@@ -66,7 +66,7 @@
     {
         <input type="hidden" name="TicketsId" value="@Model.Id" />
         <textarea class="commentBox" name="Body" placeholder="Add a comment..."></textarea><br />
-                <input type="submit" id="submitComment" />
+        <input type="submit" id="submitComment" />
 
     }
     @foreach (var comment in Model.Comments)
@@ -84,21 +84,86 @@
 
 
 <div class="col-md-offset-2 col-md-10">
-        @using (Html.BeginForm("Create", "Attachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
-        {
-            <input type="hidden" id="TicketsId" name="TicketsId" value="@Model.Id" />
-            <input name="image" type="file" class="form-control" id="image" />
-            <textarea id="Body" name="Body"></textarea>
+    @using (Html.BeginForm("Create", "Attachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+    {
+        <input type="hidden" id="TicketsId" name="TicketsId" value="@Model.Id" />
+        <input name="image" type="file" class="form-control" id="image" />
             <input type="submit" value="Create" class="btn btn-default" />
-        }
-     @foreach (var attachment in Model.Attachments)
-     {
+    }
+    @foreach (var attachment in Model.Attachments)
+    {
         @*<div> Posted by @attachment.User.FirstName at @attachment.Created</div>*@
-        <img src="@attachment.MediaUrl" alt="Attachment Photo" style="max-width:150px" /> 
-      }
+        <img src="@attachment.MediaUrl" alt="Attachment Photo" style="max-width:150px" />
+    }
 </div>
-        <p>
-            @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id })*@ 
-            @Html.ActionLink("Back to List", "Index", "Tickets")
-            @Html.ActionLink("History", "History", "Tickets", new { id = Model.Id }, null)
-        </p>
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @{ var ticketHistory = Model.History; }
+                @foreach (var history in ticketHistory)
+            {
+                    <h3>@history.Date.ToString("M/d/yy h:mm t")M</h3>
+                    <p>@Html.Raw(history.Tickets.Title)</p>
+                    <p>@Html.Raw(history.Tickets.StatusId)</p>
+                    <p>@Html.Raw(history.Tickets.PriorityId)</p>
+                    <p>@Html.Raw(history.Tickets.TypeId)</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id })*@
+    @Html.ActionLink("Back to List", "Index", "Tickets")
+</p>
+
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <h3> Ticket History</h3>
+        <a href="~/Views/Tickets/Details.cshtml">~/Views/Tickets/Details.cshtml</a>
+        <table class="table table-striped table-hover " id="tableformat1">
+            <thead>
+                <tr>
+                    <td>
+                        <b>Title</b>
+                    </td>
+                    <td>
+                        <b>Date and Time Changed</b>
+                    </td>
+                    <td>
+                        <b>Old Value</b>
+                    </td>
+                    <td>
+                        <b>New Value</b>
+                    </td>
+                    <td>
+                        <b>Changed By</b>
+                    </td>
+                </tr>
+            </thead>
+            @foreach (var item in Model.History)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OldValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NewValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

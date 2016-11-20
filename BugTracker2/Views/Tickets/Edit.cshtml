@@ -9,13 +9,29 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @{ var TicketHistory = Model.History; }
+                @foreach (var history in ticketHistory)
+                {
+                    <h3>@history.Date.ToString("M/d/yy h:mm t")M</h3>
+                    <p>@Html.Raw(history.Tickets.Title)</p>
+                    <p>@Html.Raw(history.Tickets.StatusId)</p>
+                    <p>@Html.Raw(history.Tickets.PriorityId)</p>
+                    <p>@Html.Raw(history.Tickets.TypeId)</p>
+                }
+            </div>
+        </div>
+    </div>
+
     <div class="form-horizontal">
         <h4>Tickets</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.ProjectId, new { })
+        @Html.HiddenFor(model => model.Project, new { })
 
         <div class="form-group">
             @Html.HiddenFor(model => model.OwnerId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -57,7 +73,7 @@
             </div>
         </div>
 
-        <p>
+        @*<p>
             @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
             { }
         <div class="form-group">
@@ -68,7 +84,7 @@
             </div>
         </div>
             }
-            </p>
+            </p>*@
 
         <p>
             @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
@@ -96,13 +112,16 @@
             }
         </p>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.AssignedUserId, "Assign Ticket", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("AssignedUserId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.AssignedUserId, "", new { @class = "text-danger" })
+        @if (ViewContext.HttpContext.User.IsInRole("Project Manager"))
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.AssignedUserId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("AssignedUserId", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.AssignedUserId, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
+        }
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -112,6 +131,18 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @{ var ticketHistory = Model.History; }
+            @foreach (var history in ticketHistory)
+            {
+                <h3>@history.Date.ToString("M/d/yy h:mm t")M</h3>
+                <p>@Html.Raw(history.Tickets.Title)</p>
+                <p>@Html.Raw(history.Tickets.StatusId)</p>
+                <p>@Html.Raw(history.Tickets.PriorityId)</p>
+                <p>@Html.Raw(history.Tickets.TypeId)</p>
+            }
+        </div>
+    </div>
 </div>

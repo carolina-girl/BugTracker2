@@ -56,10 +56,10 @@ namespace BugTracker2.Controllers
             {
                         comment.Created = DateTimeOffset.Now;
                         comment.UserId = User.Identity.GetUserId();
+                        var com = db.Tickets.FirstOrDefault(p => p.Id == comment.TicketsId).Id;
                         db.Comments.Add(comment);
                         db.SaveChanges();
-                        var com = db.Tickets.FirstOrDefault(p => p.Id == comment.TicketsId).Id;
-                        var ticket = db.Projects.Find(comment.TicketsId);
+
                         return RedirectToAction("Details", "Tickets", new { id = comment.Tickets.Id });
                     }
                     return View(comment);

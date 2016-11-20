@@ -18,6 +18,7 @@ namespace BugTracker2.Models
 
         public int Id { get; set; }
         [Display(Name = "Owner")]
+        public string UserId { get; set; }
         public string OwnerId { get; set; }
         public string AssignedUserId { get; set; }
         public string Email { get; set; }

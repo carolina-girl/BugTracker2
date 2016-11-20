@@ -20,21 +20,22 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            <th>
+            @*<th>
                     @Html.DisplayNameFor(model => model.Created)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.Updated)
                 </th>
             <th>
                 @Html.DisplayNameFor(model => model.Body)
             </th>
-            <th>
+            @*<th>
                     @Html.DisplayNameFor(model => model.Users)
-                </th>
+                </th>*@
             <th></th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var item in Model)
         {
@@ -43,7 +44,7 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                        @Html.DisplayFor(modelItem => item.Created)
+                        @Html.HiddenFor(modelItem => item.Created)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Updated)
@@ -52,7 +53,7 @@
                     @Html.DisplayFor(modelItem => item.Body)
                 </td>
                 <td>
-                        @Html.DisplayFor(modelItem => item.Users)
+                        @Html.HiddenFor(modelItem => item.Users)
                     </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

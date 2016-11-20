@@ -23,7 +23,7 @@
 
         <dd>
             @Html.DisplayFor(model => model.Created)
-        </dd>
+        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Updated)
@@ -31,7 +31,7 @@
 
         <dd>
             @Html.DisplayFor(model => model.Updated)
-        </dd>*@
+        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.Body)
@@ -46,5 +46,4 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index") |
     @Html.ActionLink("Assign Projects", "Index", "Admin") |
-    @Html.ActionLink("Tickets", "Index", "Tickets", new {  id = Model.Id })
 </p>

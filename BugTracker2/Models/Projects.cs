@@ -14,6 +14,7 @@ namespace BugTracker2.Models
             this.Tickets = new HashSet<Tickets>();
         }
         public int Id { get; set; }
+        public string UserId { get; set; }
         public string Title { get; set; }
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset? Updated { get; set; }

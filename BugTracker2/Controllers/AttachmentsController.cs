@@ -71,8 +71,7 @@ namespace BugTracker2.Controllers
                     var ext = Path.GetExtension(image.FileName).ToLower();
                     if (ext != ".png" && ext != ".jpg" && ext != ".jpeg" && ext != ".gif" && ext != ".bmp")
                     ModelState.AddModelError("image", "Invalid Format.");
-                    
-                    
+
                     db.Attachments.Add(attachment);
                     db.SaveChanges();
                     return RedirectToAction("Details", "Tickets", new { id = attachment.TicketsId });

@@ -20,11 +20,10 @@ namespace BugTracker2.Models
                 this.Projects = new HashSet<Projects>();
                 this.Tickets = new HashSet<Tickets>();
             }
+        public string Id { get; set; }
+        public string Name { get; set; }
         public IEnumerable<Tickets> Tickets { get; set; }
         public IEnumerable<Projects> Projects { get; set; }
-        public IEnumerable<Attachments> Attachments { get; set; }
-        public IEnumerable<Comments> Comments { get; set; }
-        public int ProjectsAmt { get; set; }
     }
 
     public class RolesIndexViewModel

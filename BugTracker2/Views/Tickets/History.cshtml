@@ -1,4 +1,4 @@
-﻿@model BugTracker2.Models.Tickets
+﻿@*@model BugTracker2.Models.Tickets
 @{
     ViewBag.Title = "History";
 }
@@ -6,25 +6,20 @@
 
     <h4>Ticket History</h4>
     <hr />
-             <dd>
-                @Html.DisplayFor(model => model.Title)
-            </dd
-><div>
-    <dl class="dl-horizontal">
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-    </dl>
+<div class="col-md-12 content">
+    <h1>Ticket History: @Html.ActionLink(Model.Title, "Details", new { id = Model.Id })</h1>
 </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+           @{ var ticketHistory = Model.History; }
+           @foreach (var history in ticketHistory.Reverse())
+            {
+                <h3>@history.Date.ToString("M/d/yy h:mm t")M</h3>
+                <p>@Html.Raw(history.NewValue)</p>
+            }
+        </div>
+    </div>
+</div>*@
+

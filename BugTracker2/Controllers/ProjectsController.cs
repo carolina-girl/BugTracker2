@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BugTracker2.Models;
 using Microsoft.AspNet.Identity;
+using BugTracker2.Models.Helper;
 
 namespace BugTracker2.Controllers
 {
@@ -16,19 +17,22 @@ namespace BugTracker2.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Projects
-        public ActionResult Index()
+       //[Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
+       public ActionResult Index()
         {
-            List<Projects> projects = new List<Projects>();
 
-            if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
+          if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
             {
                 var UserId = User.Identity.GetUserId();
-                projects = db.Projects.Where(p => p.Users.Any(u => u.Id == UserId)).ToList();
-            }
-            
+                var user = db.Users.Find(UserId);
+                var projects = user.Projects.ToList();
+
                 return View(projects);
             }
-        
+
+            return View();
+
+        }
 
         // GET: Projects
         [Authorize(Roles = "Admin,ProjectManager")]
@@ -42,17 +46,17 @@ namespace BugTracker2.Controllers
             
                 return View(projects);
             }
-        
+
 
         [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         // GET: Projects/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.Projects.Find(id);
+            Projects projects = db.Projects.Find(Id);
             if (projects == null)
             {
                 return HttpNotFound();
@@ -60,16 +64,12 @@ namespace BugTracker2.Controllers
             return View(projects);
         }
 
-
-
         // GET: Projects/Create
         [Authorize(Roles = "Admin,ProjectManager")]
         public ActionResult Create()
         {
             return View();
         }
-
-
 
         // POST: Projects/Create
         [Authorize(Roles = "Admin,ProjectManager")]
@@ -81,6 +81,7 @@ namespace BugTracker2.Controllers
         {
             if (ModelState.IsValid)
             {
+                projects.Created = DateTimeOffset.Now;
                 projects.Updated = DateTimeOffset.Now;
                 string userId = User.Identity.GetUserId();
                 db.Projects.Add(projects);
@@ -94,13 +95,13 @@ namespace BugTracker2.Controllers
 
         // GET: Projects/Edit/5
         [Authorize(Roles = "Admin,ProjectManager")]
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.Projects.Find(id);
+            Projects projects = db.Projects.Find(Id);
             if (projects == null)
             {
                 return HttpNotFound();
@@ -128,13 +129,13 @@ namespace BugTracker2.Controllers
         }
 
         // GET: Projects/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.Projects.Find(id);
+            Projects projects = db.Projects.Find(Id);
             if (projects == null)
             {
                 return HttpNotFound();
@@ -145,9 +146,9 @@ namespace BugTracker2.Controllers
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int? id)
+        public ActionResult DeleteConfirmed(int? Id)
         {
-            Projects projects = db.Projects.Find(id);
+            Projects projects = db.Projects.Find(Id);
             db.Projects.Remove(projects);
             db.SaveChanges();
             return RedirectToAction("Index");

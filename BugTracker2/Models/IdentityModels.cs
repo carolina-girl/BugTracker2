@@ -49,7 +49,7 @@ namespace BugTracker2.Models
 
         public DbSet<Projects> Projects { get; set; }
 
-        public DbSet<TicketHistory> TicketHistories { get; set; }
+        public DbSet<TicketHistory> TicketHistory { get; set; }
 
         public DbSet<TicketPriority> TicketPriorities { get; set; }
 
