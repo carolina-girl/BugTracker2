@@ -5,34 +5,34 @@
 }
 
 <h2>Details</h2>
-
+<input type="hidden" name="TypeId" id="TypeId" value="@ViewBag.TypeId" />
 <div>
     <h4>Tickets</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Owner)
-        </dt>
+        @*<dt>
+                @Html.DisplayNameFor(model => model.Owner)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.OwnerId)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.OwnerId)
+            </dd>*@
 
         @*<dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Created)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Updated)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>*@
+            <dd>
+                @Html.DisplayFor(model => model.Updated)
+            </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.Title)
@@ -50,9 +50,9 @@
             @Html.DisplayFor(model => model.Body)
         </dd>
 
-        <dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Status)
-        </dd>
+        </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Status)
@@ -60,10 +60,95 @@
 
     </dl>
 </div>
+
+
+<div class="col-md-offset-2 col-md-10">
+    @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+    {
+        <input type="hidden" name="TicketsId" value="@Model.Id" />
+        <textarea class="commentBox" name="Body" placeholder="Add a comment..."></textarea><br />
+        <input type="submit" id="submitComment" />
+
+    }
+    @foreach (var comment in Model.Comments)
+    {
+        <ul>
+            <li>Posted by @comment.User.DisplayName at @comment.Created</li>
+            <li>@comment.Body</li>
+        </ul>
+        <p>
+            @Html.ActionLink("Edit", "Edit", "Comments", new { id = comment.Id }, null) |
+            @Html.ActionLink("Delete", "Delete", "Comments", new { id = comment.Id }, null)
+        </p>
+    }
+</div>
+
+
+<div class="col-md-offset-2 col-md-10">
+    @using (Html.BeginForm("Create", "Attachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+    {
+        <input type="hidden" id="TicketsId" name="TicketsId" value="@Model.Id" />
+        <input name="image" type="file" class="form-control" id="image" />
+            <input type="submit" value="Create" class="btn btn-default" />
+    }
+    @foreach (var attachment in Model.Attachments)
+    {
+        @*<div> Posted by @attachment.User.FirstName at @attachment.Created</div>*@
+        <img src="@attachment.MediaUrl" alt="Attachment Photo" style="max-width:150px" />
+    }
+</div>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index") |
-    @Html.ActionLink("View Attachments", "Index", "Attachments") |
-    @Html.ActionLink("View Comments", "Index", "Comments")
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id })*@
+    @Html.ActionLink("Back to List", "Index", "Tickets")
 </p>
 
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <h3> Ticket History</h3>
+        <a href="~/Views/Tickets/Details.cshtml"></a>
+        <table id="mytable" class="data-table-xl hover row-border table-striped compact">
+            <thead>
+                <tr>
+                    <td>
+                        <b>Title</b>
+                    </td>
+                    <td>
+                        <b>Date and Time Changed</b>
+                    </td>
+                    <td>
+                        <b>Old Value</b>
+                    </td>
+                    <td>
+                        <b>New Value</b>
+                    </td>
+                    <td>
+                        <b>Changed By</b>
+                    </td>
+                </tr>
+            </thead>
+            @foreach (var item in Model.History)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OldValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NewValue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

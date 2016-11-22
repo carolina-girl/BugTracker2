@@ -6,7 +6,7 @@
 
 
 <h2>Projects</h2>
-
+<input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
 <p>
     @if (ViewContext.HttpContext.User.IsInRole("Admin,ProjectManagers"))
             {
@@ -20,18 +20,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            @*<th>
+            <th>
                     @Html.DisplayNameFor(model => model.Created)
-                </th>*@
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Updated)
                 </th>
             <th>
                 @Html.DisplayNameFor(model => model.Body)
             </th>
-            @*<th>
+            <th>
                     @Html.DisplayNameFor(model => model.Users)
-                </th>*@
+                </th>
             <th></th>
         </tr>
     </thead>
@@ -53,12 +53,14 @@
                     @Html.DisplayFor(modelItem => item.Body)
                 </td>
                 <td>
-                        @Html.HiddenFor(modelItem => item.Users)
+                        @Html.DisplayFor(modelItem => item.Users)
                     </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Add Tickets", "Create", "Tickets", new { id = item.Id }, null) |
                     @Html.ActionLink("Back to Dashboard", "Index", "Home")
+
                     @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                 </td>
 
@@ -67,14 +69,12 @@
     </tbody>
 </table>
     <p>
-        @*@if (ViewContext.HttpContext.User.IsInRole("Admin"))*@
         @if (Request.IsAuthenticated && User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
         {
             @Html.ActionLink("Assign Projects To Users", "Index", "Admin")
         }
     </p>
     <p>
-        @*@if (ViewContext.HttpContext.User.IsInRole("Admin"))*@
             @if (Request.IsAuthenticated && User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
             {
             @Html.ActionLink("View All Projects", "FullList", "Projects")

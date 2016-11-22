@@ -8,15 +8,16 @@
 
 <div>
     <h4>Comment</h4>
+    @Html.HiddenFor(model => model.TicketsId)
     <hr />
     <dl class="dl-horizontal">
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.User.FirstName)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.User.FirstName)
-        </dd>
+        </dd>*@
 
         @*<dt>
             @Html.DisplayNameFor(model => model.TicketsId)

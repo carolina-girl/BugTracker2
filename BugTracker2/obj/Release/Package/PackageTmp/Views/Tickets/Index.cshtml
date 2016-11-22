@@ -5,13 +5,13 @@
 }
 
 <h2>Tickets</h2>
-
-<p>
+<input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
+@*<p>
     @if (ViewContext.HttpContext.User.IsInRole("Submitter"))
     {
         @Html.ActionLink("Create", "Create", "Tickets")
     }
-</p>
+</p>*@
 
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>
@@ -22,12 +22,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Project)
        </th>
-        @*<th>
+        <th>
             @Html.DisplayNameFor(model => model.Created)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Updated)
-        </th>*@
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
@@ -36,6 +36,12 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Status.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Priority.Priority)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Type.Type)
         </th>
 
         <th></th>
@@ -50,12 +56,12 @@
         <td>
             @Html.DisplayFor(modelItem => item.Project.Title)
         </td>
-        @*<td>
+        <td>
             @Html.DisplayFor(modelItem => item.Created)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Updated)
-        </td>*@
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>
@@ -65,6 +71,13 @@
         <td>
             @Html.DisplayFor(modelItem => item.Status.Status)
         </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Priority.Priority)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Type.Type)
+        </td>
+
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
             @Html.ActionLink("Details", "Details", new { id = item.Id }) 
@@ -79,6 +92,17 @@
 <div>
     @Html.ActionLink("Back to Dashboard", "Index","Home")
 </div> 
+<p>
+    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+            {
+        @Html.ActionLink("View All Tickets", "FullList", "Tickets")
+    }
+</p>
+
+
+
+
+
 
 
     

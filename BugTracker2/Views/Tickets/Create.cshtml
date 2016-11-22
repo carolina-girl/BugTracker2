@@ -11,13 +11,15 @@
         <hr />
   
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
+        <input type="hidden" name="ProjectId" id="ProjectId" value="@ViewBag.ProjectId" />
+        <input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
+    @*<div class="form-group">
         @Html.HiddenFor(model => model.ProjectId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.HiddenFor(model => model.ProjectId, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
         </div>
-    </div>
+    </div>*@
 
         <div class="form-group">
             @Html.HiddenFor(model => model.OwnerId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -60,8 +62,8 @@
         </div>
 
         <p>
-            @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-            { 
+            @*@if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+            {*@ 
             <div class="form-group">
                 @Html.LabelFor(model => model.PriorityId, "Ticket Priority", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -69,12 +71,12 @@
                     @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
                 </div>
             </div>
-            }
+            @*}*@
         </p>
 
         <p>
-            @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-            { 
+            @*@if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+            {*@ 
             <div class="form-group">
                 @Html.LabelFor(model => model.TypeId, "Ticket Type", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -82,7 +84,7 @@
                     @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
                 </div>
             </div>
-            }
+            @*}*@
         </p>
 
             <div class="form-group">
@@ -90,7 +92,7 @@
                     <input type="submit" value="Create" class="btn btn-default" />
                 </div>
             </div>
-        </div>
+       </div>
 }
 
 <div>

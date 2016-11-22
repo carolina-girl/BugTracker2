@@ -10,21 +10,6 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                @{ var TicketHistory = Model.History; }
-                @foreach (var history in ticketHistory)
-                {
-                    <h3>@history.Date.ToString("M/d/yy h:mm t")M</h3>
-                    <p>@Html.Raw(history.Tickets.Title)</p>
-                    <p>@Html.Raw(history.Tickets.StatusId)</p>
-                    <p>@Html.Raw(history.Tickets.PriorityId)</p>
-                    <p>@Html.Raw(history.Tickets.TypeId)</p>
-                }
-            </div>
-        </div>
-    </div>
 
     <div class="form-horizontal">
         <h4>Tickets</h4>
@@ -32,6 +17,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.Project, new { })
+        @Html.HiddenFor(model => model.ProjectId)
 
         <div class="form-group">
             @Html.HiddenFor(model => model.OwnerId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -73,7 +59,7 @@
             </div>
         </div>
 
-        @*<p>
+        <p>
             @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
             { }
         <div class="form-group">
@@ -84,7 +70,7 @@
             </div>
         </div>
             }
-            </p>*@
+            </p>
 
         <p>
             @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
@@ -130,19 +116,3 @@
         </div>
     </div>
 }
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            @{ var ticketHistory = Model.History; }
-            @foreach (var history in ticketHistory)
-            {
-                <h3>@history.Date.ToString("M/d/yy h:mm t")M</h3>
-                <p>@Html.Raw(history.Tickets.Title)</p>
-                <p>@Html.Raw(history.Tickets.StatusId)</p>
-                <p>@Html.Raw(history.Tickets.PriorityId)</p>
-                <p>@Html.Raw(history.Tickets.TypeId)</p>
-            }
-        </div>
-    </div>
-</div>

@@ -80,3 +80,10 @@ C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTra
 C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Release\BugTracker2.csprojResolveAssemblyReference.cache
 C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Release\BugTracker2.dll
 C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Release\BugTracker2.pdb
+C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\bin\SendGrid.CSharp.HTTP.Client.dll
+C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\bin\SendGrid.dll
+C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\bin\System.Net.Http.Formatting.dll
+C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\bin\System.Net.Http.Formatting.xml
+C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Release\BugTracker2.Migrations.Initial.resources
+C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Release\BugTracker2.Migrations.Initial1.resources
+C:\Users\Mary Ann Burns\documents\visual studio 2015\Projects\BugTracker2\BugTracker2\obj\Release\BugTracker2.csproj.GenerateResource.Cache

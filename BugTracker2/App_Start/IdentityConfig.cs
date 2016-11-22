@@ -4,23 +4,41 @@ using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using BugTracker2.Models;
-using static BugTracker2.Models.ApplicationUser;
+using System.Configuration;
+using System.Net.Mail;
 
 namespace BugTracker2
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            var apiKey = ConfigurationManager.AppSettings["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"];
+            var from = ConfigurationManager.AppSettings["maburns@carolina.rr.com"];
+            SendGridMessage myMessage = new SendGridMessage();
+            myMessage.AddTo(from);
+            //myMessage.From = new MailAddress(from);
+            //myMessage.Subject = message.Subject;
+            //myMessage.Html = message.Body;
+
+            //var transportWeb = new Microsoft.Web(apiKey);
+
+            try
+            {
+                //await transportWeb.DeliverAsync(myMessage);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                await Task.FromResult(0);
+            }
         }
     }
 

@@ -14,6 +14,7 @@ namespace BugTracker2.Models
             this.Comments = new HashSet<Comments>();
             this.Attachments = new HashSet<Attachments>();
             this.History = new HashSet<TicketHistory>();
+            this.Users = new HashSet<ApplicationUser>();
         }
 
         public int Id { get; set; }
@@ -42,6 +43,7 @@ namespace BugTracker2.Models
         public virtual ICollection<Comments> Comments { get; set; }
         public virtual ICollection<Attachments> Attachments { get; set; }
         public virtual ICollection<TicketHistory> History { get; set; }
+        public virtual ICollection<ApplicationUser> Users { get; set; }
         public virtual Projects Project { get; set; }
         public virtual ApplicationUser AssignedUser { get; set; }
         public virtual ApplicationUser Owner { get; set; }
