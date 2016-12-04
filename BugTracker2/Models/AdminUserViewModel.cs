@@ -11,6 +11,7 @@ namespace BugTracker2.Models
     {
         public ApplicationUser User { get; set; }
         public MultiSelectList Roles { get; set; }
+        public MultiSelectList AbsentRoles { get; set; }
         public string[] SelectedRoles { get; set; }
     }
 
@@ -18,10 +19,22 @@ namespace BugTracker2.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
- 
+
         public List<Projects> Projects { get; set; }
         public List<Tickets> Tickets { get; set; }
     }
 
-}
 
+    public class TicketUserViewModel
+    {
+        public string TicketTitle { get; set; }
+        public int TicketId { get; set; }
+        public string TicketAssignedTo { get; set; }
+
+        public SelectList UsersList { get; set; }
+
+        public string UserId { get; set; }
+
+    }
+
+}

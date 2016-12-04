@@ -1,6 +1,10 @@
 ﻿using BugTracker2.Models;
+using BugTracker2.Models.Helper;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.IdentityModel.Protocols.WSTrust;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,11 +15,15 @@ namespace BugTracker2.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         UserRoleAssignHelper userRole = new UserRoleAssignHelper();
+        AdminUserViewModel AdminModel = new AdminUserViewModel();
+        AdminProjectUserAssignViewModel AdminProjectModel = new AdminProjectUserAssignViewModel();
 
+
+
+        // GET: Admin 
         [Authorize(Roles = "Admin,ProjectManager")]
-        // GET: Admin
         public ActionResult Index()
-        { 
+        {
             var model = db.Users.ToList();
             return View(model);
         }
@@ -27,57 +35,115 @@ namespace BugTracker2.Controllers
         public ActionResult EditUser(string Id)
         {
             var user = db.Users.Find(Id);
-            AdminUserViewModel AdminModel = new AdminUserViewModel();
-            var selected = userRole.ListUserRoles(Id);
-            AdminModel.Roles = new MultiSelectList(db.Roles, "Name", "Name", selected);
+            //AdminUserViewModel AdminModel = new AdminUserViewModel();
+            //UserRoleAssignHelper helper = new UserRoleAssignHelper();
+            var currentRoles = userRole.ListUserRoles(Id);
+            //var absentRoles = userRole.ListAbsentUserRoles(Id);
+            //AdminModel.AbsentRoles = new MultiSelectList(absentRoles);
+            AdminModel.Roles = new MultiSelectList(db.Roles, "Name", "Name", currentRoles);
             AdminModel.User = user;
 
             return View(AdminModel);
         }
 
-
+        // POST: Add User Role
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult EditUser(AdminUserViewModel model)
+        public ActionResult AddRole(string AddId, List<string> SelectedAbsentRoles)
         {
-            var user = db.Users.Find(model.User.Id);
-            foreach (var rolermv in db.Roles.Select(r => r.Name).ToList())
+            if (ModelState.IsValid)
             {
-                userRole.RemoveUserFromRole(user.Id, rolermv);
-            }
+                //UserRoleAssignHelper helper = new UserRoleAssignHelper();
+                var user = db.Users.Find(AddId);
+                foreach (var role in SelectedAbsentRoles)
+                {
+                    userRole.AddUserToRole(AddId, role);
+                }
 
-            foreach (var roleadd in model.SelectedRoles)
-            {
-                userRole.AddUserToRole(user.Id, roleadd);
+                db.Entry(user).State = EntityState.Modified;
+                db.Users.Attach(user);
+                db.SaveChanges();
+                return RedirectToAction("ListUsers");
             }
-            return RedirectToAction("Index");
+            return View(AddId);
+        }
+
+        // POST: Remove User Role
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult RemoveRole(string RemoveId, List<string> SelectedCurrentRoles)
+        {
+            if (ModelState.IsValid)
+            {
+                //UserRoleAssignHelper helper = new UserRoleAssignHelper();
+                var user = db.Users.Find(RemoveId);
+                foreach (var role in SelectedCurrentRoles)
+                {
+                    userRole.RemoveUserFromRole(RemoveId, role);
+                }
+
+                db.Entry(user).State = EntityState.Modified;
+                db.Users.Attach(user);
+                db.SaveChanges();
+                return RedirectToAction("ListUsers");
+            }
+            return View(RemoveId);
         }
 
 
+
+
+        //GET: Admin/ProjectUser/5
         [Authorize(Roles = "Admin,ProjectManager")]
-        //GET: Admin/SelectProject/5
-        public ActionResult ProjectUser(string Id)
+        public ActionResult ProjectUser(int? Id)
         {
             var user = db.Users.Find(Id);
             AdminProjectUserAssignViewModel AdminProjectModel = new AdminProjectUserAssignViewModel();
-             var selected = db.Projects.ToList();
+            var selected = db.Projects.ToList();
             AdminProjectModel.Projects = new MultiSelectList(db.Projects, "Id", "Title", selected);
-            AdminProjectModel.User = user;
+            //AdminProjectModel.User = user;
             return View(AdminProjectModel);
         }
 
+        //{
+        //    var user = db.Users.Find(Id);
+        //    AdminProjectUserAssignViewModel AdminProjectModel = new AdminProjectUserAssignViewModel();
+        //    //ProjectId = db.Projects.Id;
+        //    //Title = db.Project.Title;
+        //    var selected = db.Projects.ToList();
+        //    AdminProjectModel.Projects = new MultiSelectList(db.Projects, "Id", "Title", selected);
+        //    AdminProjectModel.User = user;
+        //    return RedirectToAction("Index", "Admin");
+        //}
+
+        // POST: Admin/SelectProject/5
         [HttpPost]
-        public ActionResult ProjectUser(AdminProjectUserAssignViewModel model)
+        public ActionResult AssignProjects(string id)
         {
+            var user = db.Users.Find(id);
+            AdminProjectUserAssignViewModel model = new AdminProjectUserAssignViewModel();
+            var selected = db.Projects.ToList();
+            model.Projects = new MultiSelectList(db.Projects, "Id", "Title", selected);
+            model.User = user;
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public ActionResult AssignProjects(AdminProjectUserAssignViewModel model)
+        {
+
             var user = db.Users.Find(model.User.Id);
             var currentProjects = (from p in db.Projects
-                                       where p.Users.Any(r => r.Id == user.Id)
-                                       select p.Id).ToArray();
-             
-             foreach (var x in model.SelectedProjects)
+                                   where p.Users.Any(r => r.Id == user.Id)
+                                   select p.Id).ToArray();
 
+
+            foreach (var x in model.SelectedProjects)
             {
-                var projects = db.Projects.Find(x);
-                projects.Users.Add(user);
+                var project = db.Projects.Find(x);
+                project.Users.Add(user);
             }
             foreach (var z in currentProjects)
             {
@@ -91,10 +157,10 @@ namespace BugTracker2.Controllers
                     }
                 }
             }
-            db.SaveChanges();
-            return RedirectToAction("ProjectUser", "Admin");
-            }
 
+            db.SaveChanges();
+            return RedirectToAction("Index", "Admin");
+        }
 
         protected override void Dispose(bool disposing)
         {

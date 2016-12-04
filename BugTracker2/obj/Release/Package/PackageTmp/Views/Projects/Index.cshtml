@@ -8,11 +8,12 @@
 <h2>Projects</h2>
 <input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
 <p>
-    @if (ViewContext.HttpContext.User.IsInRole("Admin,ProjectManagers"))
+    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
             {
         @Html.ActionLink("Create", "Create", "Projects")
     }
 </p>
+
 
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>
@@ -29,9 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Body)
             </th>
-            <th>
-                    @Html.DisplayNameFor(model => model.Users)
-                </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.UserId)
+                </th>*@
             <th></th>
         </tr>
     </thead>
@@ -52,9 +53,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Body)
                 </td>
-                <td>
-                        @Html.DisplayFor(modelItem => item.Users)
-                    </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>*@
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |

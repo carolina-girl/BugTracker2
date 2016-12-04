@@ -46,6 +46,12 @@
                             <a href="#page-top"></a>
                         </li>
                         <li class="page-scroll">
+                                @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+            {
+                                    @Html.ActionLink("Assign Roles", "Index", "Admin")
+                                }
+                        </li>
+                        <li class="page-scroll">
                             @Html.ActionLink("Home", "Index", "Home")
                         </li>
                         @*<li class="page-scroll">

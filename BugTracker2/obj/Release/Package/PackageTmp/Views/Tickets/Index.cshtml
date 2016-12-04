@@ -6,12 +6,12 @@
 
 <h2>Tickets</h2>
 <input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
-@*<p>
-    @if (ViewContext.HttpContext.User.IsInRole("Submitter"))
-    {
+<p>
+    @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
+            {
         @Html.ActionLink("Create", "Create", "Tickets")
     }
-</p>*@
+</p>
 
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>

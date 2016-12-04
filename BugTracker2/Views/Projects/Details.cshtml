@@ -4,46 +4,66 @@
     ViewBag.Title = "Details";
 }
 
-
+@Html.HiddenFor(model => model.Id)
+@Html.HiddenFor(model => model.UserId)
 <div>
-    <h4>Project</h4>
-    <hr />
+    <br/>
+    <h3>Project: @Html.ActionLink(Model.Title, "Details", "Projects", new { id = Model.Id }, null)</h3>
+   
+    <h3>Body: @Html.ActionLink(Model.Body, "Details", "Projects", new { id = Model.Id }, null)</h3>
+
     <dl class="dl-horizontal">
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        @*<dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Created)
         </dd>*@
 
         <dt>
-            @Html.DisplayNameFor(model => model.Updated)
+            @Html.HiddenFor(model => model.Created)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Updated)
+            @Html.HiddenFor(model => model.Created)
         </dd>
 
         <dt>
+            @Html.HiddenFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.HiddenFor(model => model.Updated)
+        </dd>
+
+        @*<dt>
             @Html.DisplayNameFor(model => model.Body)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Body)
-        </dd>
+        </dd>*@
     </dl>
 </div>
+
+        
+<div class="row">
+    <div class="col-md-12 content">
+        <h3>Tickets for this project:</h3>
+        <table class="table">
+            @foreach (var ticket in Model.Tickets)
+            {
+                <tr>
+                    <td>@Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index") |
-    @Html.ActionLink("Assign Projects", "Index", "Admin") |
+    @Html.ActionLink("Assign Projects", "Index", "Admin")
 </p>

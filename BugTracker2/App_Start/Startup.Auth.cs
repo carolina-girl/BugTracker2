@@ -7,6 +7,7 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using BugTracker2.Models;
 using static BugTracker2.Models.ApplicationUser;
+using static BugTracker2.ApplicationUserManager;
 
 namespace BugTracker2
 {

@@ -5,7 +5,13 @@
 }
 
 
-<h2>Projects</h2>
+<h2>All Projects</h2>
+@*<p>
+    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+    {
+        <h5>@Html.ActionLink("Create", "Create", "Projects")</h5>
+    }
+</p>*@
 
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>
@@ -13,12 +19,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            @*<th>
+            <th>
                     @Html.DisplayNameFor(model => model.Created)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Updated)
-                </th>*@
+                </th>
             <th>
                 @Html.DisplayNameFor(model => model.Body)
             </th>
@@ -35,26 +41,35 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
-                @*<td>
+                <td>
                         @Html.DisplayFor(modelItem => item.Created)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Updated)
-                    </td>*@
+                    </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Body)
                 </td>
                 @*<td>
                         @Html.DisplayFor(modelItem => item.Users)
                     </td>*@
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id })
-                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-                </td>
+                <td><h5>
+    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, null) |
+    @Html.ActionLink("Details", "Details", new { id = item.Id }, null)
+    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+   </h5></td>
               
             </tr>
         }
     </tbody>
 </table>
-@Html.ActionLink("Back","Index","Projects")
+
+    <p>
+        @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+        {
+            <h5>@Html.ActionLink("Create A New Project", "Create", "Projects")</h5>
+        }
+    </p>
+<h5>
+    @Html.ActionLink("Back To Your Projects", "Index", "Projects")
+</h5>

@@ -1,44 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using BugTracker2;
+using BugTracker2.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using BugTracker2.Models;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using System;
 using System.Configuration;
+using System.Net;
 using System.Net.Mail;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace BugTracker2
 {
+
     public class EmailService : IIdentityMessageService
     {
         public async Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            var apiKey = ConfigurationManager.AppSettings["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"];
-            var from = ConfigurationManager.AppSettings["maburns@carolina.rr.com"];
+            var apiKey = ConfigurationManager.AppSettings["SendGridAPIkey"];
+            var from = ConfigurationManager.AppSettings["ContactEmail"];
+
             SendGridMessage myMessage = new SendGridMessage();
-            myMessage.AddTo(from);
-            //myMessage.From = new MailAddress(from);
-            //myMessage.Subject = message.Subject;
-            //myMessage.Html = message.Body;
+            myMessage.AddTo(message.Destination);
+            myMessage.From = new MailAddress("maburns@carolina.rr.com");
+            myMessage.Subject = message.Subject;
+            myMessage.Html = message.Body;
 
-            //var transportWeb = new Microsoft.Web(apiKey);
+            //Create a Web transport, using API key
+            var transportWeb = new Web(apiKey);
 
+            //Send the email
             try
             {
-                //await transportWeb.DeliverAsync(myMessage);
+                await transportWeb.DeliverAsync(myMessage);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 await Task.FromResult(0);
             }
+
         }
     }
 
@@ -59,7 +64,9 @@ namespace BugTracker2
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+
+
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
@@ -100,29 +107,36 @@ namespace BugTracker2
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
         }
-    }
 
-    // Configure the application sign-in manager which is used in this application.
-    public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
-    {
-        public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
-            : base(userManager, authenticationManager)
+
+        // Configure the application sign-in manager which is used in this application.
+        public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
         {
+            public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
+                : base(userManager, authenticationManager)
+            {
+            }
+
+            public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
+            {
+                return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
+            }
+
+            public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
+            {
+                return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+            }
         }
 
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
+        public Task SendAsync(IdentityMessage message)
         {
-            return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
-        }
-
-        public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
-        {
-            return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+            throw new NotImplementedException();
         }
     }
 }
+

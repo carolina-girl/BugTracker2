@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace BugTracker2.Models
 {
@@ -15,11 +12,12 @@ namespace BugTracker2.Models
             this.Attachments = new HashSet<Attachments>();
             this.History = new HashSet<TicketHistory>();
             this.Users = new HashSet<ApplicationUser>();
+            this.TicketNotify = new HashSet<TicketNotify>();
         }
 
         public int Id { get; set; }
         [Display(Name = "Owner")]
-        public string UserId { get; set; }
+        public string userId { get; set; }
         public string OwnerId { get; set; }
         public string AssignedUserId { get; set; }
         public string Email { get; set; }
@@ -44,6 +42,7 @@ namespace BugTracker2.Models
         public virtual ICollection<Attachments> Attachments { get; set; }
         public virtual ICollection<TicketHistory> History { get; set; }
         public virtual ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<TicketNotify> TicketNotify { get; set; }
         public virtual Projects Project { get; set; }
         public virtual ApplicationUser AssignedUser { get; set; }
         public virtual ApplicationUser Owner { get; set; }

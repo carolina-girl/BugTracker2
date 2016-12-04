@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BugTracker2.Models;
 using System.Web.UI.WebControls;
+using static BugTracker2.ApplicationUserManager;
 
 namespace BugTracker2.Controllers
 {
@@ -53,7 +54,7 @@ namespace BugTracker2.Controllers
             }
         }
 
-        
+
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -62,7 +63,7 @@ namespace BugTracker2.Controllers
             return View();
         }
 
-        
+
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -92,9 +93,70 @@ namespace BugTracker2.Controllers
             }
         }
 
-//
-// GET: /Account/VerifyCode
-[AllowAnonymous]
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> LoginGuestDeveloper()
+        {
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var user = await UserManager.FindByNameAsync("developer@coderfoundry.com");
+
+            var result = await SignInManager.PasswordSignInAsync("developer@coderfoundry.com", "Password-1", false, shouldLockout: false);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> LoginGuestSubmitter()
+        {
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var user = await UserManager.FindByNameAsync("submitter@coderfoundry.com");
+        
+            var result = await SignInManager.PasswordSignInAsync("submitter@coderfoundry.com", "Password-1", false, shouldLockout: false);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> LoginGuestProjectManager()
+        {
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var user = await UserManager.FindByNameAsync("projectManager@coderfoundry.com");
+         
+            var result = await SignInManager.PasswordSignInAsync("projectManager@coderfoundry.com", "Password-1", false, shouldLockout: false);
+            
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> LoginGuestAdmin()
+        {
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var user = await UserManager.FindByNameAsync("mahburns@gmail.com");
+       
+            var result = await SignInManager.PasswordSignInAsync("mahburns@gmail.com", "redhead46", false, shouldLockout: false);
+            
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        //
+        // GET: /Account/VerifyCode
+        [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
             // Require that the user has already logged in via username/password or external login
@@ -153,7 +215,7 @@ namespace BugTracker2.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
-                                            
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -161,9 +223,9 @@ namespace BugTracker2.Controllers
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -205,7 +267,7 @@ namespace BugTracker2.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null /*|| !(await UserManager.IsEmailConfirmedAsync(user.Id))*/)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
@@ -394,7 +456,7 @@ namespace BugTracker2.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //
@@ -491,7 +553,7 @@ namespace BugTracker2.Controllers
             var callbackUrl = Url.Action("ConfirmEmail", "Account",
                new { userId = userID, code = code }, protocol: Request.Url.Scheme);
             await UserManager.SendEmailAsync(userID, subject,
-               
+
             "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
             return callbackUrl;

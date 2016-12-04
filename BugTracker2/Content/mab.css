@@ -13,3 +13,38 @@
 header {
     margin-top: 0;
 }
+#loginbut {
+    margin-left: -800px;
+}
+.login-password-buttons {
+    margin-left: -725px;
+    margin-top: -200px;
+}
+.checkbox {
+    margin-left: -800px;
+}
+input[type=submit] {
+    color: black;
+    background-color: white;
+}
+#guestBut-1 {
+    margin-top: 0px;
+    margin-right: 0px;
+}
+/*#guestBut-2 {
+    margin-top: 50px;
+    margin-right: 50px;
+}*/
+#guestForm {
+    margin-top: -50px;
+    margin-right: 400px;
+}
+#loginForm {
+    margin-top: -20px;
+    margin-left: 260px;
+}
+.login-wrap {
+    margin-left: 200px;
+
+}
+

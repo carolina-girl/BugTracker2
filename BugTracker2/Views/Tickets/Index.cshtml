@@ -1,23 +1,22 @@
-﻿@model IEnumerable<BugTracker2.Models.Tickets>
+﻿
+@model IEnumerable<BugTracker2.Models.Tickets>
 
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Tickets</h2>
-<input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
-@*<p>
-    @if (ViewContext.HttpContext.User.IsInRole("Submitter"))
-    {
-        @Html.ActionLink("Create", "Create", "Tickets")
-    }
-</p>*@
+@*<input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
+<input type="hidden" name="UserId" id="UserId" value="@ViewBag.UserId" />
+<input type="hidden" name="OwnerId" id="OwnerId" value="@ViewBag.OwnerId" />*@
+@*<input type="hidden" name="ProjectId" id="ProjectId" ="@ViewBag.Projects.ProjectId" />*@
+
 
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>
     <tr>
         @*<th>
-            @Html.DisplayNameFor(model => model.OwnerId)
+            @Html.DisplayNameFor(model => model.ProjectId)
         </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Project)
@@ -43,6 +42,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Type.Type)
         </th>
+        <th>
+            Assigned To
+        </th>
 
         <th></th>
     </tr>
@@ -51,7 +53,7 @@
 @foreach (var item in Model) {
     <tr>
         @*<td>
-            @Html.DisplayFor(modelItem => item.OwnerId)
+            @Html.DisplayFor(modelItem => item.ProjectId)
         </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.Project.Title)
@@ -77,27 +79,42 @@
         <td>
             @Html.DisplayFor(modelItem => item.Type.Type)
         </td>
-
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) 
-            @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@ 
-        </td>
-    </tr>
-}
-            
- </tbody>
- 
-</table>
-<div>
-    @Html.ActionLink("Back to Dashboard", "Index","Home")
-</div> 
-<p>
-    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+            @if (item.AssignedUser == null)
             {
+                <span class="text-danger">Unassigned</span>
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)
+            }
+        </td>
+
+        <td><h5>
+    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+    @Html.ActionLink("Details", "Details", new { id = item.Id })
+    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+        </h5></td>
+    </tr>
+}      
+ </tbody>
+</table>
+<h5>
+    @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
+    {
+        @Html.ActionLink("Create A New Ticket", "Create", "Tickets")
+    }
+</h5>
+<h5>
+    @Html.ActionLink("Back to Dashboard", "Index", "Home")
+</h5> 
+
+<h5>
+    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+    {
         @Html.ActionLink("View All Tickets", "FullList", "Tickets")
     }
-</p>
+</h5>
 
 
 
@@ -105,5 +122,6 @@
 
 
 
-    
+
+
 

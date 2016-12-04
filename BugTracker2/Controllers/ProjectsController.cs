@@ -17,7 +17,7 @@ namespace BugTracker2.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Projects
-       //[Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
+       [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
        public ActionResult Index()
         {
 
@@ -25,22 +25,30 @@ namespace BugTracker2.Controllers
             {
                 var UserId = User.Identity.GetUserId();
                 var user = db.Users.Find(UserId);
-                var projects = user.Projects.ToList();
+                var project = new List<Projects>();
+                ProjectsHelper helper = new ProjectsHelper(db);
+                project = helper.ListProjects(UserId);
+                project = user.Projects.ToList();
+                string Created = DateTimeOffset.Now.ToString("MM/dd/yyyy");
+                string Updated = DateTimeOffset.Now.ToString("MM/dd/yyyy");
+                db.SaveChanges();
 
-                return View(projects);
+                return View(project);
             }
 
             return View();
 
         }
 
+
         // GET: Projects
         [Authorize(Roles = "Admin,ProjectManager")]
-        public ActionResult FullList()
+        public ActionResult FullList(int? Id)
         {
             List<Projects> projects = new List<Projects>();
             if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
             {
+                Projects project = db.Projects.Find(Id);
                 projects = db.Projects.ToList();
             }
             
@@ -50,18 +58,26 @@ namespace BugTracker2.Controllers
 
         [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         // GET: Projects/Details/5
-        public ActionResult Details(int? Id)
+        public ActionResult Details(int? Id, string userId)
         {
             if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.Projects.Find(Id);
-            if (projects == null)
+            Projects project = db.Projects.Find(Id);
+            if (project == null)
             {
                 return HttpNotFound();
             }
-            return View(projects);
+            var tickets = project.Tickets.OrderByDescending(t => t.Created).ToList();
+            ProjectsHelper projectsHelper = new ProjectsHelper(db);
+            userId = User.Identity.GetUserId();
+            if (!projectsHelper.HasProject(userId, project.Id))
+            {
+                TempData["Error"] = "Sorry, you do not have permission to access that project.";
+                return RedirectToAction("Index");
+            }
+            return View(project);
         }
 
         // GET: Projects/Create
@@ -77,19 +93,20 @@ namespace BugTracker2.Controllers
         // more details see http://go.microsoft.com/fwlin.k/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Created,Updated,Body")] Projects projects)
+        public ActionResult Create([Bind(Include = "Id,Title,Created,Updated,Body,UserId")] Projects project)
         {
             if (ModelState.IsValid)
             {
-                projects.Created = DateTimeOffset.Now;
-                projects.Updated = DateTimeOffset.Now;
-                string userId = User.Identity.GetUserId();
-                db.Projects.Add(projects);
+                ProjectsHelper helper = new ProjectsHelper(db);
+                var UserId = User.Identity.GetUserId();
+                var user = db.Users.Find(UserId);
+                db.Projects.Add(project);
+                helper.AssignedUser(UserId, project.Id);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(projects);
+            return View(project);
         }
 
 
@@ -101,12 +118,19 @@ namespace BugTracker2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.Projects.Find(Id);
-            if (projects == null)
+            Projects project = db.Projects.Find(Id);
+            if (project == null)
             {
                 return HttpNotFound();
             }
-            return View(projects);
+            ProjectsHelper projectsHelper = new ProjectsHelper(db);
+            var userId = User.Identity.GetUserId();
+            if (!projectsHelper.HasProject(userId, project.Id))
+            {
+                TempData["Error"] = "Sorry, you do not have permission to access that project.";
+                return RedirectToAction("Index");
+            }
+            return View(project);
         }
 
 
@@ -127,6 +151,7 @@ namespace BugTracker2.Controllers
             }
             return View(projects);
         }
+
 
         // GET: Projects/Delete/5
         public ActionResult Delete(int? Id)

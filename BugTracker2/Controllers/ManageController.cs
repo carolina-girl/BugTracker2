@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BugTracker2.Models;
+using static BugTracker2.ApplicationUserManager;
 
 namespace BugTracker2.Controllers
 {
@@ -32,9 +33,9 @@ namespace BugTracker2.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -333,7 +334,7 @@ namespace BugTracker2.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -384,6 +385,6 @@ namespace BugTracker2.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

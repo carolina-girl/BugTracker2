@@ -1,19 +1,19 @@
 ﻿@model BugTracker2.Models.AdminProjectUserAssignViewModel
+@{
+    ViewBag.Title = "ProjectUser";
+}
 
+<br/>
+<br/>
+<br/>
 
-
-<h2>Assign Users to Projects</h2>
 
 @using (Html.BeginForm())
 {
-    @Html.HiddenFor(model => model.User.Id)
-    
-
     @Html.AntiForgeryToken()
     @Html.ListBox("SelectedProjects", Model.Projects)
 
-    <input type="submit" value="Add" class="btn btn-default" />
+    <input type="submit" value="Save" class="btn btn-default" />
 
-    <input type="submit" value="Remove" class="btn btn-default" />
-    @Html.ActionLink("Return", "Index", "Admin")
+    <h5>@Html.ActionLink("Back to Index", "Index", "Admin")</h5>
 }

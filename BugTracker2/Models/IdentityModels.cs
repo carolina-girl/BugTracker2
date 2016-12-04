@@ -19,8 +19,10 @@ namespace BugTracker2.Models
         public ApplicationUser()
         {
             this.Projects = new HashSet<Projects>();
+            this.Tickets = new HashSet<Tickets>();
         }
         public virtual ICollection<Projects> Projects { get; set; }
+        public virtual ICollection<Tickets> Tickets { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -48,8 +50,10 @@ namespace BugTracker2.Models
         public DbSet<Attachments> Attachments { get; set; }
 
         public DbSet<Projects> Projects { get; set; }
+        public DbSet<ProjectUsers> ProjectUsers { get; set; }
 
         public DbSet<TicketHistory> TicketHistory { get; set; }
+        public DbSet<TicketNotify> Notifications { get; set; }
 
         public DbSet<TicketPriority> TicketPriorities { get; set; }
 
@@ -59,5 +63,6 @@ namespace BugTracker2.Models
 
         public DbSet<TicketType> TicketTypes { get; set; }
         public IEnumerable ApplicationUsers { get; internal set; }
+
     }
 }

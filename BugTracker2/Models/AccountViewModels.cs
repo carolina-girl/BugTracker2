@@ -48,6 +48,8 @@ namespace BugTracker2.Models
 
     public class LoginViewModel
     {
+        public string Name { get; set; }
+
         [Required]
         [Display(Name = "Email")]
         [EmailAddress]

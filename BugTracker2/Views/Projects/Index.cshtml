@@ -4,15 +4,16 @@
     ViewBag.Title = "Index";
 }
 
-
 <h2>Projects</h2>
+<input type="hidden" name="UserId" id="UserId" value="@ViewBag.UserId" />
 <input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
-<p>
-    @if (ViewContext.HttpContext.User.IsInRole("Admin,ProjectManagers"))
-            {
-        @Html.ActionLink("Create", "Create", "Projects")
+@*<p>
+    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+    {
+       <h5>@Html.ActionLink("Create", "Create", "Projects")</h5>
     }
-</p>
+</p>*@
+
 
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>
@@ -29,9 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Body)
             </th>
-            <th>
-                    @Html.DisplayNameFor(model => model.Users)
-                </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.UserId)
+                </th>*@
             <th></th>
         </tr>
     </thead>
@@ -44,7 +45,7 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                        @Html.HiddenFor(modelItem => item.Created)
+                        @Html.DisplayFor(modelItem => item.Created)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Updated)
@@ -52,33 +53,40 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Body)
                 </td>
-                <td>
-                        @Html.DisplayFor(modelItem => item.Users)
-                    </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Add Tickets", "Create", "Tickets", new { id = item.Id }, null) |
-                    @Html.ActionLink("Back to Dashboard", "Index", "Home")
-
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>*@
+                <td><h5>
+                    @Html.ActionLink("Edit", "Edit", "Projects", new { id = item.Id }, null) |
+                    @Html.ActionLink("Details", "Details", "Projects", new { id = item.Id }, null) |
+                    @Html.ActionLink("Create A New Ticket", "Create", "Tickets", new { id = item.Id }, null)
                     @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-                </td>
+               </h5></td>
 
             </tr>
         }
     </tbody>
 </table>
-    <p>
+<h5>
+    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+    {
+        @Html.ActionLink("Create A New Project", "Create", "Projects")
+    }
+</h5>
+<h5>
+    @Html.ActionLink("Back to Dashboard", "Index", "Home")
+</h5>
+    <h5>
         @if (Request.IsAuthenticated && User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
         {
-            @Html.ActionLink("Assign Projects To Users", "Index", "Admin")
+           @Html.ActionLink("Assign Projects To Users", "Index", "Admin")
         }
-    </p>
-    <p>
+    </h5>
+    <h5>
             @if (Request.IsAuthenticated && User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
             {
             @Html.ActionLink("View All Projects", "FullList", "Projects")
         }
-    </p>
+    </h5>
 
 

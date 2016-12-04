@@ -12,8 +12,7 @@
     @Html.AntiForgeryToken()
     @Html.ListBox("SelectedProjects", Model.Projects)
 
-    <input type="submit" value="Add" class="btn btn-default" />
+    <input type="submit" value="Save" class="btn btn-default" />
 
-    <input type="submit" value="Remove" class="btn btn-default" />
     @Html.ActionLink("Return", "Index", "Admin")
 }
