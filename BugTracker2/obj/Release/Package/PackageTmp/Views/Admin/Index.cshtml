@@ -2,15 +2,41 @@
 
 <h2>User List</h2>
 
-  
-
-@foreach (var item in Model)
-{
-
-    <p>
-        @Html.DisplayFor(modelItem => item.Email)
-        @Html.ActionLink("Assign Roles", "EditUser", "Admin", new { id = item.Id }, null) |
-        @Html.ActionLink("Assign Projects", "ProjectUser", "Admin", new { id = item.Id }, null)
-    </p>
-}
-
+<table id="mytable" class="data-table-xl hover row-border table-striped compact">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <th>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <h5>
+                        @Html.ActionLink("Assign Roles", "EditUser", "Admin", new { id = item.Id }, null) |
+                        @Html.ActionLink("Assign to Projects", "ProjectUser", "Admin", new { id = item.Id }, null)
+                    </h5>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

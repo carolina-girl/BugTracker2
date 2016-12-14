@@ -45,7 +45,8 @@ using System.Linq;
                 {
                     UserName = "mahburns@gmail.com",
                     Email = "mahburns@gmail.com",
-                    FirstName = "Mary"
+                    FirstName = "Mary",
+                    LastName = "Burns"
                 }, "redhead46");
             }
             if (!context.Users.Any(u => u.Email == "ProjectManagerEmail"))
@@ -84,112 +85,6 @@ using System.Linq;
             userManager.AddToRole(userId3, "Developer");
             var userId4 = userManager.FindByEmail("submitter@coderfoundry.com").Id;
             userManager.AddToRole(userId4, "Submitter");
-
-
-
-
-
-
-            //internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
-            //{
-            //    public Configuration()
-            //    {
-            //        AutomaticMigrationsEnabled = true;
-            //    }
-
-
-            //    protected override void Seed(ApplicationDbContext context)
-            //    {
-            //        var roleManager = new RoleManager<IdentityRole>(
-            //            new RoleStore<IdentityRole>(context));
-            //         if (!context.Roles.Any(r => r.Name == "Admin"))
-            //        {
-            //            roleManager.Create(new IdentityRole { Name = "Admin" });
-            //        }
-            //         var userManager = new UserManager<ApplicationUser>(
-            //            new UserStore<ApplicationUser>(context));
-            //        if (!context.Users.Any(u => u.Email == "mahburns@gmail.com"))
-            //        {
-            //            userManager.Create(new ApplicationUser
-            //            {
-            //                UserName = "mahburns@gmail.com",
-            //                Email = "mahburns@gmail.com",
-            //                FirstName = "Admin",
-            //                LastName = "Admin",
-            //                DisplayName = "Admin"
-            //            }, "redhead46");
-            //        }
-            //         var userId3 = userManager.FindByEmail("admin@coderfoundry.com").Id;
-            //        userManager.AddToRole(userId3, "Admin");
-
-
-            //        var roleManager2 = new RoleManager<IdentityRole>(
-            //            new RoleStore<IdentityRole>(context));
-            //        if (!context.Roles.Any(r => r.Name == "ProjectManager"))
-            //        {
-            //            roleManager.Create(new IdentityRole { Name = "ProjectManager" });
-            //        }
-            //         var userManager2 = new UserManager<ApplicationUser>(
-            //            new UserStore<ApplicationUser>(context));
-            //         if (!context.Users.Any(u => u.Email == "projectManager@coderfoundry.com"))
-            //        {
-            //            userManager.Create(new ApplicationUser
-            //            {
-            //                UserName = "projectManager@coderfoundry.com",
-            //                Email = "projectManager@coderfoundry.com",
-            //                FirstName = "ProjectManager",
-            //                LastName = "ProjectManager",
-            //                DisplayName = "ProjectManager"
-            //            }, "Password-1");
-            //        }
-            //        var userId2 = userManager.FindByEmail("projectManager@coderfoundry.com").Id;
-            //        userManager.AddToRole(userId2, "ProjectManager");
-
-
-
-            //    var roleManager1 = new RoleManager<IdentityRole>(
-            //            new RoleStore<IdentityRole>(context));
-            //        if (!context.Roles.Any(r => r.Name == "Developer"))
-            //        {
-            //            roleManager.Create(new IdentityRole { Name = "Developer" });
-            //        }
-            //        var userManager1 = new UserManager<ApplicationUser>(
-            //            new UserStore<ApplicationUser>(context));
-            //        if (!context.Users.Any(u => u.Email == "developer@coderfoundry.com"))
-            //        {
-            //            userManager.Create(new ApplicationUser
-            //            {
-            //                UserName = "developer@coderfoundry.com",
-            //                Email = "developer@coderfoundry.com",
-            //                FirstName = "Developer",
-            //                LastName = "Developer",
-            //                DisplayName = "Developer"
-            //            }, "Password-1");
-            //        }
-            //        var userId1 = userManager.FindByEmail("developer@coderfoundry.com").Id;
-            //        userManager.AddToRole(userId1, "Developer");
-
-            //        var roleManager3 = new RoleManager<IdentityRole>(
-            //            new RoleStore<IdentityRole>(context));
-            //         if (!context.Roles.Any(r => r.Name == "Submitter"))
-            //        {
-            //            roleManager.Create(new IdentityRole { Name = "Submitter" });
-            //        }
-            //         var userManager3 = new UserManager<ApplicationUser>(
-            //            new UserStore<ApplicationUser>(context));
-            //         if (!context.Users.Any(u => u.Email == "submitter@coderfoundry.com"))
-            //        {
-            //            userManager.Create(new ApplicationUser
-            //            {
-            //                UserName = "submitter@coderfoundry.com",
-            //                Email = "submitter@coderfoundry.com",
-            //                FirstName = "Submitter",
-            //                LastName = "Submitter",
-            //                DisplayName = "Submitter"
-            //            }, "Password-1");
-            //        }
-            //         var userId3 = userManager.FindByEmail("submitter@coderfoundry.com").Id;
-            //        userManager.AddToRole(userId3, "Submitter");
 
 
             context.TicketStatus.AddOrUpdate(s => s.Status,

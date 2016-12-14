@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Web;
-using static BugTracker2.Models.ApplicationUser;
-
+using SqlProviderServices = System.Data.Entity.SqlServer.SqlProviderServices;
 namespace BugTracker2.Models
 {
     public class UserRoleAssignHelper
@@ -19,7 +15,7 @@ namespace BugTracker2.Models
         {
             return userManager.IsInRole(userId, roleName);
         }
-        public ICollection<string>ListUserRoles(string userId)
+        public ICollection<string> ListUserRoles(string userId)
         {
             return userManager.GetRoles(userId);
         }
@@ -47,7 +43,7 @@ namespace BugTracker2.Models
             var result = userManager.RemoveFromRole(userId, roleName);
             return result.Succeeded;
         }
-        public ICollection<ApplicationUser>UsersInRole(string roleName)
+        public ICollection<ApplicationUser> UsersInRole(string roleName)
         {
             var resultList = new List<ApplicationUser>();
             var List = userManager.Users.ToList();
@@ -59,7 +55,7 @@ namespace BugTracker2.Models
             return resultList;
         }
 
-        public ICollection<ApplicationUser>UsersNotInRole(string roleName)
+        public ICollection<ApplicationUser> UsersNotInRole(string roleName)
         {
             var resultList = new List<ApplicationUser>();
             var List = userManager.Users.ToList();
@@ -73,6 +69,7 @@ namespace BugTracker2.Models
 
     }
 }
+
 
 
 

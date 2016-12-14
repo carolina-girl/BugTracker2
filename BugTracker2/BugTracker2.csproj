@@ -226,7 +226,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
-    <Compile Include="Controllers\StringUtilities.cs" />
     <Compile Include="Controllers\TicketsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -251,6 +250,7 @@
     <Compile Include="Models\Projects.cs" />
     <Compile Include="Helper\ProjectsHelper.cs" />
     <Compile Include="Models\Projectusers.cs" />
+    <Compile Include="Models\StringUtilities.cs" />
     <Compile Include="Models\TicketHistory.cs" />
     <Compile Include="Models\TicketNotify.cs" />
     <Compile Include="Models\TicketPriority.cs" />
@@ -710,6 +710,7 @@
     <Content Include="Views\Tickets\FullList.cshtml" />
     <Content Include="Views\Account\ConfirmationSent.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Tickets\Close.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

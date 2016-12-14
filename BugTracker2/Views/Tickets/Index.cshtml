@@ -86,13 +86,13 @@
             }
             else
             {
-                @Html.DisplayFor(modelItem => item.AssignedUser.DisplayName)
+                @Html.DisplayFor(modelItem => item.AssignedUser.FirstName)
             }
         </td>
 
         <td><h5>
     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-    @Html.ActionLink("Details", "Details", new { id = item.Id })
+    @Html.ActionLink("Details", "Details", new { id = item.Id }) 
     @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
         </h5></td>
     </tr>
@@ -102,7 +102,7 @@
 <h5>
     @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
     {
-        @Html.ActionLink("Create A New Ticket", "Create", "Tickets")
+        @Html.ActionLink("Create A New Ticket", "Index", "Projects")
     }
 </h5>
 <h5>

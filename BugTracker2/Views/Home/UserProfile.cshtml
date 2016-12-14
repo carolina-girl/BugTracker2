@@ -1,7 +1,7 @@
 ﻿@model BugTracker2.Models.UserProfileView
 
 @{
-    ViewBag.Title = "User Profile";
+    ViewBag.Title = "UserProfile";
 }
 <div class="col-md-12 subnav">
     <h1>User Profile: @Model.Name</h1>
@@ -11,8 +11,6 @@
     <div class="row">
         <div class="col-md-12 content">
             <h3>Email: <a href="mailto:@Model.Email">@Model.Email</a></h3>
-
-            @*<h3>Phone Number: @(Model.PhoneNumber ?? "N/A")</h3>*@
 
             <h3>Roles: </h3>
             <ul>
@@ -30,7 +28,6 @@
             @if (Model.Roles.Contains("Developer"))
             {
                 <h3>@Model.Name is currently assigned @Model.TicketsAssigned tickets. </h3>
-                @*<h3>@Model.Name has resolved @Model.TicketsResolved total tickets.</h3>*@
             }
             <br /><br />
             <h4>@Html.ActionLink("Back to Project", "Details", "Projects", new { id = Model.ProjectId }, null)</h4>

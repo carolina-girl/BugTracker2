@@ -20,8 +20,8 @@ namespace BugTracker2.Controllers
         // GET: Attachments
         public ActionResult Index()
         {
-            var attachments = db.Attachments.Include(a => a.User).Include(a => a.Tickets);
-            return View(attachments.ToList());
+            var attachment = db.Attachments.Include(a => a.User).Include(a => a.Tickets);
+            return View(attachment.ToList());
         }
 
         // GET: Attachments/Details/5
@@ -31,12 +31,12 @@ namespace BugTracker2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Attachments attachments = db.Attachments.Find(id);
-            if (attachments == null)
+            Attachments attachment = db.Attachments.Find(id);
+            if (attachment == null)
             {
                 return HttpNotFound();
             }
-            return View(attachments);
+            return View(attachment);
         }
 
         // GET: Attachments/Create
@@ -87,14 +87,14 @@ namespace BugTracker2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Attachments attachments = db.Attachments.Find(Id);
-            if (attachments == null)
+            Attachments attachment = db.Attachments.Find(Id);
+            if (attachment == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", attachments.SubmitterId);
-            ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachments.TicketsId);
-            return View(attachments);
+            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", attachment.SubmitterId);
+            ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachment.TicketsId);
+            return View(attachment);
         }
 
         // POST: Attachments/Edit/5
@@ -102,17 +102,17 @@ namespace BugTracker2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TicketsId,SubmitterId,Body,MediaUrl,OwnerId,Created")] Attachments attachments)
+        public ActionResult Edit([Bind(Include = "Id,TicketsId,SubmitterId,Body,MediaUrl,OwnerId,Created")] Attachments attachment)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(attachments).State = EntityState.Modified;
+                db.Entry(attachment).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", attachments.SubmitterId);
-            ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachments.TicketsId);
-            return View(attachments);
+            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", attachment.SubmitterId);
+            ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachment.TicketsId);
+            return View(attachment);
         }
 
         // GET: Attachments/Delete/5
@@ -122,12 +122,12 @@ namespace BugTracker2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Attachments attachments = db.Attachments.Find(Id);
-            if (attachments == null)
+            Attachments attachment = db.Attachments.Find(Id);
+            if (attachment == null)
             {
                 return HttpNotFound();
             }
-            return View(attachments);
+            return View(attachment);
         }
 
         // POST: Attachments/Delete/5
@@ -135,8 +135,8 @@ namespace BugTracker2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int Id)
         {
-            Attachments attachments = db.Attachments.Find(Id);
-            db.Attachments.Remove(attachments);
+            Attachments attachment = db.Attachments.Find(Id);
+            db.Attachments.Remove(attachment);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

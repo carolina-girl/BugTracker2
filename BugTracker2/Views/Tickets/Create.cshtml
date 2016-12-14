@@ -1,5 +1,8 @@
 ﻿@model BugTracker2.Models.Tickets
 
+@{
+    ViewBag.Title = "Create";
+}
 
 
 @using (Html.BeginForm()) 
@@ -67,8 +70,8 @@
         </div>
 
         <p>
-            @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-            {
+           @*@if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+            {*@
             <div class="form-group">
                 @Html.LabelFor(model => model.PriorityId, "Ticket Priority", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -76,12 +79,12 @@
                     @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
                 </div>
             </div>
-            }
+            @*}*@
         </p>
 
         <p>
-            @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-            {
+            @*@if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+            {*@
             <div class="form-group">
                 @Html.LabelFor(model => model.TypeId, "Ticket Type", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -89,7 +92,7 @@
                     @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
                 </div>
             </div>
-            }
+            @*}*@
         </p>
 
             <div class="form-group">

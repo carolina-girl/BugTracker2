@@ -1,133 +1,103 @@
 ﻿@model BugTracker2.Models.Tickets
 
+
 @{
     ViewBag.Title = "Details";
 }
-<input type="hidden" name="TypeId" id="TypeId" value="@ViewBag.TypeId" />
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h2><strong>@Model.Title</strong></h2>
-            <h3><strong>Created By</strong>: @Model.Owner.DisplayName on @Model.Created.ToString("MMMM dd, yyyy h:mm t")M</h3>
-            @if (Model.Updated.HasValue)
-            {
-                <h4 class="text-danger">Updated on @Model.Updated.Value.ToString("MMMM dd, yyyy h:mm t")M</h4>
-            }
-            @if (Model.AssignedUser != null)
-            {
-                <h3>Assigned To: @Model.AssignedUser.DisplayName</h3>
-            }
-            else
-            {
-                <h3>Assigned To: <span class="text-danger">Unassigned</span></h3>
-            }
-        </div>
-     </div>
-        <div class="row">
-        <div class="col-md-12">
-            <h4>Type: @Model.Type.Type</h4>
-            <h4>Priority: @Model.Priority.Priority</h4>
-            <h4>Status: @Model.Status.Status</h4>
-        </div>
-        <div class="col-md-12">
-            <h4>Description: </h4>
-            <p>@Model.Body</p>
-        </div>
-     @if (!Model.Status.ToString().Equals("Closed"))
-     {
-         if (ViewContext.HttpContext.User.IsInRole("ProjectManager"))
-         {
-        @Html.ActionLink("Assign User", "AssignedUserId", new { id = Model.Id }, new { @class = "action-btn" })
-        @Html.ActionLink("Close", "Close", new { id = Model.Id }, new { @class = "action-btn" })
-         }
-         if (ViewBag.UserId == Model.AssignedUserId || ViewBag.UserId == Model.OwnerId || ViewContext.HttpContext.User.IsInRole("ProjectManager"))
-         {
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "action-btn" })
-         }
-     }
-    </div>
-    <div class="row">
-        <div class="col-md-12">
+<br />
+<br />
+<br />
+
+        <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <h3 class="attachment">Comments</h3>
-                    @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
-                    { 
-                      @Html.AntiForgeryToken()
-                            <input type="hidden" name="TicketsId" value="@Model.Id" />
-                            <textarea name="Body" id="styled" onfocus="this.value = ''; setbg('#8B0000');" onblur="setbg('white')">Enter your comment here...</textarea>
-                            <input type="submit" id="submitComment" value="Add Comment" class="btn btn-default action-link" />
-                        }
-                            @foreach (var comment in Model.Comments)
-                            {
-                                <ul class="comment">
-                                    <li>Posted by @comment.User.DisplayName at @comment.Created.ToString("M/d/yy h:mm t")M</li>
-                                    <li>@comment.Body</li>
-                                </ul>
-                                <div class="col-md-6">
-                                    @*@if (ViewBag.UserId == @comment.SubmitterId || ViewContext.HttpContext.User.IsInRole("ProjectManager") || ViewContext.HttpContext.User.IsInRole("Admin"))
-                                        {
-                                           using (Html.BeginForm("DeleteComment", "Tickets", FormMethod.Post, new { onsubmit = "return confirm('Are you sure you want to delete this comment?')" }))
-                                            {
-                                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="Id" value="@comment.Id" />
-                                                <input type="hidden" name="TicketId" value="@comment.TicketsId" />
-                                                <div class="form-group comment-btn-delete">
-                                                    <input type="submit" value="Delete" class="delete" />
-                                                </div>
-                                            }
-                                            <p>
-                                                @Html.ActionLink("Edit", "Edit", "Comments", new { id = comment.Id }, null) |
-                                                @Html.ActionLink("Delete", "Delete", "Comments", new { id = comment.Id }, null)
-                                            </p>
-                                        }*@
-                                </div>
-                            }
-                        </div>
-                   </div> 
+                <div class="col-md-12">
+                    <h3>Project: @Html.ActionLink(Model.Project.Title, "Details", "Projects", new { id = Model.ProjectId }, null)</h3>
+                    <h4>@Model.Title</h4>
+                    <h4>Created By: @Model.Owner.DisplayName on @Model.Created.ToString("MM/dd/yyyy")</h4>
+                    @if (Model.Updated.HasValue)
+            {
+                        <h4 class="text-danger">Updated on @Model.Updated.Value.ToString("MM/dd/yyyy")</h4>
+                    }
+
+                    @if (Model.AssignedUserId != null)
+            {
+                        <h5>Assigned To: @Model.AssignedUser.LastName</h5>
+                    }
+                    else
+                    {
+                        <h3>Assigned To: <span class="text-danger">Unassigned</span></h3>
+                    }
                 </div>
-            </div> 
-    <div class="row">    
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-6">
-                    <h3 class="attachment">Attachments</h3>
-          
-              @*@if (ViewBag.UserId == @attachment.SubmitterId || ViewContext.HttpContext.User.IsInRole("ProjectManager") || ViewContext.HttpContext.User.IsInRole("Admin"))*@
-             @*{*@
-               @using (Html.BeginForm("Create", "Attachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
-             {
-            <input type="hidden" id="TicketsId" name="TicketsId" value="@Model.Id" />
-                        <input name="image" type="file" class="form-control" id="image" />
-                        <input type="submit" id="submitAttachment" value="Attachment" class="btn btn-default action-link" />
-             }
-             @foreach (var attachment in Model.Attachments)
-             {
-             <img src="@attachment.MediaUrl" alt="Attachment Photo" style="max-width:150px" />
-             }
-             @*}*@
-          </div>
-      </div>
-  </div>
-</div>
-    <div class="row">
-    <div class="col-md-12">
-         <h3>Ticket History: @Html.ActionLink(Model.Title, "Details", new { id = Model.Id })</h3>
+         </div>
+           
+            <br />
+            <br />
+
+            <div class="col-md-offset-1 col-md-5">
+                <h5>Type: @Html.DisplayFor(modelItem => Model.Type.Type)</h5>
+                <h5>Priority: @Html.DisplayFor(modelItem => Model.Priority.Priority)</h5>
+                <h5>Status: @Html.DisplayFor(modelItem => Model.Status.Status)</h5>
+                <h5>Description: </h5>
+                <h5>@Model.Body</h5>
             </div>
+            <div class="comment-box">
+                <div class="col-md-offset-7 col-md-12">
+                    @using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+                    {
+                        <input type="hidden" name="TicketsId" value="@Model.Id" />
+                        <textarea class="commentBox" name="Body" placeholder="Add a comment..."></textarea><br />
+                        <input type="submit" id="submitComment" />
+
+                    }
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <ul>
+                            <li>Posted by @comment.User.DisplayName at @comment.Created</li>
+                            <li>@comment.Body</li>
+                        </ul>
+                        <p>
+                            @Html.ActionLink("Edit", "Edit", "Comments", new { id = comment.Id }, null) |
+                            @Html.ActionLink("Delete", "Delete", "Comments", new { id = comment.Id }, null)
+                        </p>
+                    }
+                </div>
+                <div class="col-md-offset-7 col-md-12">
+                    @using (Html.BeginForm("Create", "Attachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+                    {
+                        <input type="hidden" id="TicketsId" name="TicketsId" value="@Model.Id" />
+                        <input name="image" type="file" class="form-control" id="image" />
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    }
+                    @foreach (var attachment in Model.Attachments)
+                    {
+                        @*<div> Posted by @attachment.User.FirstName at @attachment.Created</div>*@
+                        <img src="@attachment.MediaUrl" alt="Attachment Photo" style="max-width:150px" />
+                    }
+                </div>
+            </div>
+            <div class="history-box">
                 <div class="row">
                     <div class="col-md-12">
-                        @{ var ticketHistory = Model.History; }
-                        @foreach (var history in ticketHistory.Reverse())
-                        {
-                            <h4>@history.Date.ToString("M/d/yy h:mm t")M</h4>
-                            <p>@Html.Raw(history.Body)</p>
-                        }
+                        <h3>Ticket History: @Html.ActionLink(Model.Title, "Details", new { id = Model.Id })</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @{ var ticketHistory = Model.History; }
+                                @foreach (var history in ticketHistory.Reverse())
+                                {
+                                    <h5>@history.Date.ToString("MM/dd/yyyy")M</h5>
+                                    <p>@Html.Raw(history.Body)</p>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-       </div>
-    <p>
-    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id })*@
-    @Html.ActionLink("Back to List", "Index", "Tickets", new { id = Model.Id }, null)
-   </p>
+        </div>
+     @*</div>*@
+
+        <h5>
+            @Html.ActionLink("Back to List", "Index", "Tickets", new { id = Model.Id }, null)
+        </h5>
+
+

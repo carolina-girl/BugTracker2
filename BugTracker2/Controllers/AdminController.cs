@@ -8,132 +8,75 @@ using System.IdentityModel.Protocols.WSTrust;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SqlProviderServices = System.Data.Entity.SqlServer.SqlProviderServices;
 
 namespace BugTracker2.Controllers
-{
-    public class AdminController : Controller
-    {
-        private ApplicationDbContext db = new ApplicationDbContext();
-        UserRoleAssignHelper userRole = new UserRoleAssignHelper();
-        AdminUserViewModel AdminModel = new AdminUserViewModel();
-        AdminProjectUserAssignViewModel AdminProjectModel = new AdminProjectUserAssignViewModel();
+ {
+     public class AdminController : Controller
+     {
+         private ApplicationDbContext db = new ApplicationDbContext();
+         UserRoleAssignHelper userManager = new UserRoleAssignHelper();
+         ProjectsHelper helper = new ProjectsHelper();
 
 
 
-        // GET: Admin 
-        [Authorize(Roles = "Admin,ProjectManager")]
+        // GET: Admin
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Index()
-        {
-            var model = db.Users.ToList();
-            return View(model);
+         {
+             var model = db.Users.ToList();
+             return View(model);
         }
 
-
-
-        //GET: Admin/SelectRole/5
+  
+        //GET: Admin/EditUser/5
         [Authorize(Roles = "Admin")]
         public ActionResult EditUser(string Id)
-        {
-            var user = db.Users.Find(Id);
-            //AdminUserViewModel AdminModel = new AdminUserViewModel();
-            //UserRoleAssignHelper helper = new UserRoleAssignHelper();
-            var currentRoles = userRole.ListUserRoles(Id);
-            //var absentRoles = userRole.ListAbsentUserRoles(Id);
-            //AdminModel.AbsentRoles = new MultiSelectList(absentRoles);
-            AdminModel.Roles = new MultiSelectList(db.Roles, "Name", "Name", currentRoles);
-            AdminModel.User = user;
-
+         {
+             var user = db.Users.Find(Id);
+             AdminUserViewModel AdminModel = new AdminUserViewModel();
+             var selected = userManager.ListUserRoles(Id);
+             AdminModel.Roles = new MultiSelectList(db.Roles, "Name", "Name", selected);
+             AdminModel.User = user;
             return View(AdminModel);
-        }
+         }
 
-        // POST: Add User Role
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public ActionResult AddRole(string AddId, List<string> SelectedAbsentRoles)
-        {
-            if (ModelState.IsValid)
-            {
-                //UserRoleAssignHelper helper = new UserRoleAssignHelper();
-                var user = db.Users.Find(AddId);
-                foreach (var role in SelectedAbsentRoles)
-                {
-                    userRole.AddUserToRole(AddId, role);
-                }
-
-                db.Entry(user).State = EntityState.Modified;
-                db.Users.Attach(user);
-                db.SaveChanges();
-                return RedirectToAction("ListUsers");
+        //POST:  Admin/EditUser
+         [Authorize(Roles = "Admin")]
+         [HttpPost]
+         public ActionResult EditUser(AdminUserViewModel AdminModel)
+         {
+             var user = db.Users.Find(AdminModel.User.Id);
+             foreach (var rolermv in db.Roles.Select(r => r.Name).ToList())
+             {
+                 userManager.RemoveUserFromRole(user.Id, rolermv);
             }
-            return View(AddId);
-        }
-
-        // POST: Remove User Role
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public ActionResult RemoveRole(string RemoveId, List<string> SelectedCurrentRoles)
-        {
-            if (ModelState.IsValid)
-            {
-                //UserRoleAssignHelper helper = new UserRoleAssignHelper();
-                var user = db.Users.Find(RemoveId);
-                foreach (var role in SelectedCurrentRoles)
-                {
-                    userRole.RemoveUserFromRole(RemoveId, role);
-                }
-
-                db.Entry(user).State = EntityState.Modified;
-                db.Users.Attach(user);
-                db.SaveChanges();
-                return RedirectToAction("ListUsers");
+            var absentRoles = userManager.ListAbsentUserRoles(user.Id);
+            foreach (var roleadd in AdminModel.SelectedRoles)
+             {
+                userManager.AddUserToRole(user.Id, roleadd);
             }
-            return View(RemoveId);
-        }
-
-
-
+            return RedirectToAction("Index");
+         }
 
         //GET: Admin/ProjectUser/5
-        [Authorize(Roles = "Admin,ProjectManager")]
-        public ActionResult ProjectUser(int? Id)
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult ProjectUser(string Id)
         {
             var user = db.Users.Find(Id);
-            AdminProjectUserAssignViewModel AdminProjectModel = new AdminProjectUserAssignViewModel();
-            var selected = db.Projects.ToList();
-            AdminProjectModel.Projects = new MultiSelectList(db.Projects, "Id", "Title", selected);
-            //AdminProjectModel.User = user;
-            return View(AdminProjectModel);
-        }
-
-        //{
-        //    var user = db.Users.Find(Id);
-        //    AdminProjectUserAssignViewModel AdminProjectModel = new AdminProjectUserAssignViewModel();
-        //    //ProjectId = db.Projects.Id;
-        //    //Title = db.Project.Title;
-        //    var selected = db.Projects.ToList();
-        //    AdminProjectModel.Projects = new MultiSelectList(db.Projects, "Id", "Title", selected);
-        //    AdminProjectModel.User = user;
-        //    return RedirectToAction("Index", "Admin");
-        //}
-
-        // POST: Admin/SelectProject/5
-        [HttpPost]
-        public ActionResult AssignProjects(string id)
-        {
-            var user = db.Users.Find(id);
             AdminProjectUserAssignViewModel model = new AdminProjectUserAssignViewModel();
-            var selected = db.Projects.ToList();
+            var selected = helper.ListProjects(Id);
             model.Projects = new MultiSelectList(db.Projects, "Id", "Title", selected);
             model.User = user;
 
             return View(model);
         }
 
-
+        //POST: Admin/ProjectUser
+        [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost]
-        public ActionResult AssignProjects(AdminProjectUserAssignViewModel model)
+        public ActionResult ProjectUser(string Id, AdminProjectUserAssignViewModel model)
         {
-
             var user = db.Users.Find(model.User.Id);
             var currentProjects = (from p in db.Projects
                                    where p.Users.Any(r => r.Id == user.Id)
@@ -158,17 +101,21 @@ namespace BugTracker2.Controllers
                 }
             }
 
+            db.Entry(user).State = EntityState.Modified;
+            db.Users.Attach(user);
             db.SaveChanges();
             return RedirectToAction("Index", "Admin");
         }
 
+
         protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-    }
-}
+         {
+             if (disposing)
+             {
+                 db.Dispose();
+             }
+             base.Dispose(disposing);
+         }
+     }
+ }
+

@@ -9,13 +9,13 @@ namespace BugTracker2.Models
 {
     public class AdminUserViewModel
     {
-        public ApplicationUser User { get; set; }
-        public MultiSelectList Roles { get; set; }
-        public MultiSelectList AbsentRoles { get; set; }
-        public string[] SelectedRoles { get; set; }
-    }
+            public ApplicationUser User { get; set; }
+            public MultiSelectList Roles { get; set; }
+            public MultiSelectList AbsentRoles { get; set; }
+            public string[] SelectedRoles { get; set; }
+        }
 
-    public class DashboardViewModel
+        public class DashboardViewModel
     {
         public string Id { get; set; }
         public string Name { get; set; }

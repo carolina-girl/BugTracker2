@@ -63,7 +63,8 @@
 </div>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index") |
-    @Html.ActionLink("Assign Projects", "Index", "Admin")
+    @Html.ActionLink("Edit", "Edit", new {id = Model.Id }, null) |
+    @Html.ActionLink("Back to List", "Index", new { id = Model.Id }, null) |
+    @Html.ActionLink("Assign Projects", "Index", "Admin", new { id = Model.Id }, null) 
+    @*@Html.ActionLink("UserProfile", "UserProfile", "Home", new { id = Model.Id })*@ 
 </p>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,14 +8,19 @@ using System.Web.WebPages;
 
 namespace BugTracker2.Models.Helper
 {
-    public class ProjectsHelper
-    {
-        private ApplicationDbContext db;
-
-        public ProjectsHelper(ApplicationDbContext context)
+        public class ProjectsHelper
         {
-            this.db = context;
-        }
+            private ApplicationDbContext db = new ApplicationDbContext();
+            private UserManager<ApplicationUser> userManager = new
+           UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            public ProjectsHelper(ApplicationDbContext context)
+            {
+                this.db = context;
+            }
+            public ProjectsHelper()
+            {
+            }
+
 
         public void AssignedUser(string userId, int projectId)
         {
@@ -49,10 +56,10 @@ namespace BugTracker2.Models.Helper
             }
         }
 
-        public List<Projects> ListProjects(string userId)
+        public List<int> ListProjects(string userId)
         {
             var user = db.Users.Find(userId);
-            return user.Projects.ToList();
+            return user.Projects.Select(p => p.Id).ToList();
         }
 
         public List<ApplicationUser> ListUsers(int projectId)
@@ -60,6 +67,7 @@ namespace BugTracker2.Models.Helper
             var project = db.Projects.Find(projectId);
             return project.Users.ToList();
         }
+      
 
         public List<string> ListProjectManagers(int? projectId)
         {

@@ -17,7 +17,7 @@ namespace BugTracker2.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Projects
-       [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
+       [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
        public ActionResult Index()
         {
 
@@ -27,10 +27,8 @@ namespace BugTracker2.Controllers
                 var user = db.Users.Find(UserId);
                 var project = new List<Projects>();
                 ProjectsHelper helper = new ProjectsHelper(db);
-                project = helper.ListProjects(UserId);
+                //project = helper.ListProjects(UserId);
                 project = user.Projects.ToList();
-                string Created = DateTimeOffset.Now.ToString("MM/dd/yyyy");
-                string Updated = DateTimeOffset.Now.ToString("MM/dd/yyyy");
                 db.SaveChanges();
 
                 return View(project);
@@ -42,7 +40,7 @@ namespace BugTracker2.Controllers
 
 
         // GET: Projects
-        [Authorize(Roles = "Admin,ProjectManager")]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult FullList(int? Id)
         {
             List<Projects> projects = new List<Projects>();
@@ -56,7 +54,7 @@ namespace BugTracker2.Controllers
             }
 
 
-        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
+        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
         // GET: Projects/Details/5
         public ActionResult Details(int? Id, string userId)
         {
@@ -81,14 +79,14 @@ namespace BugTracker2.Controllers
         }
 
         // GET: Projects/Create
-        [Authorize(Roles = "Admin,ProjectManager")]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: Projects/Create
-        [Authorize(Roles = "Admin,ProjectManager")]
+        [Authorize(Roles = "Admin, ProjectManager")]
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlin.k/?LinkId=317598.
         [HttpPost]
@@ -97,23 +95,41 @@ namespace BugTracker2.Controllers
         {
             if (ModelState.IsValid)
             {
+                //var Slug = StringUtilities.URLFriendly(project.Title);
+                //if (String.IsNullOrWhiteSpace(Slug))
+                //{
+                //    ModelState.AddModelError("Title", "Invalid title.");
+                //    return View(project);
+                //}
+                //if (db.Projects.Any(t => t.Slug == Slug))
+                //{
+                //    ModelState.AddModelError("Title", "The title must be unique.");
+                //    return View(project);
+                //}
+
+                //project.Slug = Slug;
+                //db.Projects.Add(project);
+                //db.SaveChanges();
+
                 ProjectsHelper helper = new ProjectsHelper(db);
                 var UserId = User.Identity.GetUserId();
                 var user = db.Users.Find(UserId);
+                project.Created = DateTimeOffset.Now;
                 db.Projects.Add(project);
                 helper.AssignedUser(UserId, project.Id);
+                db.Projects.Add(project);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
             return View(project);
         }
 
 
+
         // GET: Projects/Edit/5
-        [Authorize(Roles = "Admin,ProjectManager")]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Edit(int? Id)
-        {
+        { 
             if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -135,46 +151,48 @@ namespace BugTracker2.Controllers
 
 
         // POST: Projects/Edit/5
-        [Authorize(Roles = "Admin,ProjectManager")]
+        [Authorize(Roles = "Admin, ProjectManager")]
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Created,Updated,Body")] Projects projects)
+        public ActionResult Edit([Bind(Include = "Id,Title,Created,Updated,Body")] Projects project)
         {
             if (ModelState.IsValid)
             {
-                projects.Updated = DateTimeOffset.Now;
-                db.Entry(projects).State = EntityState.Modified;
+                project.Updated = DateTimeOffset.Now;
+                db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(projects);
+            return View(project);
         }
 
 
         // GET: Projects/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? Id)
         {
             if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.Projects.Find(Id);
-            if (projects == null)
+            Projects project = db.Projects.Find(Id);
+            if (project == null)
             {
                 return HttpNotFound();
             }
-            return View(projects);
+            return View(project);
         }
 
         // POST: Projects/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int? Id)
         {
-            Projects projects = db.Projects.Find(Id);
-            db.Projects.Remove(projects);
+            Projects project = db.Projects.Find(Id);
+            db.Projects.Remove(project);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

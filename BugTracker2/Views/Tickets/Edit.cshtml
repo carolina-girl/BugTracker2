@@ -12,9 +12,9 @@
 <br/>
 <br/>
 
-@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+@*@Html.ValidationSummary(false, "", new { @class = "text-danger" })
 @if (ViewBag.HasTicketPermission)
-{
+{*@
 
 <div class="col-md-12 subnav">
     <h3>Edit Ticket for @ProjectTitle</h3>
@@ -22,10 +22,10 @@
 
 @*<h2>Edit</h2>*@
 
-using (Html.BeginForm())
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
+    
 
     <div class="form-horizontal">
         @*<h4>Tickets</h4>*@
@@ -34,7 +34,10 @@ using (Html.BeginForm())
         @Html.HiddenFor(model => model.Project, new { })
         @Html.HiddenFor(model => model.StatusId)
         @Html.HiddenFor(model => model.userId)
-
+        @Html.HiddenFor(model => model.OwnerId)
+        @Html.HiddenFor(model => model.ProjectId)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Created)
 
 
             @*<div class="form-group">
@@ -91,8 +94,8 @@ using (Html.BeginForm())
                 </p>*@
 
             <p>
-                @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-                {
+                @*@if (User.IsInRole("ProjectManager") || User.IsInRole("Admin") || User.IsInRole("Submitter"))
+                {*@
                     <div class="form-group">
                         @Html.LabelFor(model => model.PriorityId, "Ticket Priority", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
@@ -100,12 +103,12 @@ using (Html.BeginForm())
                             @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                }
+                @*}*@
             </p>
 
             <p>
-                @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-                {
+                @*@if (User.IsInRole("ProjectManager") || User.IsInRole("Admin") || User.IsInRole("Submitter"))
+                {*@
                     <div class="form-group">
                         @Html.LabelFor(model => model.TypeId, "Ticket Type", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
@@ -113,7 +116,7 @@ using (Html.BeginForm())
                             @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                }
+                @*}*@
             </p>
 
             <p>
@@ -136,9 +139,11 @@ using (Html.BeginForm())
             </div>
         </div>
 }
+<div>
+    @if (Request.IsAuthenticated && User.IsInRole("Developer") || (Request.IsAuthenticated && User.IsInRole("ProjectManager")))
+            {
+       <h5>@Html.ActionLink("Close", "Close", "Tickets", new { id = Model.Id }, null)</h5>
+    }
+    <h5>@Html.ActionLink("Back to List", "Index")</h5>
+</div>
 
-}
-else
-{
-    <br/> <br/>
-}

@@ -4,18 +4,17 @@
     ViewBag.Title = "Log in";
 }
 <body>
+
 <header>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="intro-text">
                     <span class="name">Bug Tracker</span> 
-                    <h3 class="landing-header"></h3> 
-                    <h3>Welcome to my Bug Tracking application! Here you will find methods for submitting, updating, 
-                               
-                               and tracking issues or "bugs" in a real world application! Please feel free to navigate 
+                    <h4 class="landing-header">Welcome to the Bug Tracker. Here you will find methods for
+                           tracking issues or "bugs" in a real world application. I invite you to navigate 
                                the site through the use of several demo logins, each representing the different roles 
-                               of the platform.</h3>
+                               of the platform.</h4>
                     <div class="col-md-12">
                         <div class="row">
                             </div>
@@ -24,32 +23,33 @@
               
                 <div class="col-md-6 col-md-offset-2">
                     <div class="login-wrap">
+                        <div id="login-wrap">
                         <h4>Demo application as:</h4>
 
                         @using (Html.BeginForm("LoginGuestAdmin", "Account"))
                         {
                             @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-block">Administrator</button>
+                            <button type="submit" class="btn btn-block" style="background-color:#2C3E50;">Administrator</button>
                         }
 
                         @using (Html.BeginForm("LoginGuestProjectManager", "Account"))
                         {
                             @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-block">ProjectManager</button>
+                            <button type="submit" class="btn btn-block" style="background-color:#2C3E50;">ProjectManager</button>
                         }
 
                         @using (Html.BeginForm("LoginGuestDeveloper", "Account"))
                         {
                             @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-block">Developer</button>
+                            <button type="submit" class="btn btn-block" style="background-color:#2C3E50;">Developer</button>
                         }
 
                         @using (Html.BeginForm("LoginGuestSubmitter", "Account"))
                         {
                             @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-block">Submitter</button>
+                            <button type="submit" class="btn btn-block" style="background-color:#2C3E50;">Submitter</button>
                         }
-
+                        </div>
                     </div>
                 </div>
                        @*</div>
@@ -111,8 +111,8 @@
                     </div>
                 </div>
             </div>
-            </div>
-        </div>
+            @*</div>
+        </div>*@
 </header>
 </body>
 

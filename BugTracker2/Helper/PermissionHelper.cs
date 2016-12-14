@@ -25,7 +25,7 @@ namespace BugTracker2.Helper
             {
                 return true;
             }
-            else if (userRoles.Contains("Project Manager") && user.Projects.SelectMany(p => p.Tickets).ToList().Contains(ticket))
+            else if (userRoles.Contains("ProjectManager") && user.Projects.SelectMany(p => p.Tickets).ToList().Contains(ticket))
             {
                 return true;
             }

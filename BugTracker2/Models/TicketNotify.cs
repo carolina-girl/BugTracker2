@@ -10,6 +10,7 @@ namespace BugTracker2.Models
         public int Id { get; set; }
         public int TicketId { get; set; }
         public string NotifyUserId { get; set; }
+        public string TicketNotifyDeveloper { get; set; }
 
         public virtual ApplicationUser NotifyUser { get; set; }
         public virtual Tickets Ticket { get; set; }

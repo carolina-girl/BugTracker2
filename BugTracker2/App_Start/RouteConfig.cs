@@ -19,7 +19,47 @@ namespace BugTracker2
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
+        }
     }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+//            routes.MapRoute(
+//                name: "Default",
+//                url: "{controller}/{action}/{id}",
+//                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+//            );
+//            routes.MapRoute(
+//                name: "NewSlug",
+//                url: "Project{slug}",
+//                defaults: new { controller = "Projects", action = "Details",
+//                    slug = UrlParameter.Optional
+//                }
+//                );
+//        }
+
+//    }
+//}
 
 

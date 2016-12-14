@@ -13,12 +13,28 @@
     @Html.HiddenFor(model => model.User.Id)
 
     @Html.AntiForgeryToken()
+
     @Html.ListBox("SelectedRoles", Model.Roles)
 
 
-    <input type="submit" value="Add" class="btn btn-default" />
-
-    <input type="submit" value="Remove" class="btn btn-default" />
+    <input type="submit" value="Save" class="btn btn-default" />
 }
+<h5>
+    @Html.ActionLink("Assign Project", "ProjectUser", "Admin") |
+    @Html.ActionLink("Back to Index", "Index", "Admin")
+</h5>
 
-@Html.ActionLink("Assign Project", "ProjectUser", "Admin")
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.table').dataTable().columnFilter({
+                aoColumns: [
+                    { type: "text" },
+                    { type: "select", values: ['Admin', 'Project Manager', 'Developer', 'Submitter'] },
+                    { type: "text" },
+                ]
+
+            });
+        });
+    </script>
+    }

@@ -18,8 +18,8 @@ namespace BugTracker2.Controllers
         // GET: Comments
         public ActionResult Index()
         {
-            var comments = db.Comments.Include(c => c.User);
-            return View(comments.ToList());
+            var comment = db.Comments.Include(c => c.User);
+            return View(comment.ToList());
         }
 
         // GET: Comments/Details/5
@@ -29,12 +29,12 @@ namespace BugTracker2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comments comments = db.Comments.Find(Id);
-            if (comments == null)
+            Comments comment = db.Comments.Find(Id);
+            if (comment == null)
             {
                 return HttpNotFound();
             }
-            return View(comments);
+            return View(comment);
         }
 
         // GET: Comments/Create
@@ -74,13 +74,13 @@ public ActionResult Edit(int? Id)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comments comments = db.Comments.Find(Id);
-            if (comments == null)
+            Comments comment = db.Comments.Find(Id);
+            if (comment == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", comments.UserId);
-            return View(comments);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", comment.UserId);
+            return View(comment);
         }
 
         // POST: Comments/Edit/5
@@ -88,16 +88,16 @@ public ActionResult Edit(int? Id)
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TicketsId,UserId,Body,Submitted,UpdatedReason,Created,Updated")] Comments comments)
+        public ActionResult Edit([Bind(Include = "Id,TicketsId,UserId,Body,Submitted,UpdatedReason,Created,Updated")] Comments comment)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(comments).State = EntityState.Modified;
+                db.Entry(comment).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", comments.UserId);
-            return View(comments);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName", comment.UserId);
+            return View(comment);
         }
 
         // GET: Comments/Delete/5
@@ -107,20 +107,20 @@ public ActionResult Edit(int? Id)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comments comments = db.Comments.Find(Id);
-            if (comments == null)
+            Comments comment = db.Comments.Find(Id);
+            if (comment == null)
             {
                 return HttpNotFound();
             }
-            return View(comments);
+            return View(comment);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int Id)
         {
-            Comments comments = db.Comments.Find(Id);
-            db.Comments.Remove(comments);
+            Comments comment = db.Comments.Find(Id);
+            db.Comments.Remove(comment);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
