@@ -18,7 +18,7 @@ namespace BugTracker2.Models
         public class DashboardViewModel
     {
         public string Id { get; set; }
-        public string Name { get; set; }
+        public string FullName { get; set; }
 
         public List<Projects> Projects { get; set; }
         public List<Tickets> Tickets { get; set; }

@@ -105,7 +105,7 @@ namespace BugTracker2.Controllers
 
             var result = await SignInManager.PasswordSignInAsync("developer@coderfoundry.com", "Password-1", false, shouldLockout: false);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         [HttpPost]
@@ -120,7 +120,7 @@ namespace BugTracker2.Controllers
         
             var result = await SignInManager.PasswordSignInAsync("submitter@coderfoundry.com", "Password-1", false, shouldLockout: false);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         [HttpPost]
@@ -135,7 +135,7 @@ namespace BugTracker2.Controllers
          
             var result = await SignInManager.PasswordSignInAsync("projectManager@coderfoundry.com", "Password-1", false, shouldLockout: false);
             
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
         [HttpPost]
@@ -150,7 +150,7 @@ namespace BugTracker2.Controllers
        
             var result = await SignInManager.PasswordSignInAsync("mahburns@gmail.com", "redhead46", false, shouldLockout: false);
             
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Dashboard", "Home");
         }
 
 

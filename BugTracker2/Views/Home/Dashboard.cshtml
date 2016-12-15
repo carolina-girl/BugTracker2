@@ -1,0 +1,56 @@
+﻿@model BugTracker2.Models.DashboardViewModel
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <img class="img-responsive" src="~/Template/img/profile.png" alt="">
+                <div class="intro-text">
+                    <span class="name">Bug Tracker</span>
+                    <hr class="star-light">
+                    <span class="skills">Project developed by Mary Ann Burns for Coder Foundry 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<h2 class="dashboard">Dashboard</h2>
+<div class = "container">
+     <div class = "row">
+          <div class = "col-md-12 content">
+        <h3 class="dashboard">Projects</h3>
+                    <table class="table">
+                    @foreach (var project in Model.Projects)
+                    {
+                     <tr>
+                         <td>@Html.ActionLink(project.Title, "Details", "Projects", new { id = project.Id }, null)</td>
+                    </tr>
+                    }
+                    </table>
+                    <p><a href="/Projects">View Projects</a> </p>
+            </div>
+         </div>
+         <div class= "row">
+             <div class = "col-md-12 content">
+                 <h3 class="dashboard">Tickets</h3>
+                 <table class="table">
+                   @foreach (var ticket in Model.Tickets)
+                   {
+                   <tr>
+                       <td>@Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)</td>
+                  </tr>
+                   }
+                 </table>
+                 <p>
+                 <a href="/Tickets">View Tickets</a>
+                </p>
+           </div>
+      </div>
+ </div>
+
+
+
+     

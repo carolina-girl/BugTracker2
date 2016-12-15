@@ -79,7 +79,7 @@ namespace BugTracker2.Controllers
         {
             List<Tickets> Ticket = new List<Tickets>();
             var assignedUser = ticket.AssignedUserId;
-            ViewBag.AssignedUserId = new SelectList(db.Users, "Developer", "FirstName");
+            ViewBag.AssignedUserId = new SelectList(db.Users, "Developer", "FullName");
 
             return RedirectToAction("Index");
         }
@@ -254,16 +254,16 @@ namespace BugTracker2.Controllers
                     TicketHistory history = new TicketHistory();
                     history.Date = DateTimeOffset.Now;
                     StringBuilder historyBody = new StringBuilder();
-                    historyBody.Append("Ticket edited by  " + " " + ".");
+                    historyBody.Append("Ticket edited by  ");
                     historyBody.Append(user.FullName);
 
                     if (oldValue.Title != ticket.Title)
                     {
-                        historyBody.AppendFormat(" The description was changed from {0} to {1}. ", oldValue.Title, ticket.Title);
+                        historyBody.AppendFormat(" The title was changed from {0} to {1}. ", oldValue.Title, ticket.Title);
                     }
                     if (oldValue.Body != ticket.Body)
                     {
-                        historyBody.AppendFormat(" The Id was changed from {0} to {1}. ", oldValue.Body, ticket.Body);
+                        historyBody.AppendFormat(" The body was changed from {0} to {1}. ", oldValue.Body, ticket.Body);
                     }
                     if (oldValue.TypeId != ticket.TypeId)
                     {
@@ -271,7 +271,7 @@ namespace BugTracker2.Controllers
                         var currTypeName = db.TicketTypes.Find(ticket.TypeId).Type;
                         if (oldTypeName != currTypeName)
                         {
-                            historyBody.AppendFormat(" The Type was changed from {0} to {1}. ", oldTypeName, currTypeName);
+                            historyBody.AppendFormat(" The type was changed from {0} to {1}. ", oldTypeName, currTypeName);
                         }
                     }
                     if (oldValue.PriorityId != ticket.PriorityId)
@@ -280,14 +280,14 @@ namespace BugTracker2.Controllers
                         var currPriorityName = db.TicketPriorities.Find(ticket.PriorityId).Priority;
                         if (oldPriorityName != currPriorityName)
                         {
-                            historyBody.AppendFormat(" The Priority was changed from {0} to {1}. ", oldPriorityName, currPriorityName);
+                            historyBody.AppendFormat(" The priority was changed from {0} to {1}. ", oldPriorityName, currPriorityName);
                         }
                     }
                     
                     if (oldValue.AssignedUserId != ticket.AssignedUserId)
                     {
                         ticket.AssignedUser = db.Users.Find(ticket.AssignedUserId);
-                        historyBody.AppendFormat(" The Assigned Developer was changed from {0} to {1}. ", oldValue.AssignedUser.FullName, ticket.AssignedUser.FullName);
+                        historyBody.AppendFormat(" The assigned developer was changed from {0} to {1}. ", oldValue.AssignedUser.FullName, ticket.AssignedUser.FullName);
                     }
 
 

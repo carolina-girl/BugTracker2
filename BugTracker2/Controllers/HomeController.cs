@@ -16,19 +16,25 @@ namespace BugTracker2.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         //GET: Index
-        public ActionResult Index(int? Id)
+        public ActionResult Dashboard(int? Id)
         {
             {
                 DashboardViewModel model = new DashboardViewModel();
                 model.Id = User.Identity.GetUserId();
                 var user = db.Users.Find(model.Id);
-                model.Name = user.FullName + " " + user.LastName;
+                model.FullName = user.FullName;
                 model.Projects = user.Projects.ToList();
 
                 TicketsHelper helper = new TicketsHelper(db);
                 model.Tickets = helper.GetUserTickets(model.Id).OrderByDescending(t => t.Created).Take(3).ToList();
                 return View(model);
             }
+        }
+
+        //GET: Index
+        public ActionResult Index(int? Id)
+        {
+            return RedirectToAction("Login", "Account");
         }
 
         // GET: User Profile
