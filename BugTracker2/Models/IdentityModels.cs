@@ -5,15 +5,18 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.Collections;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BugTracker2.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        public string FirstName { get; set; }
+        internal string FirstName;
+
         public string LastName { get; set; }
-        public string DisplayName { get; set; }
+        [NotMapped]
+        public string FullName { get { return FirstName + " " + LastName; } }
         public string TimeZone { get; set; }
 
         public ApplicationUser()
@@ -62,7 +65,6 @@ namespace BugTracker2.Models
         public DbSet<TicketStatus> TicketStatus { get; set; }
 
         public DbSet<TicketType> TicketTypes { get; set; }
-        public IEnumerable ApplicationUsers { get; internal set; }
 
     }
 }

@@ -38,7 +38,7 @@ using System.Linq;
             }
 
             var userManager = new UserManager<Models.ApplicationUser>(
-                new UserStore<Models.ApplicationUser>(context));
+                new UserStore<ApplicationUser>(context));
             if (!context.Users.Any(u => u.Email == "AdminEmail"))
             {
                 userManager.Create(new Models.ApplicationUser

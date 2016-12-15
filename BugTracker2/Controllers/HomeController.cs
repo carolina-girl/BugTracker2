@@ -22,7 +22,7 @@ namespace BugTracker2.Controllers
                 DashboardViewModel model = new DashboardViewModel();
                 model.Id = User.Identity.GetUserId();
                 var user = db.Users.Find(model.Id);
-                model.Name = user.FirstName + " " + user.LastName;
+                model.Name = user.FullName + " " + user.LastName;
                 model.Projects = user.Projects.ToList();
 
                 TicketsHelper helper = new TicketsHelper(db);
@@ -43,7 +43,7 @@ namespace BugTracker2.Controllers
             Projects project = db.Projects.Find(TempData["ProjectId"]);
             model.ProjectId = project.Id;
             UserRoleAssignHelper helper = new UserRoleAssignHelper();
-            model.Name = user.DisplayName;
+            model.Name = user.FullName;
             model.Email = user.Email;
             model.PhoneNumber = user.PhoneNumber;
             model.ProjectCount = user.Projects.Count();

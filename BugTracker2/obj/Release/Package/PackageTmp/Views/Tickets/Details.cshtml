@@ -14,7 +14,7 @@
                 <div class="col-md-12">
                     <h3>Project: @Html.ActionLink(Model.Project.Title, "Details", "Projects", new { id = Model.ProjectId }, null)</h3>
                     <h4>@Model.Title</h4>
-                    <h4>Created By: @Model.Owner.DisplayName on @Model.Created.ToString("MM/dd/yyyy")</h4>
+                    <h4>Created By: @Model.Owner.FullName on @Model.Created.ToString("MM/dd/yyyy")</h4>
                     @if (Model.Updated.HasValue)
             {
                         <h4 class="text-danger">Updated on @Model.Updated.Value.ToString("MM/dd/yyyy")</h4>
@@ -53,7 +53,7 @@
                     @foreach (var comment in Model.Comments)
                     {
                         <ul>
-                            <li>Posted by @comment.User.DisplayName at @comment.Created</li>
+                            <li>Posted by @comment.User.FullName at @comment.Created</li>
                             <li>@comment.Body</li>
                         </ul>
                         <p>

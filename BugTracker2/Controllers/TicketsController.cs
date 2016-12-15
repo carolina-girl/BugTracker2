@@ -137,7 +137,7 @@ namespace BugTracker2.Controllers
                 db.Tickets.Add(ticket);
                 db.TicketHistory.Add(history);
                 db.SaveChanges();
-               
+
 
                 var user = db.Users.Find(ticket.OwnerId);
                 TicketNotify notify = new TicketNotify();
@@ -205,7 +205,7 @@ namespace BugTracker2.Controllers
             ticket = db.Tickets.Find(Id);
             var developerId = db.Roles.FirstOrDefault(d => string.Compare("Developer", d.Name, true) == 0).Id;
             var developers = db.Users.Where(r => r.Roles.Any(a => a.RoleId == developerId));
-            ViewBag.AssignedUserId = new SelectList(developers, "Id", "FirstName", ticket.AssignedUserId);
+            ViewBag.AssignedUserId = new SelectList(developers, "Id", "FullName", ticket.AssignedUserId);
 
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
             ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority", ticket.PriorityId);
@@ -239,19 +239,23 @@ namespace BugTracker2.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                ticket.StatusId = db.TicketStatus.SingleOrDefault(s => s.Status == "Pending").Id;
                 //ticket history 
                 ticket.Updated = DateTimeOffset.Now;
                 var userId = User.Identity.GetUserId();
                 var user = db.Users.Find(userId);
-                var oldValue = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == ticket.Id);
-                if (oldValue.Title != ticket.Title || oldValue.Body != ticket.Body || oldValue.TypeId != ticket.TypeId || oldValue.PriorityId != ticket.PriorityId)
+                var oldValue = db.Tickets.AsNoTracking().Include("AssignedUser").FirstOrDefault(t => t.Id == ticket.Id);
+                if (oldValue.Title != ticket.Title || 
+                    oldValue.Body != ticket.Body || 
+                    oldValue.TypeId != ticket.TypeId || 
+                    oldValue.PriorityId != ticket.PriorityId ||
+                    oldValue.AssignedUserId != ticket.AssignedUserId)
                 {
                     TicketHistory history = new TicketHistory();
                     history.Date = DateTimeOffset.Now;
                     StringBuilder historyBody = new StringBuilder();
-                    historyBody.Append("Ticket edited by ");
-                    historyBody.Append(user.FirstName);
+                    historyBody.Append("Ticket edited by  " + " " + ".");
+                    historyBody.Append(user.FullName);
 
                     if (oldValue.Title != ticket.Title)
                     {
@@ -261,7 +265,7 @@ namespace BugTracker2.Controllers
                     {
                         historyBody.AppendFormat(" The Id was changed from {0} to {1}. ", oldValue.Body, ticket.Body);
                     }
-                    if (oldValue.Type != ticket.Type)
+                    if (oldValue.TypeId != ticket.TypeId)
                     {
                         var oldTypeName = db.TicketTypes.Find(oldValue.TypeId).Type;
                         var currTypeName = db.TicketTypes.Find(ticket.TypeId).Type;
@@ -270,7 +274,7 @@ namespace BugTracker2.Controllers
                             historyBody.AppendFormat(" The Type was changed from {0} to {1}. ", oldTypeName, currTypeName);
                         }
                     }
-                    if (oldValue.Priority != ticket.Priority)
+                    if (oldValue.PriorityId != ticket.PriorityId)
                     {
                         var oldPriorityName = db.TicketPriorities.Find(oldValue.PriorityId).Priority;
                         var currPriorityName = db.TicketPriorities.Find(ticket.PriorityId).Priority;
@@ -279,40 +283,33 @@ namespace BugTracker2.Controllers
                             historyBody.AppendFormat(" The Priority was changed from {0} to {1}. ", oldPriorityName, currPriorityName);
                         }
                     }
+                    
+                    if (oldValue.AssignedUserId != ticket.AssignedUserId)
+                    {
+                        ticket.AssignedUser = db.Users.Find(ticket.AssignedUserId);
+                        historyBody.AppendFormat(" The Assigned Developer was changed from {0} to {1}. ", oldValue.AssignedUser.FullName, ticket.AssignedUser.FullName);
+                    }
+
 
                     history.Body = historyBody.ToString();
                     history.TicketId = ticket.Id;
                     db.TicketHistory.Add(history);
+                    db.Tickets.Attach(ticket);
+                    db.Entry(ticket).State = EntityState.Modified;
+                    db.Entry(ticket).Property(x => x.Created).IsModified = false;
+                    db.Entry(ticket).Property(x => x.OwnerId).IsModified = false;
+                    db.Entry(ticket).Property(x => x.ProjectId).IsModified = false;
+                    db.Entry(ticket).Property(x => x.userId).IsModified = false;
+                    db.Entry(ticket).Property("Updated").IsModified = true;
+                    db.Entry(ticket).Property("Title").IsModified = true;
+                    db.Entry(ticket).Property("Body").IsModified = true;
+                    db.SaveChanges();
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Error: No changes have been made.");
-                    return View(ticket);
-                }
-                db.Tickets.Attach(ticket);
-                db.Entry(ticket).State = EntityState.Modified;
-                db.Entry(ticket).Property(x => x.Created).IsModified = false;
-                db.Entry(ticket).Property(x => x.OwnerId).IsModified = false;
-                db.Entry(ticket).Property(x => x.ProjectId).IsModified = false;
-                db.Entry(ticket).Property(x => x.userId).IsModified = false;
-                db.Entry(ticket).Property("Updated").IsModified = true;
-                db.Entry(ticket).Property("Title").IsModified = true;
-                db.Entry(ticket).Property("Body").IsModified = true;
-                db.SaveChanges();
-
-                var ticketPriorityId = db.TicketPriorities.FirstOrDefault(t => t.Id == ticket.Id);
-                ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority", ticket.PriorityId);
-
-                var ticketTypeId = db.TicketTypes.FirstOrDefault(t => t.Id == ticket.Id);
-                ViewBag.TypeId = new SelectList(db.TicketTypes, "Id", "Type", ticket.TypeId);
-
-                var developerId = db.Roles.FirstOrDefault(d => string.Compare("Developer", d.Name, true) == 0).Id;
-                var developers = db.Users.Where(r => r.Roles.Any(a => a.RoleId == developerId));
-                ViewBag.AssignedUserId = new SelectList(developers, "Id", "FirstName", ticket.AssignedUserId);
-
-                ticket.StatusId = db.TicketStatus.SingleOrDefault(s => s.Status == "Pending").Id;
-                ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
-
+                //else
+                //{
+                //    ModelState.AddModelError("", "Error: No changes have been made.");
+                //    return View(ticket);
+                //}
 
                 //Send Notification
                 var tickets = db.Tickets.Find(ticket.Id);
@@ -326,13 +323,26 @@ namespace BugTracker2.Controllers
                     msg.Body = ("The following changes have been made to Ticket  " + ticket.Id + " - " + ticket.Title + ": " + msg);
                     await svc.SendAsync(msg);
                 } //await NotifyDeveloper(ticket.Id, userId, ticket.AssignedUserId);
-                    return RedirectToAction("Index", "Tickets", new { id = ticket.Id });
-                }
-                return View(ticket);
+                return RedirectToAction("Index", "Tickets", new { id = ticket.Id });
             }
-        
-        
-                    
+
+            // var ticketPriority = db.TicketPriorities.FirstOrDefault(t => t.Id == ticket.Id);
+            ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority", ticket.PriorityId);
+
+            // var ticketType = db.TicketTypes.FirstOrDefault(t => t.Id == ticket.Id);
+            ViewBag.TypeId = new SelectList(db.TicketTypes, "Id", "Type", ticket.TypeId);
+
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
+
+            var developerId = db.Roles.FirstOrDefault(d => string.Compare("Developer", d.Name, true) == 0).Id;
+            var developers = db.Users.Where(r => r.Roles.Any(a => a.RoleId == developerId));
+            ViewBag.AssignedUserId = new SelectList(developers, "Id", "FullName", ticket.AssignedUserId);
+           
+            return View(ticket);
+        }
+
+
+
 
         // GET: Tickets/Close/5
         [Authorize(Roles = "Developer, ProjectManager")]
@@ -361,9 +371,9 @@ namespace BugTracker2.Controllers
             ticket.Updated = DateTimeOffset.Now;
             var NotifyUserId = User.Identity.GetUserId();
             var user = db.Users.Find(NotifyUserId);
-           TicketHistory hist = new TicketHistory();
+            TicketHistory hist = new TicketHistory();
             hist.Date = System.DateTimeOffset.Now;
-            var historyBody = "Ticket Closed by " + user.FirstName;
+            var historyBody = "Ticket Closed by " + user.FullName;
             hist.Body = historyBody;
             hist.TicketId = ticket.Id;
             db.TicketHistory.Add(hist);
@@ -380,11 +390,11 @@ namespace BugTracker2.Controllers
                 msg.Subject = "Bug Tracker Update: " + ticket.Title;
                 msg.Body = ("The following changes have been made to Ticket  " + ticket.Id + " - " + ticket.Title + ": " + msg);
                 await svc.SendAsync(msg);
-               //await TicketNotifyDeveloper(ticket.Id, NotifyUserId, ticket.AssignedUserId);
+                //await TicketNotifyDeveloper(ticket.Id, NotifyUserId, ticket.AssignedUserId);
             }
             db.SaveChanges();
 
-           //await TicketNotifyDeveloper(Id, NotifyUserId, ticket.AssignedUserId);
+            //await TicketNotifyDeveloper(Id, NotifyUserId, ticket.AssignedUserId);
             return RedirectToAction("Index");
         }
 
