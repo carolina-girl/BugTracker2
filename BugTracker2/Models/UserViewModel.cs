@@ -5,7 +5,7 @@ using System.Web;
 
 namespace BugTracker2.Models
 {
-    public class UserProfileView
+    public class UserViewModel
     {
         public string Name { get; set; }
         public string Email { get; set; }

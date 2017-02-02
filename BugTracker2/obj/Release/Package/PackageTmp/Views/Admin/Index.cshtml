@@ -5,9 +5,9 @@
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.FirstName)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
@@ -21,9 +21,9 @@
         @foreach (var item in Model)
             {
             <tr>
-                <th>
+                @*<th>
                     @Html.DisplayFor(modelItem => item.FirstName)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayFor(modelItem => item.LastName)
                 </th>

@@ -4,6 +4,9 @@
 }
 
 <h2>FullList of Tickets</h2>
+<input type="hidden" name="Body" id="Body" value="@ViewBag.Body" />
+<input type="hidden" name="OwnerId" id="OwnerId" value="@ViewBag.OwnerId" />
+<input type="hidden" name="Updated" id="Updated" value="@ViewBag.Updated" />
 
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>
@@ -17,15 +20,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Updated)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Body)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Status.Status)
             </th>
@@ -52,15 +55,15 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Created)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.Updated)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.Body)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.Status.Status)
                 </td>

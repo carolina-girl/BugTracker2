@@ -19,7 +19,7 @@ namespace BugTracker2.Helper
         {
             var user = db.Users.Find(userId);
             var ticket = db.Tickets.Find(ticketId);
-            UserRoleAssignHelper helper = new UserRoleAssignHelper();
+            UserRoleAssignHelper helper = new UserRoleAssignHelper(db);
             var userRoles = helper.ListUserRoles(userId);
             if (userRoles.Contains("Admin"))
             {

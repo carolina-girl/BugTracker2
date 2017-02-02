@@ -42,6 +42,7 @@ namespace BugTracker2.Controllers
             return View(db.Tickets.ToList());
         }
 
+
         // GET: Tickets/Details/5
         [Authorize(Roles = "Admin, Submitter, Developer, ProjectManager")]
         public ActionResult Details(int? Id)
@@ -63,8 +64,7 @@ namespace BugTracker2.Controllers
                 ViewBag.HasTicketPermission = true;
                 return View(ticket);
             }
-            ModelState.AddModelError("hello", "You do not have permission to view this ticket!");
-            //TempData["Error"] = "Sorry, you do not have permission to view that ticket.";
+            ModelState.AddModelError("hello", "You do not have permission to view this ticket.");
             ViewBag.HasTicketPermission = false;
             return View((Tickets)null);
         }
@@ -84,6 +84,29 @@ namespace BugTracker2.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Tickets/History/5
+        [Authorize]
+        public ActionResult History(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Tickets ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+            TicketsHelper ticketHelper = new TicketsHelper(db);
+            var userId = User.Identity.GetUserId();
+            if (ticketHelper.HasTicketPermission(userId, ticket.Id))
+            {
+                ViewBag.UserId = User.Identity.GetUserId();
+                return View(ticket);
+            }
+            TempData["Error"] = "Sorry, you do not have permission to view that ticket.";
+            return RedirectToAction("Index");
+        }
 
         // GET: Tickets/Create
         [Authorize(Roles = "Submitter")]
@@ -106,6 +129,7 @@ namespace BugTracker2.Controllers
             ViewBag.ProjectTitle = project.Title;
             return View();
         }
+        
 
 
         //POST: Tickets/Create
@@ -120,10 +144,7 @@ namespace BugTracker2.Controllers
             {
                 ticket.Created = System.DateTimeOffset.Now;
                 ticket.OwnerId = User.Identity.GetUserId();
-                ViewBag.OwnerId = new SelectList(db.Tickets, "Id", "Owner", ticket.OwnerId);
-                ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Project", ticket.ProjectId);
-                ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority", ticket.Priority);
-                ViewBag.TypeId = new SelectList(db.TicketTypes, "Id", "Type", ticket.Type);
+
                 ticket.StatusId = db.TicketStatus.SingleOrDefault(s => s.Status == "Open").Id;
                 ticket.AssignedUserId = User.Identity.GetUserId();
                 ticket.OwnerId = User.Identity.GetUserId();
@@ -175,6 +196,11 @@ namespace BugTracker2.Controllers
                 }
                 return RedirectToAction("Index");
             }
+
+            ViewBag.OwnerId = new SelectList(db.Tickets, "Id", "Owner", ticket.OwnerId);
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Project", ticket.ProjectId);
+            ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority", ticket.Priority);
+            ViewBag.TypeId = new SelectList(db.TicketTypes, "Id", "Type", ticket.Type);
             return View();
         }
 
@@ -256,6 +282,9 @@ namespace BugTracker2.Controllers
                     StringBuilder historyBody = new StringBuilder();
                     historyBody.Append("Ticket edited by  ");
                     historyBody.Append(user.FullName);
+                    Comments comment = new Comments();
+                    historyBody.Append("A comment was add on  ");
+                    historyBody.Append(comment.Created);
 
                     if (oldValue.Title != ticket.Title)
                     {
@@ -283,13 +312,15 @@ namespace BugTracker2.Controllers
                             historyBody.AppendFormat(" The priority was changed from {0} to {1}. ", oldPriorityName, currPriorityName);
                         }
                     }
-                    
-                    if (oldValue.AssignedUserId != ticket.AssignedUserId)
-                    {
-                        ticket.AssignedUser = db.Users.Find(ticket.AssignedUserId);
-                        historyBody.AppendFormat(" The assigned developer was changed from {0} to {1}. ", oldValue.AssignedUser.FullName, ticket.AssignedUser.FullName);
-                    }
-
+                
+                    //Attachments attachments = new Attachments();
+                    //db.Attachments.Add(attachments);
+                    //attachments = db.Attachments.Find(attachments.Id);
+                    //historyBody.AppendFormat("  An attachment has been added to this ticket.");
+                    //Comments comment = new Comments();
+                    //db.Comments.Add(comment);
+                    //comment = db.Comments.Find(comment.Id);                
+                    //historyBody.AppendFormat("  A comment has been added to this ticket.");
 
                     history.Body = historyBody.ToString();
                     history.TicketId = ticket.Id;
@@ -305,11 +336,11 @@ namespace BugTracker2.Controllers
                     db.Entry(ticket).Property("Body").IsModified = true;
                     db.SaveChanges();
                 }
-                //else
-                //{
-                //    ModelState.AddModelError("", "Error: No changes have been made.");
-                //    return View(ticket);
-                //}
+                else
+                {
+                    ModelState.AddModelError("", "Error: No changes have been made.");
+                    return View(ticket);
+                }
 
                 //Send Notification
                 var tickets = db.Tickets.Find(ticket.Id);
@@ -334,14 +365,98 @@ namespace BugTracker2.Controllers
 
             ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
 
-            var developerId = db.Roles.FirstOrDefault(d => string.Compare("Developer", d.Name, true) == 0).Id;
-            var developers = db.Users.Where(r => r.Roles.Any(a => a.RoleId == developerId));
-            ViewBag.AssignedUserId = new SelectList(developers, "Id", "FullName", ticket.AssignedUserId);
+            //var developerId = db.Roles.FirstOrDefault(d => string.Compare("Developer", d.Name, true) == 0).Id;
+            //var developers = db.Users.Where(r => r.Roles.Any(a => a.RoleId == developerId));
+            //ViewBag.AssignedUserId = new SelectList(developers, "Id", "FullName", ticket.AssignedUserId);
            
             return View(ticket);
         }
 
+        //GET Tickets/Assign Users
+        [Authorize(Roles = "Admin,ProjectManager")]
+        public ActionResult AssignUser(int? Id)
+        {
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Tickets ticket = db.Tickets.Find(Id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+            AssignTicketsViewModel AssignModel = new AssignTicketsViewModel();
+            AssignModel.TicketId = ticket.Id;
+            AssignModel.TicketTitle = ticket.Title;
+            ProjectsHelper helper = new ProjectsHelper(db);
+            UserRoleAssignHelper userHelper = new UserRoleAssignHelper(db);
+            var projectUsers = helper.ListUsers(ticket.ProjectId);
+            var projectDevelopers = new List<ApplicationUser>();
+            foreach (var user in projectUsers)
+            {
+                if (userHelper.IsUserInRole(user.Id, "Developer"))
+                {
+                    projectDevelopers.Add(user);
+                }
+            }
+            if (ticket.AssignedUser != null)
+            {
+                AssignModel.TicketAssignedTo = ticket.AssignedUser.FullName;
+            }
+            AssignModel.UsersList = new SelectList(projectDevelopers, "Id", "FullName");
+            return View(AssignModel);
+        }
 
+        ////POST: Tickets/AssignUser
+        [Authorize(Roles = "Admin, ProjectManager")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AssignUser(string UserId, int TicketId)
+        {
+            //Ticket details
+            var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == TicketId);
+            var ticket = db.Tickets.Find(TicketId);
+            ticket.AssignedUserId = UserId;
+            ticket.Created = System.DateTimeOffset.Now;
+            //Add to ticket history
+            TicketHistory history = new TicketHistory();
+            history.Date = DateTimeOffset.Now;
+            var user = db.Users.Find(UserId);
+            var historyBody = "Ticket assigned to " + user.FullName + ". Ticket now Pending.";
+            history.Body = historyBody;
+            history.TicketId = ticket.Id;
+            db.TicketHistory.Add(history);
+            //send email to previous developer
+            if (oldTicket.AssignedUserId != ticket.AssignedUserId && oldTicket.AssignedUserId == null)
+            {
+                var svc2 = new EmailService();
+                var msg2 = new IdentityMessage();
+                msg2.Destination = user.Email;
+                msg2.Subject = "Bug Tracker: Ticket Reassigned";
+                msg2.Body = ticket.Owner.FullName + " has reassigned the ticket '" + ticket.Title + "' to another developer. You are no longer responsible for this ticket. If you have any questions regarding this ticket, " + ticket.Owner.FullName + " can be contacted at " + ticket.Owner.Email;
+                await svc2.SendAsync(msg2);
+            }
+            if (oldTicket.AssignedUserId == ticket.AssignedUserId)
+            {
+                ModelState.AddModelError("", "Error: No changes have been made.");
+                return RedirectToAction("AssignUser", new { id = TicketId });
+            }
+            //Save to database
+            db.Tickets.Attach(ticket);
+            db.Entry(ticket).Property("AssigneduserId").IsModified = true;
+            db.Entry(ticket).Property("Status").IsModified = true;
+            db.Entry(ticket).Property("Created").IsModified = true;
+            db.SaveChanges();
+            //Send email to developer assigned
+            var svc = new EmailService();
+            var msg = new IdentityMessage();
+            msg.Destination = user.Email;
+            msg.Subject = "Bug Tracker: New Ticket Assigned";
+            msg.Body = ticket.Owner.FullName + " has assigned you the ticket '" + ticket.Title + "'.";
+            await svc.SendAsync(msg);
+
+            return RedirectToAction("Details", new { id = TicketId });
+        }
 
 
         // GET: Tickets/Close/5

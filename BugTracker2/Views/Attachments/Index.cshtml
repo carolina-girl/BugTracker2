@@ -5,28 +5,32 @@
 }
 
 <h2>List of Attachments</h2>
-
+<input type="hidden" name="TicketsId" id="TicketsId" value="@ViewBag.TicketsId" />
+<input type="hidden" name="SubmitterId" id="SubmitterId" value="@ViewBag.SubmitterId" />
+<input type="hidden" name="Tickets.Title" id="Tickets.Title" value="@ViewBag.Tickets.Title" />
+<input type="hidden" name="OwnerId" id="OwnerId" value="@ViewBag.OwnerId" />
+<input type="hidden" name="Body" id="Body" value="@ViewBag.Body" />
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", "Attachments")
 </p>
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User.FirstName)
+            @*<th>
+                @Html.DisplayNameFor(model => model.Tickets.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.TicketsId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Tickets.OwnerId)
-            </th>
-            <th>
+            </th>*@
+            @*<th>
                 @Html.DisplayNameFor(model => model.SubmitterId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Body)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.MediaUrl)
             </th>
@@ -40,21 +44,21 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.FirstName)
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Tickets.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Title)
+                    @Html.DisplayFor(modelItem => item.TicketsId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Tickets.OwnerId)
-                </td>
-                <td>
+                    @Html.DisplayFor(modelItem => item.Tickets.Owner.LastName)
+                </td>*@
+                @*<td>
                     @Html.DisplayFor(modelItem => item.SubmitterId)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Body)
-                </td>
+                </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.MediaUrl)
                 </td>

@@ -27,6 +27,14 @@
     <![endif]-->
 </head>
 <body>
+    <style>
+        body {
+          background-color: lightgrey;
+        }
+        #mainNav {
+            background-color: black;
+        }
+    </style>
     <div class="container body-content">
         <hr />
         <!-- Navigation -->
@@ -73,12 +81,9 @@
                  </div>
             </div>   
        </nav>
-  </div>
-        
+  </div>      
       @RenderBody()
-       <footer>
-           <p>&copy; @DateTime.Now.Year - Mary Ann Burns</p>
-       </footer>
+
 
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")

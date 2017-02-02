@@ -74,7 +74,7 @@ namespace BugTracker2.Models.Helper
             var projectManagers = new List<string>();
             var project = db.Projects.Find(projectId);
             var projectUsers = project.Users.ToList();
-            UserRoleAssignHelper helper = new UserRoleAssignHelper();
+            UserRoleAssignHelper helper = new UserRoleAssignHelper(db);
             foreach (var user in projectUsers)
             {
                 if (helper.IsUserInRole(user.Id, "ProjectManager"))

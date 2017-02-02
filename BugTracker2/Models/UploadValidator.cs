@@ -31,5 +31,10 @@ namespace BugTracker2.Models
                     return false;
                 }
             }
+
+        internal static bool IsImage(HttpPostedFileBase image)
+        {
+            throw new NotImplementedException();
         }
+    }
     }

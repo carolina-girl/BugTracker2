@@ -51,7 +51,7 @@ namespace BugTracker2.Controllers
              {
                  userManager.RemoveUserFromRole(user.Id, rolermv);
             }
-            var absentRoles = userManager.ListAbsentUserRoles(user.Id);
+            //var absentRoles = userManager.ListAbsentUserRoles(user.Id);
             foreach (var roleadd in AdminModel.SelectedRoles)
              {
                 userManager.AddUserToRole(user.Id, roleadd);

@@ -243,6 +243,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminProjectUserAssignViewModel.cs" />
     <Compile Include="Models\AdminUserViewModel.cs" />
+    <Compile Include="Models\AssignTicketsViewModel.cs" />
     <Compile Include="Models\Attachments.cs" />
     <Compile Include="Models\Comments.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -464,6 +465,8 @@
     <Content Include="fileUpload\flower.jpeg" />
     <Content Include="fileUpload\image1.jpg" />
     <Content Include="fileUpload\image5.jpg" />
+    <Content Include="fileUpload\ladybug background.jpg" />
+    <Content Include="fileUpload\main ladybug.gif" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -712,6 +715,7 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Tickets\Close.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Tickets\History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

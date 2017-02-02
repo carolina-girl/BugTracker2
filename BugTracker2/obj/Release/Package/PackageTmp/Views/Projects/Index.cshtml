@@ -7,7 +7,8 @@
 <h2>Projects</h2>
 <input type="hidden" name="UserId" id="UserId" value="@ViewBag.UserId" />
 <input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
-
+<input type="hidden" name="Updated" id="Updated" value="@ViewBag.Updated" />
+<input type="hidden" name="Body" id="Body" value="@ViewBag.Body" />
 
 
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
@@ -19,12 +20,12 @@
             <th>
                     @Html.DisplayNameFor(model => model.Created)
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.Updated)
                 </th>
             <th>
                 @Html.DisplayNameFor(model => model.Body)
-            </th>
+            </th>*@
             @*<th>
                     @Html.DisplayNameFor(model => model.UserId)
                 </th>*@
@@ -42,22 +43,24 @@
                 <td>
                         @Html.DisplayFor(modelItem => item.Created)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.Updated)
                     </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Body)
-                </td>
+                </td>*@
                 @*<td>
                         @Html.DisplayFor(modelItem => item.UserId)
                     </td>*@
                 <td><h5>
                     @Html.ActionLink("Edit", "Edit", "Projects", new { id = item.Id }, null) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id }, null) |
-                    @Html.ActionLink("Create A New Ticket", "Create", "Tickets", new { id = item.Id }, null)
+                            @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
+                            {
+                                @Html.ActionLink("Create A New Ticket", "Create", "Tickets", new { id = item.Id }, null)
+                            }
                     @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                </h5></td>
-
             </tr>
         }
     </tbody>

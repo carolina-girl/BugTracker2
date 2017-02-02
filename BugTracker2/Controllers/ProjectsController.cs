@@ -27,7 +27,6 @@ namespace BugTracker2.Controllers
                 var user = db.Users.Find(UserId);
                 var project = new List<Projects>();
                 ProjectsHelper helper = new ProjectsHelper(db);
-                //project = helper.ListProjects(UserId);
                 project = user.Projects.ToList();
                 db.SaveChanges();
 
@@ -95,22 +94,6 @@ namespace BugTracker2.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var Slug = StringUtilities.URLFriendly(project.Title);
-                //if (String.IsNullOrWhiteSpace(Slug))
-                //{
-                //    ModelState.AddModelError("Title", "Invalid title.");
-                //    return View(project);
-                //}
-                //if (db.Projects.Any(t => t.Slug == Slug))
-                //{
-                //    ModelState.AddModelError("Title", "The title must be unique.");
-                //    return View(project);
-                //}
-
-                //project.Slug = Slug;
-                //db.Projects.Add(project);
-                //db.SaveChanges();
-
                 ProjectsHelper helper = new ProjectsHelper(db);
                 var UserId = User.Identity.GetUserId();
                 var user = db.Users.Find(UserId);

@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using BugTracker2.Models;
 using Microsoft.AspNet.Identity;
+using System.Text;
+using System.Xml.Linq;
 
 namespace BugTracker2.Controllers
 {
@@ -37,38 +39,85 @@ namespace BugTracker2.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Create
-        public ActionResult Create()
-        {
-            //Projects project = db.Projects.Find(id);
-            //ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "Title");
-            //ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName");
-            return View();
-        }
+        //// GET: Comments/Create
+        //public ActionResult Create()
+        //{
+        //    ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "Title");
+        //    ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName");
+        //    return View();
+        //}
 
         // POST: Comments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //public ActionResult Create([Bind(Include = "Id,Body,TicketsId")] Comments comment)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //                comment.Created = DateTimeOffset.Now;
+        //                comment.Updated = DateTimeOffset.Now;
+        //                comment.UserId = User.Identity.GetUserId();
+        //                var com = db.Tickets.FirstOrDefault(p => p.Id == comment.TicketsId).Id;
+        //                db.Comments.Add(comment);
+        //                comment = db.Comments.Find(comment.Id);
+        //                db.SaveChanges();
+        //TicketHistory history = new TicketHistory();
+        //history.Date = DateTimeOffset.Now;
+        //var historyBody = comment.UserId + "has added a comment to this ticket.";
+        //history.Body = historyBody;
+        //history.TicketId = comment.TicketsId;
+        //db.TicketHistory.Add(history);
+
+        //return RedirectToAction("Details", "Tickets", new { id = comment.Tickets.Id });
+        //    }
+        //    return View(comment);
+        //}
+
+        //GET: Comments/Create
+        [Authorize]
+        public ActionResult Create(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Tickets ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+
+            var userId = User.Identity.GetUserId();
+            ViewBag.TicketsId = id;
+            ViewBag.Title = ticket.Title;
+            return View();
+        }
+
+        [Authorize]
         [HttpPost]
-        public ActionResult Create([Bind(Include = "Id,Body,TicketsId")] Comments comment)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,TicketsId,Body")] Comments comment)
         {
             if (ModelState.IsValid)
             {
-                        comment.Created = DateTimeOffset.Now;
-                        comment.UserId = User.Identity.GetUserId();
-                        var com = db.Tickets.FirstOrDefault(p => p.Id == comment.TicketsId).Id;
-                        db.Comments.Add(comment);
-                        db.SaveChanges();
+                comment.UserId = User.Identity.GetUserId();
+                comment.Created = System.DateTimeOffset.Now;
+                db.Comments.Add(comment);
+                db.SaveChanges();
 
-                        return RedirectToAction("Details", "Tickets", new { id = comment.Tickets.Id });
-                    }
-                    return View(comment);
-                }
- 
-                
-          
-// GET: Comments/Edit/5
-public ActionResult Edit(int? Id)
+                var ticket = db.Tickets.Find(comment.TicketsId);
+                var assigneeId = ticket.AssignedUserId;
+
+                return RedirectToAction("Details", "Tickets", new { id = comment.TicketsId });
+            }
+            return View();
+        }
+
+
+
+        // GET: Comments/Edit/5
+        public ActionResult Edit(int? Id)
         {
             if (Id == null)
             {
@@ -101,13 +150,13 @@ public ActionResult Edit(int? Id)
         }
 
         // GET: Comments/Delete/5
-        public ActionResult Delete(int? Id)
+        public ActionResult Delete(int? id)
         {
-            if (Id == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comments comment = db.Comments.Find(Id);
+            Comments comment = db.Comments.Find(id);
             if (comment == null)
             {
                 return HttpNotFound();
@@ -117,15 +166,16 @@ public ActionResult Edit(int? Id)
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int Id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            Comments comment = db.Comments.Find(Id);
+            Comments comment = db.Comments.Find(id);
             db.Comments.Remove(comment);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Tickets", new { id = comment.TicketsId });
         }
+    
 
-        protected override void Dispose(bool disposing)
+    protected override void Dispose(bool disposing)
         {
             if (disposing)
             {

@@ -20,13 +20,12 @@ namespace BugTracker2.Models.Helper
         {
 
             var user = db.Users.Find(userId);
-            UserRoleAssignHelper userHelper = new UserRoleAssignHelper();
+            UserRoleAssignHelper userHelper = new UserRoleAssignHelper(db);
             ProjectsHelper projectHelper = new ProjectsHelper(db);
             var userRoles = userHelper.ListUserRoles(userId);
             var tickets = new List<Tickets>();
             if (userRoles.Contains("Admin"))
             {
-                //tickets = db.Tickets.Include(t => t.AssignedUser).Include(t => t.Owner).Include(t => t.Project).ToList();
                 tickets = user.Projects.SelectMany(p => p.Tickets).ToList();
             }
             else if (userRoles.Contains("ProjectManager"))

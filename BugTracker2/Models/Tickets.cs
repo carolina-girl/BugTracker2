@@ -21,7 +21,7 @@ namespace BugTracker2.Models
         public string OwnerId { get; set; }
         public string AssignedUserId { get; set; }
         public string Email { get; set; }
-        public int? ProjectId { get; set; }
+        public int ProjectId { get; set; }
         [Display(Name = "Type")]
         public int? TypeId { get; set; }
         [Display(Name = "Status")]
