@@ -138,6 +138,7 @@
                 <p>
                     @Html.ActionLink("Forgot your password?", "ForgotPassword")
                 </p>
+                <h4>Try a demo login:</h4>
                 <div class="flex">
                     <div>
                         @using (Html.BeginForm("LoginGuestProjectManager", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))

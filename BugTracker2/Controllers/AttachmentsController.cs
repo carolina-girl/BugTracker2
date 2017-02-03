@@ -127,6 +127,14 @@ namespace BugTracker2.Controllers
 
                 var ticket = db.Tickets.Find(attachment.TicketsId);
 
+                TicketHistory history = new TicketHistory();
+                history.Date = DateTimeOffset.Now;
+                var historyBody = "A new attachment has been added to this ticket.";
+                history.Body = historyBody;
+                history.TicketId = attachment.TicketsId;
+                db.TicketHistory.Add(history);
+                db.SaveChanges();
+
                 return RedirectToAction("Details", "Tickets", new { id = attachment.TicketsId });
             }
             return View();

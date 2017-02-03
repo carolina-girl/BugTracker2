@@ -107,7 +107,15 @@ namespace BugTracker2.Controllers
                 db.SaveChanges();
 
                 var ticket = db.Tickets.Find(comment.TicketsId);
-                var assigneeId = ticket.AssignedUserId;
+                var assignedUserId = ticket.AssignedUserId;
+
+                TicketHistory history = new TicketHistory();
+                history.Date = DateTimeOffset.Now;
+                var historyBody = "A new comment has been added to this ticket.";
+                history.Body = historyBody;
+                history.TicketId = comment.TicketsId;
+                db.TicketHistory.Add(history);
+                db.SaveChanges();
 
                 return RedirectToAction("Details", "Tickets", new { id = comment.TicketsId });
             }
