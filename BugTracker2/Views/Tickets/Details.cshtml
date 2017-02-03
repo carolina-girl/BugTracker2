@@ -14,10 +14,10 @@
     <div class="row">
         <div class="col-md-6">
             <h3><strong>Project</strong>: @Html.ActionLink(Model.Project.Title, "Details", "Projects", new { id = Model.ProjectId }, null)</h3>
-            <h4><strong>Created By</strong>: @Model.Owner.FullName on @Model.Created.ToString("MMMM dd, yyyy h:mm t")M</h4>
+            <h4><strong>Created By</strong>: @Model.Owner.FullName on @Model.Created.ToString("MMMM dd, yyyy")</h4>
             @if (Model.Updated.HasValue)
             {
-                <h4 class="text-danger">Updated on @Model.Updated.Value.ToString("MMMM dd, yyyy h:mm t")M - @Html.ActionLink("View History", "History", new { id = Model.Id })</h4>
+                <h4 class="text-danger">Updated on @Model.Updated.Value.ToString("MMMM dd, yyyy") - @Html.ActionLink("View History", "History", new { id = Model.Id })</h4>
             }
             @if (Model.AssignedUserId != null)
             {
@@ -98,17 +98,9 @@
             @foreach (var attachment in attachments)
             {
                 <div class="col-md-12">
+                    <h4>Posted by @attachment.User.LastName on @attachment.Created.ToString("M/d/yyyy")</h4>
                     <p>
-                        @if (attachment.MediaUrl.Contains(".pdf") || attachment.MediaUrl.Contains(".doc"))
-                        {
-                            <a href="@attachment.MediaUrl">@*<img src="~/Content/Images/document.png" class="img-responsive">*@Document</a>
-
-                        }
-                        else
-                        {
-                            <a href="@attachment.MediaUrl">@*<img class="img-responsive" src="@attachment.MediaURL">*@Image</a>
-                        } - @if (@attachment.UserId != null)
-                        {<span class="author">Posted by @attachment.User.FullName</span>}
+                        <img src="@attachment.MediaUrl" alt="Attachment Photo" style="max-width:150px" />
                     </p>
                     <p>@attachment.Body</p>
 

@@ -17,6 +17,7 @@
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
     <style>
         .form-control, input.btn {
             min-width: 100%;
@@ -43,33 +44,34 @@
             margin-left: 24px;
         }
 
-       .btn btn-primary {
-           display: inline-block;
-           vertical-align: top;
-           float: left;
-           margin: 3px;
+        .btn btn-primary {
+            display: inline-block;
+            vertical-align: top;
+            float: left;
+            margin: 3px;
         }
-       .flex {
-           margin: 3px;
-       }
 
-       .flex {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
+        .flex {
+            margin: 3px;
         }
-       .flex-child {
-    -webkit-box-flex: 1 1 auto;
-    -moz-box-flex:  1 1 auto;
-    -webkit-flex:  1 1 auto;
-    -ms-flex:  1 1 auto;
-    flex:  1 1 auto;
+
+        .flex {
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+        }
+
+        .flex-child {
+            -webkit-box-flex: 1 1 auto;
+            -moz-box-flex: 1 1 auto;
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            justify-content: space-between;
         }
     </style>
-
-
 </head>
 <body>
     <div class="container">
@@ -83,7 +85,7 @@
                             <strong>Welcome to the BugTracker.</strong><br />
                             Use a local account to log in.
                         </h3>
-                        <hr />
+                            <hr />
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="form-group">
                                 <div class="col-md-12">
@@ -116,81 +118,75 @@
                                     <input type="submit" value="Log in" class="btn btn-default" />
                                 </div>
                             </div>
-                            @*}
-                                </section>
-                            </div>*@
+                    }
+                </section>
+            </div>
 
-                            @*<div class="col-md-7">
-                                <section id="socialLoginForm">
-                                    @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-                                </section>
-                            </div>*@
-                    @*</div>*@
-
-                    @*<div class="row">*@
-                        <div class="col-md-5">
-                            <p>
-                                @Html.ActionLink("Register as a new user", "Register")
-                            </p>
-                            @*Enable this once you have account confirmation enabled for password reset functionality*@
-                            <p>
-                                @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                            </p>
-
-                            <div class="flex">
-                                <div>
-                                @using (Html.BeginForm("LoginGuestProjectManager", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    <input type="hidden" name="Email" value="projectManager@coderfoundry.com" />
-                                    <input type="hidden" name="Password" value="blank" />
-                                    <button type="submit" class="btn btn-primary">ProjectManager</button>
-                                }
-                                    </div>
-                                <br />
-                                <br />
-                                <div>
-                                @using (Html.BeginForm("LoginGuestDeveloper", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    <input type="hidden" name="Email" value="Developer@coderfoundry.com" />
-                                    <input type="hidden" name="Password" value="blank" />
-                                    <button type="submit" class="btn btn-primary">Developer</button>
-                                }
-                                    </div>
-                                <br />
-                                <br />
-                                <div>
-                                @using (Html.BeginForm("LoginGuestSubmitter", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    <input type="hidden" name="Email" value="submitter@coderfoundry.com" />
-                                    <input type="hidden" name="Password" value="blank" />
-                                    <button type="submit" class="btn btn-primary">Submitter</button>
-                                }
-                                    </div>
-                                <br />
-                                <br />
-                                <div>
-                                @using (Html.BeginForm("LoginGuestAdmin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                                {
-                                    @Html.AntiForgeryToken()
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    <input type="hidden" name="Email" value="mahburns@gmail.com" />
-                                    <input type="hidden" name="Password" value="blank" />
-                                    <button type="submit" class="btn btn-primary">Admin</button>
-                                }
-                            </div>
-                        </div>
-                        </div> 
-                         }
-                    </section>
-                </div>
+            <div class="col-md-12">
+                <section id="socialLoginForm">
+                    @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                </section>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p>
+                    @Html.ActionLink("Register as a new user", "Register")
+                </p>
+                @*Enable this once you have account confirmation enabled for password reset functionality*@
+                <p>
+                    @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                </p>
+                <div class="flex">
+                    <div>
+                        @using (Html.BeginForm("LoginGuestProjectManager", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input type="hidden" name="Email" value="projectManager@coderfoundry.com" />
+                                    <input type="hidden" name="Password" value="blank" />
+                                    <button type="submit" class="btn btn-primary">ProjectManager</button>
+                        }
+                    </div>
+
+                    <div>
+                        @using (Html.BeginForm("LoginGuestDeveloper", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input type="hidden" name="Email" value="Developer@coderfoundry.com" />
+                                    <input type="hidden" name="Password" value="blank" />
+                                    <button type="submit" class="btn btn-primary">Developer</button>
+                        }
+                    </div>
+
+                    <div>
+                        @using (Html.BeginForm("LoginGuestSubmitter", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input type="hidden" name="Email" value="submitter@coderfoundry.com" />
+                                    <input type="hidden" name="Password" value="blank" />
+                                    <button type="submit" class="btn btn-primary">Submitter</button>
+                        }
+                    </div>
+
+                    <div>
+                        @using (Html.BeginForm("LoginGuestAdmin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input type="hidden" name="Email" value="mahburns@gmail.com" />
+                                    <input type="hidden" name="Password" value="blank" />
+                                    <button type="submit" class="btn btn-primary">Admin</button>
+                        }
+                    </div>
+                </div>
+          </div>
+    </div>
+        </div>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

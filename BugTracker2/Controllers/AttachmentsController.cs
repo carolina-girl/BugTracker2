@@ -113,11 +113,13 @@ namespace BugTracker2.Controllers
         {
             if (ModelState.IsValid)
             {
-                        var fileName = Path.GetFileName(image.FileName);
-                        var uniqueId = DateTime.Now.Ticks;
-                        fileName = Regex.Replace(fileName, @"[!@#$%_\s]", "");
-                        image.SaveAs(Path.Combine(Server.MapPath("~/fileUpload/"), uniqueId + fileName));
-                        attachment.MediaUrl = "/fileUpload/" + uniqueId + fileName;
+                attachment.Created = DateTimeOffset.Now;
+                attachment.SubmitterId = User.Identity.GetUserId();
+                var fileName = Path.GetFileName(image.FileName);
+                var uniqueId = DateTime.Now.Ticks;
+                fileName = Regex.Replace(fileName, @"[!@#$%_\s]", "");
+                image.SaveAs(Path.Combine(Server.MapPath("~/fileUpload/"), uniqueId + fileName));
+                attachment.MediaUrl = "/fileUpload/" + uniqueId + fileName;
                 
                 attachment.UserId = User.Identity.GetUserId();
                 db.Attachments.Add(attachment);

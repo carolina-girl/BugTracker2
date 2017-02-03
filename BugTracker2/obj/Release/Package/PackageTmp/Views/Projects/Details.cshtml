@@ -55,7 +55,7 @@
             @foreach (var ticket in Model.Tickets)
             {
                 <tr>
-                    <td>@Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)</td>
+                    <td><h4>@Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)</h4></td>
                 </tr>
             }
         </table>
