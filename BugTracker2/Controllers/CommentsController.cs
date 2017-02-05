@@ -39,41 +39,6 @@ namespace BugTracker2.Controllers
             return View(comment);
         }
 
-        //// GET: Comments/Create
-        //public ActionResult Create()
-        //{
-        //    ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "Title");
-        //    ViewBag.UserId = new SelectList(db.Users, "Id", "FirstName");
-        //    return View();
-        //}
-
-        // POST: Comments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //public ActionResult Create([Bind(Include = "Id,Body,TicketsId")] Comments comment)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //                comment.Created = DateTimeOffset.Now;
-        //                comment.Updated = DateTimeOffset.Now;
-        //                comment.UserId = User.Identity.GetUserId();
-        //                var com = db.Tickets.FirstOrDefault(p => p.Id == comment.TicketsId).Id;
-        //                db.Comments.Add(comment);
-        //                comment = db.Comments.Find(comment.Id);
-        //                db.SaveChanges();
-        //TicketHistory history = new TicketHistory();
-        //history.Date = DateTimeOffset.Now;
-        //var historyBody = comment.UserId + "has added a comment to this ticket.";
-        //history.Body = historyBody;
-        //history.TicketId = comment.TicketsId;
-        //db.TicketHistory.Add(history);
-
-        //return RedirectToAction("Details", "Tickets", new { id = comment.Tickets.Id });
-        //    }
-        //    return View(comment);
-        //}
-
         //GET: Comments/Create
         [Authorize]
         public ActionResult Create(int? id)

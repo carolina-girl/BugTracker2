@@ -4,14 +4,12 @@
     ViewBag.Title = "FullList";
 }
 
-
-<h2>All Projects</h2>
-@*<p>
-    @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
-    {
-        <h5>@Html.ActionLink("Create", "Create", "Projects")</h5>
+<style>
+    body {
+        margin: 50px;
     }
-</p>*@
+</style>
+<h2>All Projects</h2>
 
 <table id="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>

@@ -3,9 +3,13 @@
 @{
     ViewBag.Title = "Attachments";
 }
-
+<style>
+    body {
+        margin: 50px;
+    }
+</style>
 <h2>List of Attachments</h2>
-<input type="hidden" name="TicketsId" id="TicketsId" value="@ViewBag.TicketsId" />
+@*<input type="hidden" name="TicketsId" id="TicketsId" value="@ViewBag.TicketsId" />*@
 <input type="hidden" name="SubmitterId" id="SubmitterId" value="@ViewBag.SubmitterId" />
 <input type="hidden" name="Tickets.Title" id="Tickets.Title" value="@ViewBag.Tickets.Title" />
 <input type="hidden" name="OwnerId" id="OwnerId" value="@ViewBag.OwnerId" />
