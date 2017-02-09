@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using BugTracker2.Models;
 using System.Web.UI.WebControls;
 using static BugTracker2.ApplicationUserManager;
+using System.Web.Security;
 
 namespace BugTracker2.Controllers
 {
@@ -456,6 +457,8 @@ namespace BugTracker2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Session.Clear();
+            FormsAuthentication.SignOut();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login", "Account");
         }

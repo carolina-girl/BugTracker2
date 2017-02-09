@@ -14,7 +14,7 @@
     <link href="~/Template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Theme CSS -->
     <link href="~/Content/mab.css" rel="stylesheet" />
-    <link href="~/Template/css/freelancer.min.css" rel="stylesheet">
+    <link href="~/Template/css/freelancer.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="~/Template/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
@@ -30,13 +30,14 @@
     <style>
         body {
           background-color: lightgrey;
+          font-family: 'Times New Roman', Times, serif;
         }
         #mainNav {
             background-color: black;
         }
     </style>
     <div class="container body-content">
-        <hr />
+  
         <!-- Navigation -->
         <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
             <div class="container">
@@ -55,19 +56,13 @@
                         </li>
                         <li class="page-scroll">
                                 @if (ViewContext.HttpContext.User.IsInRole("Admin"))
-            {
+                                {
                                     @Html.ActionLink("Assign Roles", "Index", "Admin")
                                 }
                         </li>
                         <li class="page-scroll">
                             @Html.ActionLink("Home", "Dashboard", "Home")
                         </li>
-                        @*<li class="page-scroll">
-                            @Html.ActionLink("About", "About", "Home")
-                        </li>
-                        <li class="page-scroll">
-                            @Html.ActionLink("Contact", "Contact", "Home")
-                        </li>*@
                         <li class="page-scroll">
                             @Html.ActionLink("Projects", "Index", "Projects")
                         </li>
@@ -78,10 +73,20 @@
                             @Html.Partial("_LoginPartial")
                         </li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-left">
+                        <li class="hidden">
+                            <a href="#page-top"></a>
+                        </li>
+                        <li class="page-scroll">
+                            <a href="https://mburns-portfolio.azurewebsites.net/">Portfolio</a>
+                        </li>
+                      </ul>
                  </div>
             </div>   
        </nav>
-  </div>      
+  </div> 
+    <br />
+    <br />     
       @RenderBody()
 
 

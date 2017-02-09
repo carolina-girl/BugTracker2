@@ -142,7 +142,7 @@ namespace BugTracker2.Controllers
         {
             if (ModelState.IsValid)
             {
-                ticket.Created = System.DateTimeOffset.Now;
+                ticket.Created = DateTimeOffset.Now;
                 ticket.OwnerId = User.Identity.GetUserId();
 
                 ticket.StatusId = db.TicketStatus.SingleOrDefault(s => s.Status == "Open").Id;
@@ -280,11 +280,16 @@ namespace BugTracker2.Controllers
                     TicketHistory history = new TicketHistory();
                     history.Date = DateTimeOffset.Now;
                     StringBuilder historyBody = new StringBuilder();
-                    historyBody.Append("Ticket edited by  ");
-                    historyBody.Append(user.FullName);
-                    Comments comment = new Comments();
-                    historyBody.Append("A comment was add on  ");
-                    historyBody.Append(comment.Created);
+                    historyBody.Append("This ticket was edited by " + user.FullName + " . ");
+                   // historyBody.Append(user.FullName);
+                    //Attachments attachment = new Attachments();
+                    //db.Attachments.Add(attachments);
+                    //attachments = db.Attachments.Find(attachments.Id);
+                    //historyBody.Append("An attachment was added on " + attachment.Created + ". ");
+                    //historyBody.Append(attachment.Created);
+                    //Comments comment = new Comments();
+                    //historyBody.Append("A comment was added on   .");
+                    //historyBody.Append(comment.Created);
 
                     if (oldValue.Title != ticket.Title)
                     {
@@ -312,15 +317,6 @@ namespace BugTracker2.Controllers
                             historyBody.AppendFormat(" The priority was changed from {0} to {1}. ", oldPriorityName, currPriorityName);
                         }
                     }
-                
-                    //Attachments attachments = new Attachments();
-                    //db.Attachments.Add(attachments);
-                    //attachments = db.Attachments.Find(attachments.Id);
-                    //historyBody.AppendFormat("  An attachment has been added to this ticket.");
-                    //Comments comment = new Comments();
-                    //db.Comments.Add(comment);
-                    //comment = db.Comments.Find(comment.Id);                
-                    //historyBody.AppendFormat("  A comment has been added to this ticket.");
 
                     history.Body = historyBody.ToString();
                     history.TicketId = ticket.Id;

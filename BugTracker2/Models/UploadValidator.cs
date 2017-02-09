@@ -38,3 +38,4 @@ namespace BugTracker2.Models
         }
     }
     }
+

@@ -67,7 +67,7 @@ namespace BugTracker2.Controllers
             if (ModelState.IsValid)
             {
                 comment.UserId = User.Identity.GetUserId();
-                comment.Created = System.DateTimeOffset.Now;
+                comment.Created = DateTimeOffset.Now;
                 db.Comments.Add(comment);
                 db.SaveChanges();
 
@@ -76,7 +76,7 @@ namespace BugTracker2.Controllers
 
                 TicketHistory history = new TicketHistory();
                 history.Date = DateTimeOffset.Now;
-                var historyBody = "A new comment has been added to this ticket.";
+                var historyBody = "A new comment was added to this ticket.";
                 history.Body = historyBody;
                 history.TicketId = comment.TicketsId;
                 db.TicketHistory.Add(history);

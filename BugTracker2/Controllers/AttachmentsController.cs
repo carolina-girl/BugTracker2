@@ -129,7 +129,7 @@ namespace BugTracker2.Controllers
 
                 TicketHistory history = new TicketHistory();
                 history.Date = DateTimeOffset.Now;
-                var historyBody = "A new attachment has been added to this ticket.";
+                var historyBody = "A new attachment was added to this ticket.";
                 history.Body = historyBody;
                 history.TicketId = attachment.TicketsId;
                 db.TicketHistory.Add(history);

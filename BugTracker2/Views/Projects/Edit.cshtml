@@ -3,20 +3,26 @@
 @{
     ViewBag.Title = "Edit";
 }
-
-<h3>Project: @Html.ActionLink(Model.Title, "Edit", "Projects", new { id = Model.Id }, null)</h3>
-
-
+<style>
+    body {
+        margin-left: 300px;
+    }
+</style>
+<br />
+<br />
+<br />
+<h2>Edit Project: @Html.ActionLink(Model.Title, "Edit", "Projects", new { id = Model.Id }, null)</h2>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        @*<h4>Projects</h4>*@
-        <hr />
+    <div class="form-horizontal">    
+ 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @*@Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.UserId)*@
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.UserId)
+        @Html.HiddenFor(model => model.Created)
+        @Html.HiddenFor(model => model.Updated)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -26,7 +32,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.HiddenFor(model => model.Created, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.HiddenFor(model => model.Created, new { htmlAttributes = new { @class = "form-control" } })
@@ -40,10 +46,10 @@
                 @Html.HiddenFor(model => model.Updated, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Updated, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Body, "Description", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
               @Html.TextAreaFor(model => model.Body, 4, 50, new { @class = "form-control", style = "max-width:50%" })
                 @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })

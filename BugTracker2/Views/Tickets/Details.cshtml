@@ -5,19 +5,26 @@
     ViewBag.Title = "Details";
 }
 
+<style>
+    .container {
+        font-family: 'Times New Roman', Times, serif;
+    }
+    body {
+        margin: 0px 200px 0px 200px;
+    }
+</style>
+
 <div class="col-md-8 subnav">
     <h1>Ticket: @Model.Title</h1>
 </div>
-
-
 <div class="container">
     <div class="row">
         <div class="col-md-6">
             <h3><strong>Project</strong>: @Html.ActionLink(Model.Project.Title, "Details", "Projects", new { id = Model.ProjectId }, null)</h3>
-            <h4><strong>Created By</strong>: @Model.Owner.FullName on @Model.Created.ToString("MMMM dd, yyyy")</h4>
+            <h4><strong>Created By</strong>: @Model.Owner.FullName on @Model.Created.ToString("M/d/yyyy")</h4>
             @if (Model.Updated.HasValue)
             {
-                <h4 class="text-danger">Updated on @Model.Updated.Value.ToString("MMMM dd, yyyy") - @Html.ActionLink("View History", "History", new { id = Model.Id })</h4>
+                <h4 class="text-danger">Updated on @Model.Updated.Value.ToString("M/d/yyyy")</h4>
             }
             @if (Model.AssignedUserId != null)
             {
@@ -37,6 +44,7 @@
             <h4>Type: @Html.DisplayFor(modelItem => Model.Type.Type)</h4>
             <h4>Priority: @Html.DisplayFor(modelItem => Model.Priority.Priority)</h4>
             <h4>Status: @Html.DisplayFor(modelItem => Model.Status.Status)</h4>
+            <h4>@Html.ActionLink("View History", "History", new { id = Model.Id })</h4>
         </div>
     </div>
     <div class="row">
@@ -98,12 +106,15 @@
             @foreach (var attachment in attachments)
             {
                 <div class="col-md-12">
-                    <h4>Posted by @attachment.User.LastName on @attachment.Created.ToString("M/d/yyyy")</h4>
+                   @if (@attachment.UserId != null)
+                   {
+                       <h4><span class="author">Posted by @attachment.User.FullName on @attachment.Created.ToString("M/d/yyyy")</span></h4>
+                   }
+                    @*<h4>Posted by @attachment.User.FullName on @attachment.Created.ToString("M/d/yyyy")</h4>*@
                     <p>
-                        <img src="@attachment.MediaUrl" alt="Attachment Photo" style="max-width:150px" />
+                        <img src="@attachment.MediaUrl" alt="Attachment Photo" style="max-width: 300px" />
                     </p>
                     <p>@attachment.Body</p>
-
                 </div>
                 <div class="col-md-12">
                     @if (ViewBag.UserId == @attachment.UserId || ViewContext.HttpContext.User.IsInRole("ProjectManager") || ViewContext.HttpContext.User.IsInRole("Admin"))

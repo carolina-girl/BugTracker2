@@ -6,65 +6,176 @@
 
 @Html.HiddenFor(model => model.Id)
 @Html.HiddenFor(model => model.UserId)
-<div>
-    <br/>
-    <h3>Project: @Html.ActionLink(Model.Title, "Details", "Projects", new { id = Model.Id }, null)</h3>
-   
-    <h3>Body: @Html.ActionLink(Model.Body, "Details", "Projects", new { id = Model.Id }, null)</h3>
 
-    <dl class="dl-horizontal">
-        @*<dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+<style>
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        margin: 100px 300px 0px 300px;
+    }
+</style>
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>*@
-
-        <dt>
-            @Html.HiddenFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Html.HiddenFor(model => model.Created)
-        </dd>
-
-        <dt>
-            @Html.HiddenFor(model => model.Updated)
-        </dt>
-
-        <dd>
-            @Html.HiddenFor(model => model.Updated)
-        </dd>
-
-        @*<dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>*@
-    </dl>
+<div class="col-md-8 subnav">
+    <h1>Project: @Html.ActionLink(Model.Title, "Details", "Projects", new { id = Model.Id }, null)</h1>
 </div>
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Description: @Html.ActionLink(Model.Body, "Details", "Projects", new { id = Model.Id }, null)</h3>
+        </div>
+        <br />
+        <br />
         
-<div class="row">
-    <div class="col-md-12 content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-offset-1 col-md-5">
+                    <h3>Dates</h3>
+                    <h4><strong>Created By</strong>: @Model.UserId on @Model.Created.ToString("M/d/yyyy")</h4>
+                    @if (Model.Updated.HasValue)
+                     {
+                        <h4 class="text-danger"><strong>Updated on</strong> @Model.Updated.Value.ToString("M/d/yyyy")</h4>
+                    }
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<br />
+<br />
+  <hr />
+  <hr />
+<br />
+        <div class="row">
+            <div class="col-md-12 content">
+    <div class="col-md-8 subnav">
         <h3>Tickets for this project:</h3>
-        <table class="table">
+    </div>
+    <table id="mytable" class="data-table-xl hover row-border table-striped compact">
+        <thead>
+            <tr>
+                <th>
+                    Title
+                </th>
+              <th>
+                    Date Created
+                </th>
+                <th>
+                    Date Updated
+                 </th>
+                <th>
+                    Created By
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Priority
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Assigned To
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach (var ticket in Model.Tickets)
             {
                 <tr>
-                    <td><h4>@Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)</h4></td>
-                </tr>
-            }
-        </table>
-    </div>
+                    <td>
+                        @Model.Title
+                    </td>
+                    <td>
+                        @Model.Created
+                    </td>
+                    <td>
+                        @Model.Updated
+                    </td>
+                    <td>
+                        @ticket.Owner.FullName
+                    </td>
+                    <td>
+                        @ticket.Status.Status
+                    </td>
+                    <td>
+                        @ticket.Priority.Priority
+                    </td>
+                    <td>
+                        @ticket.Type.Type
+                    </td>
+                    <td>
+                        @if (ticket.AssignedUser == null)
+                        {
+                            <span class="text-danger">Unassigned</span>
+                        }
+                        else
+                        {
+                            @ticket.AssignedUser.FullName
+                        }
+                      </td>
+                    <td></td>
+                    </tr>
+                   }
+                    </tbody>
+            </table>
+      </div>
 </div>
+  <br />
+<hr />
+<hr />
+<br />     
+<div>
+    <h4>@Html.ActionLink("Edit Project", "Edit", new { id = Model.Id }, null)</h4>
+    <h4>@Html.ActionLink("Back to List", "Index", new { id = Model.Id }, null)</h4>
+    <h4>@Html.ActionLink("Assign Projects", "Index", "Admin", new { id = Model.Id }, null)</h4>
+    <h4>@Html.ActionLink("UserProfile", "UserProfile", "Home", new { id = Model.UserId }, null)</h4>
+</div>
+          
+                    @*<div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3><strong>Project</strong>: @Html.ActionLink(Model.Project.Title, "Details", "Projects", new { id = Model.ProjectId }, null)</h3>
+                                <h4><strong>Created By</strong>: @Model.Tickets.Owner.FullName on @Model.Tickets.Created.ToString("M/d/yyyy")</h4>
+                                @if (Model.Updated.HasValue)
+                                {
+                                    <h4 class="text-danger">Updated on @Model.Tickets.Updated.Value.ToString("M/d/yyyy")</h4>
+                                }
+                                @if (Model.Tickets.AssignedUserId != null)
+                                {
+                                    <h3><strong>Assigned To</strong>: @Model.AssignedUser.FullName</h3>
+                                }
+                                else
+                                {
+                                    <h4><strong>Assigned To</strong>: <span class="text-danger">Unassigned</span></h4>
+                                }
+                            </div>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <div class="col-md-offset-1 col-md-5">
+                                <h4>Type: @Html.DisplayFor(modelItem => Model.Tickets.Type)</h4>
+                                <h4>Priority: @Html.DisplayFor(modelItem => Model.Tickets.Priority.Priority)</h4>
+                                <h4>Status: @Html.DisplayFor(modelItem => Model.Tickets.Status.Status)</h4>
+                                <h4>@Html.ActionLink("View History", "History", new { id = Model.Id })</h4>
+                            </div>
+                        </div>
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new {id = Model.Id }, null) |
-    @Html.ActionLink("Back to List", "Index", new { id = Model.Id }, null) |
-    @Html.ActionLink("Assign Projects", "Index", "Admin", new { id = Model.Id }, null) |
-    @Html.ActionLink("UserProfile", "UserProfile", "Home", new { id = Model.UserId }, null) 
-</p>
+
+
+                        <h3>Tickets for this project:</h3>
+                        <table class="table">
+                            @foreach (var ticket in Model.Tickets)
+                            {
+                                <tr>
+                                    <td><h4>@Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)</h4></td>
+                                </tr>
+                            }
+                        </table>
+                    </div>*@
+
+
+
