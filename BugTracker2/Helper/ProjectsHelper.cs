@@ -67,7 +67,22 @@ namespace BugTracker2.Models.Helper
             var project = db.Projects.Find(projectId);
             return project.Users.ToList();
         }
-      
+
+        //public List<ApplicationUser> ListAbsentUsers(int projectId)
+        //{
+        //    var project = db.Projects.Find(projectId);
+        //    var users = db.Users.ToList();
+        //    var absentUsers = new List<ApplicationUser>();
+        //    foreach (var user in users)
+        //    {
+        //        if (!HasProject(user.Id, projectId))
+        //        {
+        //            absentUsers.Add(user);
+        //        }
+        //    }
+        //    return absentUsers;
+        //}
+
 
         public List<string> ListProjectManagers(int? projectId)
         {

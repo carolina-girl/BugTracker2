@@ -115,6 +115,7 @@ namespace BugTracker2.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(comment).State = EntityState.Modified;
+                comment.Updated = DateTimeOffset.Now;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

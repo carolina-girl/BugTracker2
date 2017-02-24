@@ -15,7 +15,6 @@ using System.Web.Security;
 
 namespace BugTracker2.Controllers
 {
-    [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -95,6 +94,53 @@ namespace BugTracker2.Controllers
                     return View(model);
             }
         }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> GuestLogin(string returnUrl, string type)
+        {
+
+            string Email = "";
+            string Password = "";
+
+            switch (type)
+            {
+                case "Admin":
+                    Email = "mahburns@gmail.com";
+                    Password = "redhead46";
+                    break;
+                case "Project Manager":
+                    Email = "projectManager@coderfoundry.com";
+                    Password = "Password-1";
+                    break;
+                case "Developer":
+                    Email = "developer@coderfoundry.com";
+                    Password = "Password-1";
+                    break;
+                case "Submitter":
+                    Email = "submitter@coderfoundry.com";
+                    Password = "Password-1";
+                    break;
+                default:
+                    Email = "submitter@coderfoundry.com";
+                    Password = "Password-1";
+                    break;
+            }
+            var result = await SignInManager.PasswordSignInAsync(Email, Password, false, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToAction("Dashboard", "Home");
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return RedirectToAction("Login");
+            }
+        }
+
 
         [HttpPost]
         [AllowAnonymous]
@@ -451,17 +497,17 @@ namespace BugTracker2.Controllers
             return View(model);
         }
 
+
         //
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            Session.Clear();
-            FormsAuthentication.SignOut();
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
+
 
         //
         // GET: /Account/ExternalLoginFailure

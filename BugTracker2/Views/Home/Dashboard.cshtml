@@ -2,63 +2,285 @@
 @{
     ViewBag.Title = "Dashboard";
 }
-<style>
-    img {
-        border-radius: 50%;
-        border: solid black 5px;
-    }
-    body {
-        background-color: lightgrey;
-    }
-</style>
-<header>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <img class="img-responsive" src="~/fileUpload/main ladybug.gif" alt="">
-                <div class="intro-text">
-                    <span class="name">Bug Tracker</span>
-                    <hr class="star-light">
-                    <span class="skills">Project developed by Mary Ann Burns for Coder Foundry 2016</span>
+
+
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 class="panel-heading">  User Dashboard </h4>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                        </div>
+                        <div class="col-xs-6 text-center">
+                            <div class="huge">@Model.Projects.Count()@Html.Raw("Projects")</div>
+                            <div>Projects Assigned</div>
+                        </div>
+                    </div>
                 </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="center">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                        </div>
+                        <div class="col-xs-6 text-center">
+                            <div class="huge">@Model.Tickets.Count()@Html.Raw("Tickets")</div>
+                            <div>Tickets Opened</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                        </div>
+                        <div class="col-xs-6 text-center">
+                            <div class="huge">@Model.Tickets.Count()@Html.Raw("Tickets")</div>
+                            <div>Tickets Assigned</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                        </div>
+                        <div class="col-xs-6 text-center">
+                            <div class="huge">@Model.Tickets.Count()@Html.Raw("Events")</div>
+                            <div>Notifications</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
-</header>
-<h2 class="dashboard">Dashboard</h2>
-<div class = "container">
-     <div class = "row">
-          <div class = "col-md-12 content">
-        <h3 class="dashboard">Projects</h3>
-                    <table class="table">
-                    @foreach (var project in Model.Projects)
-                    {
-                     <tr>
-                         <td>@Html.ActionLink(project.Title, "Details", "Projects", new { id = project.Id }, null)</td>
-                    </tr>
-                    }
+
+    <!--projects index-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                   <h4> My Projects </h4>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Created Date
+                            </th>
+                            <th>
+                                Updated Date
+                             </th>
+                              @*<th>
+                             @Html.DisplayNameFor(model => model.Body)
+                             </th>*@
+                            <th>
+                                UserId
+                             </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{var projects = Model.Projects;}
+                        @foreach (var project in projects)
+                            {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(project.Title, "Details", "Projects", new { id = project.Id }, null)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => project.Created)
+                                </td>   
+                                <td>
+                                @Html.DisplayFor(modelItem => project.Updated)
+                            </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.Body)
+                        </td>*@
+                                <td>
+                            @Html.DisplayFor(modelItem => project.UserId)
+                        </td>
+                                <td>
+                                    <h5>
+                                        @Html.ActionLink("Edit", "Edit", "Projects", null, new { @class = "btn btn-primary btn-xs" })
+                                        @Html.ActionLink("Details", "Details", "Projects", null, new { @class = "btn btn-success btn-xs" })
+                                    </h5>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
                     </table>
-                    <p><a href="/Projects">View Projects</a> </p>
+                </div>
+
+                    <!--  -->
+                </div>
+                <!-- /.panel-body -->
             </div>
-         </div>
-         <div class= "row">
-             <div class = "col-md-12 content">
-                 <h3 class="dashboard">Tickets</h3>
-                 <table class="table">
-                   @foreach (var ticket in Model.Tickets)
-                   {
-                   <tr>
-                       <td>@Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)</td>
-                  </tr>
-                   }
-                 </table>
-                 <p>
-                 <a href="/Tickets">View Tickets</a>
-                </p>
-           </div>
-      </div>
- </div>
+            <!-- /.panel -->
+        </div>
+  </div>
+    <!-- Tickets Index-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                   <h4> My Tickets </h4>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    @*<th>
+                                      @Html.DisplayNameFor(model => model.ProjectId)
+                                     </th>*@
+                                    <th>
+                                        Project
+                                    </th>
+                                    <th>
+                                        Created Date
+                                    </th>
+                                    @*<th>
+                                      @Html.DisplayNameFor(model => model.Updated)
+                                     </th>*@
+                                    <th>
+                                       Title
+                                    </th>
+                                    @*<th>
+                                      @Html.DisplayNameFor(model => model.Body)
+                                     </th>*@
+                                    <th>
+                                       Status
+                                    </th>
+                                    <th>
+                                       Priority
+                                    </th>
+                                    <th>
+                                       Type
+                                    </th>
+                                    <th>
+                                        Assigned To
+                                    </th>
+
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ticket in Model.Tickets)
+                                {
+                                    <tr>
+                                        @*<td>
+                                          @Html.DisplayFor(modelItem => item.ProjectId)
+                                         </td>*@
+                                        <td>
+                                            @Html.DisplayFor(modelItem => ticket.Project.Title)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => ticket.Created)
+                                        </td>
+                                        @*<td>
+                                          @Html.DisplayFor(modelItem => item.Updated)
+                                         </td>*@
+                                        <td>
+                                            @Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)
+                                        </td>
+                                        @*<td>
+                                          @Html.DisplayFor(modelItem => item.Body)
+                                         </td>*@
+                                        <td>
+                                            @Html.DisplayFor(modelItem => ticket.Status.Status)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => ticket.Priority.Priority)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => ticket.Type.Type)
+                                        </td>
+                                        <td>
+                                            @if (ticket.AssignedUser == null)
+                                            {
+                                                <span class="text-danger">Unassigned</span>
+                                            }
+                                            else
+                                            {
+                                                @Html.DisplayFor(modelItem => ticket.AssignedUser.FullName)
+                                            }
+                                        </td>
+                                        <td>
+                                            <h5>
+                                                @Html.ActionLink("Edit", "Edit", "Tickets", null, new { @class = "btn btn-primary btn-xs" })
+                                                @Html.ActionLink("Details", "Details", "Tickets", null, new { @class = "btn btn-success btn-xs" })
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+  </div>
+    </div>
 
 
 
-     
+
+
+
+
+

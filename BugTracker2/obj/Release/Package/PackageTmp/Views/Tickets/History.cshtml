@@ -3,7 +3,14 @@
 @{
     ViewBag.Title = "Ticket History";
 }
-
+<style>
+    body {
+        margin-left: 300px;
+    }
+</style>
+<br />
+<br />
+<br />
 <div class="col-md-12 subnav">
     <h1>Ticket History: @Html.ActionLink(Model.Title, "Details", new { id = Model.Id })</h1>
 </div>
@@ -14,7 +21,7 @@
             @{ var ticketHistory = Model.History; }
             @foreach (var history in ticketHistory.Reverse())
             {
-                <h3>@history.Date.ToString("M/dd/yyyy")</h3>
+                <h4>@history.Date.ToString("M/dd/yyyy")</h4>
                 <p>@Html.Raw(history.Body)</p>
             }
         </div>

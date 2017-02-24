@@ -10,7 +10,6 @@
 </style>
 <h2>Projects</h2>
 <input type="hidden" name="UserId" id="UserId" value="@ViewBag.UserId" />
-<input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
 <input type="hidden" name="Updated" id="Updated" value="@ViewBag.Updated" />
 <input type="hidden" name="Body" id="Body" value="@ViewBag.Body" />
 
@@ -58,7 +57,7 @@
                     </td>*@
                 <td><h5>
                     @Html.ActionLink("Edit", "Edit", "Projects", new { id = item.Id }, null) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }, null) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, null) 
                             @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
                             {
                                 @Html.ActionLink("Create A New Ticket", "Create", "Tickets", new { id = item.Id }, null)

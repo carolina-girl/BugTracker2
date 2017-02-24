@@ -22,7 +22,7 @@ namespace BugTracker2.Models.Helper
             var user = db.Users.Find(userId);
             UserRoleAssignHelper userHelper = new UserRoleAssignHelper(db);
             ProjectsHelper projectHelper = new ProjectsHelper(db);
-            var userRoles = userHelper.ListUserRoles(userId);
+            var userRoles = userHelper.ListMyRoles(userId);
             var tickets = new List<Tickets>();
             if (userRoles.Contains("Admin"))
             {
@@ -56,11 +56,11 @@ namespace BugTracker2.Models.Helper
 
 
         public bool HasTicketPermission(string userId, int ticketId)
-{
+     {
     var user = db.Users.Find(userId);
     var ticket = db.Tickets.Find(ticketId);
     UserRoleAssignHelper helper = new UserRoleAssignHelper();
-    var userRoles = helper.ListUserRoles(userId);
+    var userRoles = helper.ListMyRoles(userId);
     if (userRoles.Contains("Admin"))
     {
         return true;

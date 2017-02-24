@@ -25,40 +25,45 @@
         </div>
     </div>
 </header>
-<h2 class="dashboard">Dashboard</h2>
+<h2 class="dashboard" style="margin-left: 600px">Dashboard</h2>
 <div class = "container">
-     <div class = "row">
-          <div class = "col-md-12 content">
-        <h3 class="dashboard">Projects</h3>
-                    <table class="table">
-                    @foreach (var project in Model.Projects)
-                    {
-                     <tr>
-                         <td>@Html.ActionLink(project.Title, "Details", "Projects", new { id = project.Id }, null)</td>
+    <div class="row">
+        <div class="col-md-6 content">
+            <h3 class="dashboard" style="margin-left: 350px">Current Projects</h3>
+            <h4><table class="table" style="margin-left: 350px">
+               @foreach (var project in Model.Projects)
+                {
+                    <tr>
+                        <td>@Html.ActionLink(project.Title, "Details", "Projects", new { id = project.Id }, null)</td>
                     </tr>
-                    }
-                    </table>
-                    <p><a href="/Projects">View Projects</a> </p>
+                }
+            </table></h4>
+            <p><a href="/Projects" style="margin-left: 350px">View Projects</a> </p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="dashboard">Most Recent Tickets</h3>
+                        <h4><table class="table">
+                            @foreach (var ticket in Model.Tickets)
+                            {
+                                <tr>
+                                    <td>@Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)</td>
+                                </tr>
+                            }
+                        </table></h4>
+                        <p>
+                            <a href="/Tickets">View Tickets</a>
+                        </p>
+                    </div>
+                </div>
             </div>
-         </div>
-         <div class= "row">
-             <div class = "col-md-12 content">
-                 <h3 class="dashboard">Tickets</h3>
-                 <table class="table">
-                   @foreach (var ticket in Model.Tickets)
-                   {
-                   <tr>
-                       <td>@Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)</td>
-                  </tr>
-                   }
-                 </table>
-                 <p>
-                 <a href="/Tickets">View Tickets</a>
-                </p>
-           </div>
-      </div>
+        </div>
+    </div>
  </div>
 
 
 
-     
+

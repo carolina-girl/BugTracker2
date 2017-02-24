@@ -4,22 +4,48 @@
 
 }
 
+<style>
+    body {
+      margin: 100px 400px 0px 500px;
+    }
+    .form-group selected {
+        border: 10px;
+    }
+    .btn btn-default {
+        margin: 10px;
+    }
+</style>
 
-<br/>
-<br/>
-<br/>
-
+<h1>
+Assign Projects
+</h1>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.User.Id)
 
-    @Html.ListBox("SelectedProjects", Model.Projects)
+<div class="form-group selected">   
+    @Html.LabelFor(model => model.Projects, new { @class = "control-label col-sm-2" })
+    <div class="col-sm-10">
+        @Html.ListBoxFor(model => model.SelectedProjects, Model.Projects, new { @class = "form-control", size = 12 })
+        @Html.ValidationMessageFor(model => model.SelectedProjects, "", new { @class = "text-danger" })
+    </div>
+</div>
 
-    <input type="submit" value="Save" class="btn btn-default" />
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+</div>
+}
 
-    <h5>@Html.ActionLink("Back to Index", "Index", "Admin")</h5>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }
 
 

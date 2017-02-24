@@ -25,7 +25,7 @@ namespace BugTracker2.Controllers
             {
                 var UserId = User.Identity.GetUserId();
                 var user = db.Users.Find(UserId);
-                var project = new List<Projects>();
+                var project = new List<project>();
                 ProjectsHelper helper = new ProjectsHelper(db);
                 project = user.Projects.ToList();
                 db.SaveChanges();
@@ -42,10 +42,10 @@ namespace BugTracker2.Controllers
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult FullList(int? Id)
         {
-            List<Projects> projects = new List<Projects>();
+            List<project> projects = new List<project>();
             if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
             {
-                Projects project = db.Projects.Find(Id);
+                project project = db.Projects.Find(Id);
                 projects = db.Projects.ToList();
             }
             
@@ -61,7 +61,7 @@ namespace BugTracker2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects project = db.Projects.Find(Id);
+            project project = db.Projects.Find(Id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -90,7 +90,7 @@ namespace BugTracker2.Controllers
         // more details see http://go.microsoft.com/fwlin.k/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Created,Updated,Body,UserId")] Projects project)
+        public ActionResult Create([Bind(Include = "Id,Title,Created,Updated,Body,UserId")] project project)
         {
             if (ModelState.IsValid)
             {
@@ -108,7 +108,6 @@ namespace BugTracker2.Controllers
         }
 
 
-
         // GET: Projects/Edit/5
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Edit(int? Id)
@@ -117,7 +116,7 @@ namespace BugTracker2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects project = db.Projects.Find(Id);
+            project project = db.Projects.Find(Id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -139,7 +138,7 @@ namespace BugTracker2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Created,Updated,Body")] Projects project)
+        public ActionResult Edit([Bind(Include = "Id,Title,Created,Updated,Body")] project project)
         {
             if (ModelState.IsValid)
             {
@@ -160,7 +159,7 @@ namespace BugTracker2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects project = db.Projects.Find(Id);
+            project project = db.Projects.Find(Id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -174,7 +173,7 @@ namespace BugTracker2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int? Id)
         {
-            Projects project = db.Projects.Find(Id);
+            project project = db.Projects.Find(Id);
             db.Projects.Remove(project);
             db.SaveChanges();
             return RedirectToAction("Index");

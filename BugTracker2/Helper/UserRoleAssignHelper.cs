@@ -21,26 +21,33 @@ namespace BugTracker2.Models
         }
 
         public bool IsUserInRole(string userId, string roleName)
+            {
+                return userManager.IsInRole(userId, roleName);
+            }
+
+        public IList<string> ListMyRoles(string userId)
         {
-            return userManager.IsInRole(userId, roleName);
+            return userManager.GetRoles(userId);
         }
+
         public ICollection<string> ListUserRoles(string userId)
         {
             return userManager.GetRoles(userId);
         }
-        public IList<string> ListAbsentUserRoles(string userId)
-        {
-            var roles = db.Roles.Select(r => r.Name).ToList();
-            var AbsentUserRoles = new List<string>();
-            foreach (var role in roles)
-            {
-                if (!IsUserInRole(userId, role))
-                {
-                    AbsentUserRoles.Add(role);
-                }
-            }
-            return AbsentUserRoles;
-        }
+
+        //public IList<string> ListAbsentUserRoles(string userId)
+        //{
+        //    var roles = db.Roles.Select(r => r.Name).ToList();
+        //    var AbsentUserRoles = new List<string>();
+        //    foreach (var role in roles)
+        //    {
+        //        if (!IsUserInRole(userId, role))
+        //        {
+        //            AbsentUserRoles.Add(role);
+        //        }
+        //    }
+        //    return AbsentUserRoles;
+        //}
 
         public bool AddUserToRole(string userId, string roleName)
         {

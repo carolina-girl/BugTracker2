@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace BugTracker2.Models
 {
-    public class Projects
+    public class project
     {
-        public Projects()
+        public project()
         {
             this.Users = new HashSet<ApplicationUser>();
             this.Tickets = new HashSet<Tickets>();

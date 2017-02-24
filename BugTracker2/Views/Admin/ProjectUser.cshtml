@@ -26,9 +26,9 @@ Assign Projects
     @Html.HiddenFor(model => model.User.Id)
 
 <div class="form-group selected">   
-    @Html.LabelFor(model => model.Projects, new { @class = "control-label col-sm-2" })
+    @Html.LabelFor(model => model.project, new { @class = "control-label col-sm-2" })
     <div class="col-sm-10">
-        @Html.ListBoxFor(model => model.SelectedProjects, Model.Projects, new { @class = "form-control", size = 12 })
+        @Html.ListBoxFor(model => model.SelectedProjects, Model.project, new { @class = "form-control", size = 12 })
         @Html.ValidationMessageFor(model => model.SelectedProjects, "", new { @class = "text-danger" })
     </div>
 </div>

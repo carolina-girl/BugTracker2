@@ -4,6 +4,7 @@
     ViewBag.Title = "Log in";
     Layout = null;
 }
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,7 @@
     <link href="~/Content/btn-social/bootstrap-social.css" rel="stylesheet" />
     <link href="~/Content/font-awesome.css" rel="stylesheet" />
     <link href="~/Content/zocial.css" rel="stylesheet" />
+
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -141,7 +143,8 @@
                 </p>
                 <h4>Try a demo login:</h4>
                 <div class="flex">
-                    <div>
+                    @Html.ActionLink("ProjectManager", "GuestLogin", new { ReturnUrl = ViewBag.ReturnUrl, type = "Project Manager" }, new { @class = "btn btn-primary" })
+                    @*<div>
                         @using (Html.BeginForm("LoginGuestProjectManager", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                         {
                             @Html.AntiForgeryToken()
@@ -150,9 +153,9 @@
                                     <input type="hidden" name="Password" value="blank" />
                                     <button type="submit" class="btn btn-primary">ProjectManager</button>
                         }
-                    </div>
-
-                    <div>
+                    </div>*@
+                    @Html.ActionLink("Developer", "GuestLogin", new { ReturnUrl = ViewBag.ReturnUrl, type = "Developer" }, new { @class = "btn btn-primary" })
+                    @*<div>
                         @using (Html.BeginForm("LoginGuestDeveloper", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                         {
                             @Html.AntiForgeryToken()
@@ -161,9 +164,10 @@
                                     <input type="hidden" name="Password" value="blank" />
                                     <button type="submit" class="btn btn-primary">Developer</button>
                         }
-                    </div>
+                    </div>*@
 
-                    <div>
+                    @Html.ActionLink("Submitter", "GuestLogin", new { ReturnUrl = ViewBag.ReturnUrl, type = "Submitter" }, new { @class = "btn btn-primary" })
+                    @*<div>
                         @using (Html.BeginForm("LoginGuestSubmitter", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                         {
                             @Html.AntiForgeryToken()
@@ -172,9 +176,9 @@
                                     <input type="hidden" name="Password" value="blank" />
                                     <button type="submit" class="btn btn-primary">Submitter</button>
                         }
-                    </div>
-
-                    <div>
+                    </div>*@
+                    @Html.ActionLink("Admin", "GuestLogin", new { ReturnUrl = ViewBag.ReturnUrl, type = "Admin" },new { @class="btn btn-primary"} )
+                    @*<div>
                         @using (Html.BeginForm("LoginGuestAdmin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                         {
                             @Html.AntiForgeryToken()
@@ -183,12 +187,11 @@
                                     <input type="hidden" name="Password" value="blank" />
                                     <button type="submit" class="btn btn-primary">Admin</button>
                         }
-                    </div>
+                    </div>*@
                 </div>
           </div>
     </div>
         </div>
-
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -196,3 +199,27 @@
 
 </body>
 </html>
+
+
+
+
+@*<script>
+    window.onload = function () {
+        if (typeof history.pushState === "function") {
+            history.pushState("jibberish", null, null);
+            window.onpopstate = function () {
+                history.pushState('newjibberish', null, null);
+            };
+        } else {
+            var ignoreHashChange = true;
+            window.onhashchange = function () {
+                if (!ignoreHashChange) {
+                    ignoreHashChange = true;
+                    window.location.hash = Math.random();
+                } else {
+                    ignoreHashChange = false;
+                }
+            };
+        }
+    }
+</script>*@

@@ -1,8 +1,21 @@
 ﻿@model BugTracker2.Models.UserViewModel
-
 @{
     ViewBag.Title = "UserProfile";
 }
+
+<style>
+    .container {
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    body {
+        margin: 0px 200px 0px 200px;
+    }
+</style>
+<br />
+<br />
+<br />
+
 <div class="col-md-12 subnav">
     <h1>User Profile: @Model.Name</h1>
 </div>
@@ -10,9 +23,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 content">
-            <h3>Email: <a href="mailto:@Model.Email">@Model.Email</a></h3>
+            <h4>Email: <a href="mailto:@Model.Email">@Model.Email</a></h4>
 
-            <h3>Roles: </h3>
+            <h4>Roles: </h4>
             <ul>
                 @foreach (var role in Model.Roles)
                 {
@@ -20,7 +33,7 @@
                 }
             </ul>
 
-            <h3>Assigned to @Model.ProjectCount projects.</h3>
+            <h4>Assigned to @Model.ProjectCount projects.</h4>
             @if (Model.Roles.Contains("Submitter"))
             {
                 <h3>@Model.Name has submitted @Model.TicketsSubmitted total tickets.</h3>
@@ -30,7 +43,7 @@
                 <h3>@Model.Name is currently assigned @Model.TicketsAssigned tickets. </h3>
             }
             <br /><br />
-            <h4>@Html.ActionLink("Back to Project", "Details", "Projects", new { id = Model.ProjectId }, null)</h4>
+            <h5>@Html.ActionLink("Back to Project", "Details", "Projects", new { id = Model.ProjectId }, null)</h5>
         </div>
     </div>
 </div>

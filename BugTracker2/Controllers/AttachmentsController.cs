@@ -40,53 +40,6 @@ namespace BugTracker2.Controllers
             return View(attachment);
         }
 
-        //// GET: Attachments/Create
-        //public ActionResult Create(int id)
-        //{
-        //    Attachments attachment = db.Attachments.Find(id);
-        //    db.Attachments.Remove(attachment);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Details", "Tickets", new { id = attachment.TicketsId });
-        //}
-
-        //// POST: Attachments/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //public ActionResult Create([Bind(Include = "TicketsId")] Attachments attachment, HttpPostedFileBase image)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        attachment.Created = DateTimeOffset.Now;
-        //        attachment.SubmitterId = User.Identity.GetUserId();
-
-        //        if (image != null && image.ContentLength > 0)
-        //        {
-        //            //relative server path
-        //            var filePath = "/fileUpload/";
-        //            //path on physical drive on server
-        //            var absPath = Server.MapPath("~" + filePath);
-        //            // media url for relative path
-        //            attachment.MediaUrl = filePath + image.FileName;
-        //            //save image
-        //            image.SaveAs(Path.Combine(absPath, image.FileName));
-
-        //            //check the file name to make sure its an image
-        //            var ext = Path.GetExtension(image.FileName).ToLower();
-        //            //if (ext != ".png" && ext != ".jpg" && ext != ".jpeg" && ext != ".gif" && ext != ".bmp")
-        //            //ModelState.AddModelError("image", "Invalid Format.");
-
-        //            attachment.UserId = User.Identity.GetUserId();
-        //            var com = db.Tickets.FirstOrDefault(p => p.Id == attachment.TicketsId).Id;
-        //            db.Attachments.Add(attachment);
-        //            db.SaveChanges();
-        //            return RedirectToAction("Details", "Tickets", new { id = attachment.TicketsId });
-        //        }
-        //    }
-        //    ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachment.TicketsId);
-        //    return View(attachment);
-        //}
-
         //GET: Attachments/Create
         [Authorize]
         public ActionResult Create(int? id)
@@ -120,8 +73,8 @@ namespace BugTracker2.Controllers
                 fileName = Regex.Replace(fileName, @"[!@#$%_\s]", "");
                 image.SaveAs(Path.Combine(Server.MapPath("~/fileUpload/"), uniqueId + fileName));
                 attachment.MediaUrl = "/fileUpload/" + uniqueId + fileName;
-                
-                attachment.UserId = User.Identity.GetUserId();
+                var UserId = User.Identity.GetUserId();
+                var user = db.Users.Find(UserId);
                 db.Attachments.Add(attachment);
                 db.SaveChanges();
 

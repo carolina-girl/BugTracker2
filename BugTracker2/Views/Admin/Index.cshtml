@@ -5,18 +5,20 @@
     }
 </style>
 <h2>User List</h2>
-
-<table id="mytable" class="data-table-xl hover row-border table-striped compact">
+<table c="mytable" class="data-table-xl hover row-border table-striped compact">
     <thead>
         <tr>
-            @*<th>
+            <th>
                 @Html.DisplayNameFor(model => model.FirstName)
-            </th>*@
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Roles)
             </th>
             <th></th>
         </tr>
@@ -25,14 +27,17 @@
         @foreach (var item in Model)
             {
             <tr>
-                @*<th>
+                <th>
                     @Html.DisplayFor(modelItem => item.FirstName)
-                </th>*@
+                </th>
                 <th>
                     @Html.DisplayFor(modelItem => item.LastName)
                 </th>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Roles)
                 </td>
                 <td>
                     <h5>
@@ -44,3 +49,18 @@
         }
     </tbody>
 </table>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('mytable').dataTable().columnFilter({
+                aoColumns: [
+                    { type: "text" },
+                    { type: "select", values: ['Admin', 'ProjectManager', 'Developer', 'Submitter'] },
+                    { type: "text" },
+                ]
+
+            });
+        });
+
+    </script>
+}

@@ -7,18 +7,19 @@
     string[] ProjectTypes = new[] { "Bug", "Feature Request", "Documentation" };
 
 }
-
+<style>
+    body {
+     margin-left: 300px;
+    }
+</style>
 <br/>
 <br/>
 <br/>
 <br/>
 
-@*@Html.ValidationSummary(false, "", new { @class = "text-danger" })
-@if (ViewBag.HasTicketPermission)
-{*@
 
 <div class="col-md-12 subnav">
-    <h3>Edit Ticket for @ProjectTitle</h3>
+    <h2>Edit Ticket for @ProjectTitle</h2>
 </div>
 
 @*<h2>Edit</h2>*@
@@ -30,7 +31,7 @@
 
     <div class="form-horizontal">
         @*<h4>Tickets</h4>*@
-        @*<hr />*@
+        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Project, new { })
         @Html.HiddenFor(model => model.StatusId)

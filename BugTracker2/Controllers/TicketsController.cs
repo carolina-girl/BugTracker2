@@ -116,7 +116,7 @@ namespace BugTracker2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects project = db.Projects.Find(Id);
+            project project = db.Projects.Find(Id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -281,15 +281,6 @@ namespace BugTracker2.Controllers
                     history.Date = DateTimeOffset.Now;
                     StringBuilder historyBody = new StringBuilder();
                     historyBody.Append("This ticket was edited by " + user.FullName + " . ");
-                   // historyBody.Append(user.FullName);
-                    //Attachments attachment = new Attachments();
-                    //db.Attachments.Add(attachments);
-                    //attachments = db.Attachments.Find(attachments.Id);
-                    //historyBody.Append("An attachment was added on " + attachment.Created + ". ");
-                    //historyBody.Append(attachment.Created);
-                    //Comments comment = new Comments();
-                    //historyBody.Append("A comment was added on   .");
-                    //historyBody.Append(comment.Created);
 
                     if (oldValue.Title != ticket.Title)
                     {
@@ -353,105 +344,10 @@ namespace BugTracker2.Controllers
                 return RedirectToAction("Index", "Tickets", new { id = ticket.Id });
             }
 
-            // var ticketPriority = db.TicketPriorities.FirstOrDefault(t => t.Id == ticket.Id);
             ViewBag.PriorityId = new SelectList(db.TicketPriorities, "Id", "Priority", ticket.PriorityId);
-
-            // var ticketType = db.TicketTypes.FirstOrDefault(t => t.Id == ticket.Id);
             ViewBag.TypeId = new SelectList(db.TicketTypes, "Id", "Type", ticket.TypeId);
-
-            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);
-
-            //var developerId = db.Roles.FirstOrDefault(d => string.Compare("Developer", d.Name, true) == 0).Id;
-            //var developers = db.Users.Where(r => r.Roles.Any(a => a.RoleId == developerId));
-            //ViewBag.AssignedUserId = new SelectList(developers, "Id", "FullName", ticket.AssignedUserId);
-           
+            ViewBag.ProjectId = new SelectList(db.Projects, "Id", "Title", ticket.ProjectId);           
             return View(ticket);
-        }
-
-        //GET Tickets/Assign Users
-        [Authorize(Roles = "Admin,ProjectManager")]
-        public ActionResult AssignUser(int? Id)
-        {
-            if (Id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Tickets ticket = db.Tickets.Find(Id);
-            if (ticket == null)
-            {
-                return HttpNotFound();
-            }
-            AssignTicketsViewModel AssignModel = new AssignTicketsViewModel();
-            AssignModel.TicketId = ticket.Id;
-            AssignModel.TicketTitle = ticket.Title;
-            ProjectsHelper helper = new ProjectsHelper(db);
-            UserRoleAssignHelper userHelper = new UserRoleAssignHelper(db);
-            var projectUsers = helper.ListUsers(ticket.ProjectId);
-            var projectDevelopers = new List<ApplicationUser>();
-            foreach (var user in projectUsers)
-            {
-                if (userHelper.IsUserInRole(user.Id, "Developer"))
-                {
-                    projectDevelopers.Add(user);
-                }
-            }
-            if (ticket.AssignedUser != null)
-            {
-                AssignModel.TicketAssignedTo = ticket.AssignedUser.FullName;
-            }
-            AssignModel.UsersList = new SelectList(projectDevelopers, "Id", "FullName");
-            return View(AssignModel);
-        }
-
-        ////POST: Tickets/AssignUser
-        [Authorize(Roles = "Admin, ProjectManager")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AssignUser(string UserId, int TicketId)
-        {
-            //Ticket details
-            var oldTicket = db.Tickets.AsNoTracking().FirstOrDefault(t => t.Id == TicketId);
-            var ticket = db.Tickets.Find(TicketId);
-            ticket.AssignedUserId = UserId;
-            ticket.Created = System.DateTimeOffset.Now;
-            //Add to ticket history
-            TicketHistory history = new TicketHistory();
-            history.Date = DateTimeOffset.Now;
-            var user = db.Users.Find(UserId);
-            var historyBody = "Ticket assigned to " + user.FullName + ". Ticket now Pending.";
-            history.Body = historyBody;
-            history.TicketId = ticket.Id;
-            db.TicketHistory.Add(history);
-            //send email to previous developer
-            if (oldTicket.AssignedUserId != ticket.AssignedUserId && oldTicket.AssignedUserId == null)
-            {
-                var svc2 = new EmailService();
-                var msg2 = new IdentityMessage();
-                msg2.Destination = user.Email;
-                msg2.Subject = "Bug Tracker: Ticket Reassigned";
-                msg2.Body = ticket.Owner.FullName + " has reassigned the ticket '" + ticket.Title + "' to another developer. You are no longer responsible for this ticket. If you have any questions regarding this ticket, " + ticket.Owner.FullName + " can be contacted at " + ticket.Owner.Email;
-                await svc2.SendAsync(msg2);
-            }
-            if (oldTicket.AssignedUserId == ticket.AssignedUserId)
-            {
-                ModelState.AddModelError("", "Error: No changes have been made.");
-                return RedirectToAction("AssignUser", new { id = TicketId });
-            }
-            //Save to database
-            db.Tickets.Attach(ticket);
-            db.Entry(ticket).Property("AssigneduserId").IsModified = true;
-            db.Entry(ticket).Property("Status").IsModified = true;
-            db.Entry(ticket).Property("Created").IsModified = true;
-            db.SaveChanges();
-            //Send email to developer assigned
-            var svc = new EmailService();
-            var msg = new IdentityMessage();
-            msg.Destination = user.Email;
-            msg.Subject = "Bug Tracker: New Ticket Assigned";
-            msg.Body = ticket.Owner.FullName + " has assigned you the ticket '" + ticket.Title + "'.";
-            await svc.SendAsync(msg);
-
-            return RedirectToAction("Details", new { id = TicketId });
         }
 
 

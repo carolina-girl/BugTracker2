@@ -3,25 +3,45 @@
     ViewBag.Title = "EditUser";
 }
 
+<style>
+    body {
+        margin: 100px 400px 0px 500px;
+    }
 
+    .form-group selected {
+        border: 10px;
+    }
 
-<h2>Edituser - @Model.User.FirstName @Model.User.LastName</h2>
+    .btn btn-default {
+        margin: 10px;
+    }
+</style>
 
+<h2>Assign Roles To: @Model.User.FirstName @Model.User.LastName</h2>
 @using (Html.BeginForm())
 {
-
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.User.Id)
 
-    @Html.AntiForgeryToken()
+    <div class="form-group selected">
+        @Html.LabelFor(model => model.Roles, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            @Html.ListBoxFor(model => model.SelectedRoles, Model.Roles, new { @class = "form-control", size = 12 })
+            @Html.ValidationMessageFor(model => model.SelectedRoles, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
-    @Html.ListBox("SelectedRoles", Model.Roles)
-
-
-    <input type="submit" value="Save" class="btn btn-default" />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
 }
-<h5>
-    @Html.ActionLink("Back to Index", "Index", "Admin")
-</h5>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
 
 @section Scripts {
     <script>

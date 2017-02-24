@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
+using System.Web.Mvc;
 
 namespace BugTracker2.Models
 {
@@ -65,6 +68,8 @@ namespace BugTracker2.Models
 
     }
 
+
+
     public class RegisterViewModel
     {
         [Required]
@@ -88,7 +93,7 @@ namespace BugTracker2.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
         public string FullName { get; internal set; }
     }
@@ -108,7 +113,7 @@ namespace BugTracker2.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -122,3 +127,18 @@ namespace BugTracker2.Models
         public string Email { get; set; }
     }
 }
+
+    //public class NoCacheAttribute : ActionFilterAttribute
+    //{
+    //    public override void OnResultExecuting(ResultExecutingContext filterContext)
+    //    {
+    //        filterContext.HttpContext.Response.Cache.SetExpires(DateTime.UtcNow.AddDays(-1));
+    //        filterContext.HttpContext.Response.Cache.SetValidUntilExpires(false);
+    //        filterContext.HttpContext.Response.Cache.SetRevalidation(HttpCacheRevalidation.AllCaches);
+    //        filterContext.HttpContext.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+    //        filterContext.HttpContext.Response.Cache.SetNoStore();
+
+    //        base.OnResultExecuting(filterContext);
+    //    }
+    //}
+

@@ -43,7 +43,7 @@ namespace BugTracker2.Models
         public virtual ICollection<TicketHistory> History { get; set; }
         public virtual ICollection<ApplicationUser> Users { get; set; }
         public virtual ICollection<TicketNotify> TicketNotify { get; set; }
-        public virtual Projects Project { get; set; }
+        public virtual project Project { get; set; }
         public virtual ApplicationUser AssignedUser { get; set; }
         public virtual ApplicationUser Owner { get; set; }
     }
