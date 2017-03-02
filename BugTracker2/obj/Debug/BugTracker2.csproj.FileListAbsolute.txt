@@ -1,3 +1,6 @@
+C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.Migrations.Initial.resources
+C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.Migrations.Initial1.resources
+C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.csproj.GenerateResource.Cache
 C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\bin\ApplicationInsights.config
 C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\bin\roslyn\csc.exe
 C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -16,10 +19,7 @@ C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTra
 C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\bin\BugTracker2.pdb
 C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\bin\SendGrid.SmtpApi.dll
 C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\bin\SendGridMail.dll
-C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.Migrations.Initial.resources
-C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.Migrations.Initial1.resources
-C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.csproj.GenerateResource.Cache
+C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.csprojResolveAssemblyReference.cache
 C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.dll
 C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.pdb
-C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\obj\Debug\BugTracker2.csprojResolveAssemblyReference.cache
-C:\Users\Mary Ann Burns\Documents\Visual Studio 2015\Projects\BugTracker2\BugTracker2\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml

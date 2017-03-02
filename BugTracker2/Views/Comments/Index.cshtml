@@ -2,81 +2,98 @@
 
 @{
     ViewBag.Title = "Index";
+    var ticketsId = ViewBag.TicketsId;
 }
-<style>
-    body {
-        margin: 50px;
-    }
-</style>
-<h2>List of Comments</h2>
+
 <input type="hidden" name="Body" id="Body" value="@ViewBag.Body" />
 <input type="hidden" name="Submitted" id="Submitted" value="@ViewBag.Submitted" />
 <input type="hidden" name="UpdatedReason" id="UpdatedReason" value="@ViewBag.UpdatedReason" />
 <input type="hidden" name="Updated" id="Updated" value="@ViewBag.Updated" />
 
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>List all of your Comments</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12 subnav">
+                    <table id="mytable" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                   User
+                                </th>
+                                <th>
+                                   Ticket
+                                </th>
+                                @*<th>
+                                    @Html.DisplayNameFor(model => model.TicketsId)
+                                </th>*@
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.Body)
+                                    </th>*@
+                                @*<th>
+                                        @Html.DisplayNameFor(model => model.Submitted)
+                                    </th>*@
+                                    @*<th>
+                                        @Html.DisplayNameFor(model => model.UpdatedReason)
+                                    </th>*@
+                                <th>
+                                    Date Created
+                                </th>
+                                <th>
+                                   Date Updated
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table id="mytable" class="data-table-xl hover row-border table-striped compact">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketsId)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Body)
-            </th>*@
-            @*<th>
-                @Html.DisplayNameFor(model => model.Submitted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedReason)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th></th>
-        </tr>
-        </thead>
-    <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.User.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Tickets.Title)
+                                    </td>
+                                    @*<td>
+                                        @Html.DisplayFor(modelItem => item.TicketsId)
+                                    </td>*@
+                                      @*<td>
+                                            @Html.DisplayFor(modelItem => item.Body)
+                                        </td>*@
+                                        @*<td>
+                                            @Html.DisplayFor(modelItem => item.Submitted)
+                                        </td>*@
+                                        @*<td>
+                                            @Html.DisplayFor(modelItem => item.UpdatedReason)
+                                        </td>*@
+                                    <td>
+                                        @item.Created.ToString("M/dd/yyyy")
+                                    </td>
+                                    <td>
+                                        @item.Updated.ToString("M/dd/yyyy")
+                                    </td>
+                                    <td>
+                                        <h5>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TicketsId)
-                </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.Body)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Submitted)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UpdatedReason)
-                </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Updated)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                                            @Html.ActionLink("Edit", "Edit", "Comments", new { id = item.Id }, new { @class = "btn btn-primary btn-sm", @style = "color:white" })
+                                            @Html.ActionLink("Details", "Details", "Comments", new { id = item.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })
+                                        </h5>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+               </div>
+         </div>
+    </div>
+</div>
+    </div>
+<div>
+    <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
+    <input type="button" class="btn btn-info btn-default" value="Back to tickets" onclick="location.href='@Url.Action("Index", "Tickets")'" />   
+</div>

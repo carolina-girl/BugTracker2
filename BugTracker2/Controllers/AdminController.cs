@@ -11,7 +11,7 @@ using System.Web.Mvc;
 using SqlProviderServices = System.Data.Entity.SqlServer.SqlProviderServices;
 
 namespace BugTracker2.Controllers
- {
+{
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -67,7 +67,7 @@ namespace BugTracker2.Controllers
             var user = db.Users.Find(Id);
             AdminProjectUserAssignViewModel model = new AdminProjectUserAssignViewModel();
             var selected = helper.ListProjects(Id);
-            model.project = new MultiSelectList(db.Projects, "Id", "Title", selected);
+            model.Projects = new MultiSelectList(db.Projects, "Id", "Title", selected);
             model.User = user;
 
             return View(model);
@@ -76,79 +76,47 @@ namespace BugTracker2.Controllers
         //POST: Admin/ProjectUser
         [Authorize(Roles = "Admin, ProjectManager")]
         [HttpPost]
-        public ActionResult ProjectUser(AdminProjectUserAssignViewModel model)
+        public ActionResult ProjectUser(string Id, AdminProjectUserAssignViewModel model)
         {
-            if (ModelState.IsValid)
+            var user = db.Users.Find(model.User.Id);
+            var currentProjects = (from p in db.Projects
+                                   where p.Users.Any(r => r.Id == user.Id)
+                                   select p.Id).ToArray();
+
+
+            foreach (var x in model.SelectedProjects)
             {
-                var user = db.Users.Find(model.User.Id);
-                var currentProjects = db.Projects.Where(p => p.UserId == user.Id).ToList();
-                foreach (var current in currentProjects)
-                {
-                    var project = db.Projects.Find(current);
-                    project.Users.Remove(model.User);
-                }
-                foreach (var selected in model.SelectedProjects)
-                {
-                    var project = db.Projects.Find(selected);
-                    project.Users.Add(model.User);
-                }
-
-                db.Entry(user).State = EntityState.Modified;
-                db.Users.Attach(user);
-                db.SaveChanges();
-                    return RedirectToAction("Index", "Admin");
-                    
-                }
-                return View();
+                var project = db.Projects.Find(x);
+                project.Users.Add(user);
             }
-        
-        
-   
-        
+            foreach (var z in currentProjects)
+            {
+                var project = db.Projects.Find(z);
 
+                foreach (var x in model.SelectedProjects)
+                {
+                    if (x != z)
+                    {
+                        project.Users.Remove(user);
+                    }
+                }
+            }
 
-        //    var user = db.Users.Find(model.User.Id);
-        //        //var currentProjects = (from p in db.Projects
-        //        //                       where p.Users.Any(r => r.Id == user.Id)
-        //        //                       select p.Id).ToArray();
-        //        var currentProjects = db.Projects.Where(r => r.UserId == user.Id).ToList();
-
-        //        foreach (var selected in model.SelectedProjects)
-        //        {
-        //            var project = db.Projects.Find(selected);
-        //            project.Users.Add(user);
-        //        }
-        //        foreach (var current in currentProjects)
-        //        {
-        //            var project = db.Projects.Find(current);
-        //            project.Users.Remove(user);
-        //        }
-        //        foreach (var selected in model.SelectedProjects)
-        //        {
-        //            if (selected != current)
-        //            {
-        //                project.Users.Remove(user);
-        //            }
-        //        }
-
-        //        db.Entry(user).State = EntityState.Modified;
-        //        db.Users.Attach(user);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index", "Admin");
-        //    }
-        //    return View();
-        //}
-    
+            db.Entry(user).State = EntityState.Modified;
+            db.Users.Attach(user);
+            db.SaveChanges();
+            return RedirectToAction("Index", "Admin");
+        }
 
 
         protected override void Dispose(bool disposing)
-         {
-             if (disposing)
-             {
-                 db.Dispose();
-             }
-             base.Dispose(disposing);
-         }
-     }
- }
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+}
 

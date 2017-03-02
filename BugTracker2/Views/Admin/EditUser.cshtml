@@ -3,21 +3,17 @@
     ViewBag.Title = "EditUser";
 }
 
-<style>
-    body {
-        margin: 100px 400px 0px 500px;
-    }
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Edit User </h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12 subnav">
+                    @*<h4>Ticket: @Model.Title</h4>*@
 
-    .form-group selected {
-        border: 10px;
-    }
-
-    .btn btn-default {
-        margin: 10px;
-    }
-</style>
-
-<h2>Assign Roles To: @Model.User.FirstName @Model.User.LastName</h2>
+                    <h3>Assign Roles To: @Model.User.FirstName @Model.User.LastName</h3>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -38,22 +34,28 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+                    <div>
+                        <input type="button" class="btn btn-primary btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Admin")'" />
+                    </div>
+                    </div>
 </div>
+</div>
+        </div>
+    </div>
 
 
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('.table').dataTable().columnFilter({
-                aoColumns: [
-                    { type: "text" },
-                    { type: "select", values: ['Admin', 'Project Manager', 'Developer', 'Submitter'] },
-                    { type: "text" },
-                ]
 
-            });
-        });
-    </script>
-    }
+                    @section Scripts {
+                        <script>
+                            $(document).ready(function () {
+                                $('.table').dataTable().columnFilter({
+                                    aoColumns: [
+                                        { type: "text" },
+                                        { type: "select", values: ['Admin', 'Project Manager', 'Developer', 'Submitter'] },
+                                        { type: "text" },
+                                    ]
+
+                                });
+                            });
+                        </script>
+                    }

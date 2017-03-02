@@ -15,8 +15,6 @@
     <link href="~/Content/btn-social/bootstrap-social.css" rel="stylesheet" />
     <link href="~/Content/font-awesome.css" rel="stylesheet" />
     <link href="~/Content/zocial.css" rel="stylesheet" />
-
-
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -200,26 +198,3 @@
 </body>
 </html>
 
-
-
-
-@*<script>
-    window.onload = function () {
-        if (typeof history.pushState === "function") {
-            history.pushState("jibberish", null, null);
-            window.onpopstate = function () {
-                history.pushState('newjibberish', null, null);
-            };
-        } else {
-            var ignoreHashChange = true;
-            window.onhashchange = function () {
-                if (!ignoreHashChange) {
-                    ignoreHashChange = true;
-                    window.location.hash = Math.random();
-                } else {
-                    ignoreHashChange = false;
-                }
-            };
-        }
-    }
-</script>*@

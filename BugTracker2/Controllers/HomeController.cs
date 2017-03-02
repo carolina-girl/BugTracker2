@@ -1,23 +1,27 @@
 ﻿using BugTracker2.Models;
 using BugTracker2.Models.Helper;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IdentityModel.Protocols.WSTrust;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace BugTracker2.Controllers
 {
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private UserManager<ApplicationUser> manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
         //GET: Home/Dashboard/
         public ActionResult Dashboard(int? Id)
-        {  
+        {
             //object of dashboardViewModel
             DashboardViewModel model = new DashboardViewModel();
             //get user Id
@@ -27,27 +31,22 @@ namespace BugTracker2.Controllers
             if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
             {
                 //list this user's projects
-                var project = new List<project>();
                 ProjectsHelper phelper = new ProjectsHelper(db);
-                project = user.Projects.ToList();
-                //list tickets for these projects
-                TicketsHelper thelper = new TicketsHelper(db);
-                var tickets = thelper.GetUserTickets(UserId).ToList();
-             }
- 
+                var project = phelper.ListProjects(UserId).ToList();
+                model.Projects = user.Projects.OrderByDescending(p => p.Created).ToList();
 
-            //goes into a project db and takes the top 5 of a list and order it by desc of name.
-            //and returns it to the projects model
-            model.Projects = db.Projects.OrderByDescending(p => p.Title).Take(5).ToList();
-            //goes into a ticket db and takes the top 10 of a list and order it by desc of name.
-            //and returns it to the tickets model
-            model.Tickets = db.Tickets.OrderByDescending(t => t.Updated).Take(10).ToList();
-
-            ViewBag.Message = "The dashboard shows the most recent elements of the projects and tickets page. Click on dashboard/tickets tab to view new recent tickets.";
-            //return the projects and tickets model to the view
+                var userId = User.Identity.GetUserId();
+                TicketsHelper helper = new TicketsHelper(db);
+                model.Tickets = helper.GetUserTickets(userId);
+            }
+            ViewBag.Message = "The dashboard shows the  elements of the projects and tickets page. Click on dashboard/tickets tab to view tickets.";
+            //return the projects and tickets model to the view               
+            model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Open").AsNoTracking().ToList();
+            model.PendingTickets = db.Tickets.Where(t => t.Status.Status == "Pending").AsNoTracking().ToList();
+            model.ClosedTickets = db.Tickets.Where(t => t.Status.Status == "Closed").AsNoTracking().ToList();
             return View(model);
-     
-          }
+
+        }
        
 
         //GET: Index
@@ -56,37 +55,27 @@ namespace BugTracker2.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        // GET: User Profile
-        public ActionResult UserProfile()
+
+        // GET: /Home/UserProfile
+        [Authorize]
+        public ActionResult UserProfile(string userId)
         {
-            ApplicationUser user = db.Users.Find(TempData["UserId"]);
-            if (user == null)
-            {
-                return RedirectToAction("Index");
-            }
+            var user = manager.FindById(User.Identity.GetUserId());
+            userId = User.Identity.GetUserId();
             UserViewModel model = new UserViewModel();
-            project project = db.Projects.Find(TempData["ProjectId"]);
-            model.ProjectId = project.Id;
             UserRoleAssignHelper helper = new UserRoleAssignHelper(db);
+
             model.Name = user.FullName;
+            model.Roles = helper.ListMyRoles(userId);
+            model.ProjectCount = db.Projects.Count();
             model.Email = user.Email;
-            model.PhoneNumber = user.PhoneNumber;
-            model.ProjectCount = user.Projects.Count();
-            model.Roles = helper.ListMyRoles(user.Id);
             var tickets = user.Projects.SelectMany(p => p.Tickets).ToList();
             model.TicketsAssigned = tickets.Where(t => t.AssignedUserId == user.Id).Count();
             model.TicketsSubmitted = tickets.Where(t => t.OwnerId == user.Id).Count();
+
             return View(model);
         }
 
-        [HttpPost]
-        public ActionResult UserProfile(string userId, int? ProjectId)
-        {
-            var user = db.Users.Find(userId);
-            TempData["UserId"] = userId;
-            TempData["ProjectId"] = ProjectId;
-            return RedirectToAction("UserProfile");
-        }
 
         public ActionResult Contact()
         {

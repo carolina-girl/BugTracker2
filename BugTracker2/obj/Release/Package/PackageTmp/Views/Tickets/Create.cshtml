@@ -4,113 +4,129 @@
     ViewBag.Title = "Create";
 }
 
-<style>
-    body {
-        margin-left: 300px;
-    }
-</style>
-<br />
-<br />
-<br />
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h2>Create A Ticket</h2>
-        <hr />
-  
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <input type="hidden" name="ProjectId" id="ProjectId" value="@ViewBag.ProjectId" />
-        <input type="hidden" name="OwnerId" id="OwnerId" value="@ViewBag.OwnerId" />
-        <input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
-
-
-
-
-    @*<div class="form-group">
-        @Html.HiddenFor(model => model.ProjectId, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.HiddenFor(model => model.ProjectId, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-        <div class="form-group">
-            @Html.HiddenFor(model => model.OwnerId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.HiddenFor(model => model.OwnerId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OwnerId, "", new { @class = "text-danger" })
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Create Ticket</h4>
             </div>
-        </div>*@
+            <div class="panel-body">
+                <div class="col-md-12 subnav">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
 
-        @*<div class="form-group">
-            @Html.HiddenFor(model => model.Created, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.HiddenFor(model => model.Created, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Created, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div class="form-horizontal">
+                            <h2>Create A Ticket</h2>
+                            <hr />
 
-        <div class="form-group">
-            @Html.HiddenFor(model => model.Updated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.HiddenFor(model => model.Updated, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Updated, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input type="hidden" name="ProjectId" id="ProjectId" value="@ViewBag.ProjectId" />
+                            <input type="hidden" name="OwnerId" id="OwnerId" value="@ViewBag.OwnerId" />
+                            <input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Body, "Description", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Body, 4,50, new { @class = "form-control", style="max-width:50%" })
-                @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
+
+
+                            @*<div class="form-group">
+                        @Html.HiddenFor(model => model.ProjectId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.HiddenFor(model => model.ProjectId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                        <div class="form-group">
+                            @Html.HiddenFor(model => model.OwnerId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.HiddenFor(model => model.OwnerId, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.OwnerId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+
+                            @*<div class="form-group">
+                        @Html.HiddenFor(model => model.Created, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.HiddenFor(model => model.Created, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Created, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.HiddenFor(model => model.Updated, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.HiddenFor(model => model.Updated, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Updated, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Body, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Body, new { htmlAttributes = new { @class = "form-control", id = "editor" } })
+                                    @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <p>
+                                @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                                {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.PriorityId, "Ticket Priority", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("PriorityId", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                }
+                                @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+                                {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TypeId, "Ticket Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("TypeId", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                }
+                            </p>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Submit" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div>
+                    @if (Request.IsAuthenticated && User.IsInRole("Developer") || (Request.IsAuthenticated && User.IsInRole("ProjectManager")))
+                    {
+                        <h5>@Html.ActionLink("Close", "Close", "Tickets", new { id = Model.Id }, new { @class = "btn btn-primary btn-sm", @style = "color:white" })</h5>
+                    }
+                    <h5>@Html.ActionLink("Back to List", "Index", "Tickets", new { id = Model.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })</h5>
+                </div>
              </div>
-        </div>
-
-        <p>
-           @*@if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-            {*@
-            <div class="form-group">
-                @Html.LabelFor(model => model.PriorityId, "Ticket Priority", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("PriorityId", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            @*}*@
-        </p>
-
-        <p>
-            @*@if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
-            {*@
-            <div class="form-group">
-                @Html.LabelFor(model => model.TypeId, "Ticket Type", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("TypeId", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            @*}*@
-        </p>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </div>
-        </div>
-}
-
-<div>
-    <h5>@Html.ActionLink("Back to List", "Index")</h5>
+          </div>
+     </div>
 </div>
+     </div>
+
+ @section scripts{
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            tinymce.init({
+                forced_root_block: "", selector: '#editor'
+            });
+        });
+    </script>
+} 

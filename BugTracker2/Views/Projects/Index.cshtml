@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BugTracker2.Models.project>
+﻿@model IEnumerable<BugTracker2.Models.Projects>
 
 @{
     ViewBag.Title = "Index";
@@ -19,7 +19,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover">
+                    <table id="mytable" class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>
@@ -28,16 +28,16 @@
                                 <th>
                                     @Html.DisplayNameFor(model => model.Created)
                                 </th>
+                                <th>
+                            @Html.DisplayNameFor(model => model.Updated)
+                        </th>
+                           <th>
+                               Number of Tickets
+                           </th>
                                 @*<th>
-                                            @Html.DisplayNameFor(model => model.Updated)
-                                        </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Body)
-                                    </th>*@
-                                @*<th>
-                                        @Html.DisplayNameFor(model => model.UserId)
-                                    </th>*@
-                                <th></th>
+                                 @Html.DisplayNameFor(model => model.user)
+                                </th>*@
+                               <th></th>
                             </tr>
                         </thead>
 
@@ -49,26 +49,26 @@
                                         @Html.DisplayFor(modelItem => item.Title)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Created)
+                                        @String.Format("{0:d}", item.Created)
                                     </td>
+                                    <td>
+                                        @String.Format("{0:d}", item.Updated)
+                                    </td>
+                                    <td>
+                                       @item.Tickets.Count()
+                                   </td>
                                     @*<td>
-                                                @Html.DisplayFor(modelItem => item.Updated)
-                                            </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Body)
-                                        </td>*@
-                                    @*<td>
-                                            @Html.DisplayFor(modelItem => item.UserId)
-                                        </td>*@
+                                      @Html.DisplayFor(modelItem => item.user.FullName)
+                                   </td>*@
                                     <td>
                                         <h5>
-                                            @Html.ActionLink("Edit", "Edit", "Projects", new { id = item.Id }, null) |
-                                            @Html.ActionLink("Details", "Details", new { id = item.Id }, null)
+
+                                            @Html.ActionLink("Edit", "Edit", "Projects", new { id = item.Id }, new { @class = "btn btn-primary btn-sm", @style = "color:white" })
+                                            @Html.ActionLink("Details", "Details", "Projects", new { id = item.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })
                                             @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
                                             {
-                                                @Html.ActionLink("Create A New Ticket", "Create", "Tickets", new { id = item.Id }, null)
+                                                @Html.ActionLink("Create Ticket", "Create", "Tickets", new { id = item.Id }, new { @class = "btn btn-warning btn-default", @style = "color:white" })
                                             }
-                                            @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                                         </h5>
                                     </td>
                                 </tr>
@@ -87,23 +87,21 @@
         <h5>
             @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
             {
-                @Html.ActionLink("Create A New Project", "Create", "Projects")
+                @Html.ActionLink("Create A New Project", "Create", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
             }
-        </h5>
-        <h5>
-            @Html.ActionLink("Back to Dashboard", "Index", "Home")
-        </h5>
-        <h5>
+
+            <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
+
             @if (Request.IsAuthenticated && User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
             {
-                @Html.ActionLink("Assign Projects To Users", "Index", "Admin")
+                <input type="button" class="btn btn-success btn-default" value="Assign projects to users" onclick="location.href='@Url.Action("Index", "Admin")'" />
             }
-        </h5>
-        <h5>
+ 
             @if (Request.IsAuthenticated && User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
             {
-                @Html.ActionLink("View All Projects", "FullList", "Projects")
+                @Html.ActionLink("View All Projects", "FullList", "Projects", new { @class = "btn btn-primary btn-default", @style = "color:white" })
             }
         </h5>
     </div>
+
 

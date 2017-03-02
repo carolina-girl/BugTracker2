@@ -1,65 +1,76 @@
 ﻿@model BugTracker2.Models.Tickets
 @{
     ViewBag.Title = "Close";
- }
+}
+
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Close Ticket: @Model.Title</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-6 subnav">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 content">
+                                <h5>Are you sure you want to close this ticket?</h5>
+
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Project Title</th>
+                                            <th>Assigned To</th>
+                                            <th>Created</th>
+                                            <th>Updated</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>@Model.Project.Title</td>
+                                            @if (@Model.AssignedUser == null)
+                                            {
+                                                <td>Unassigned</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@Model.AssignedUser.LastName</td>
+                                            }
+                                            <td>@String.Format("{0:d}", Model.Created)</td>
+                                            @if (@Model.Updated == null)
+                                            {
+                                                <td>Never</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@String.Format("{0:d}", Model.Created)</td>
+                                            }
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                @using (Html.BeginForm())
+                               {
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(model => model.Id)
+                                    <div class="form-actions no-color content">
+                                        <input type="submit" value="Close" class="btn btn-danger btn-default" />
+                                    </div>
+                                    <div>
+                                        <h5>@Html.ActionLink("Back to List", "Index", "Projects", new { id = Model.Id }, new { @class = "btn btn-success btn-default", @style = "color:white" })</h5>
+                                    </div>
+                                }
 
 
-<div class="col-md-12 subnav">
-    <h3>Close Ticket: @Model.Title</h3>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 content">
-            <h5>Are you sure you want to close this ticket?</h5>
-
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Project Title</th>
-                        <th>Assigned To</th>
-                        <th>Created</th>
-                        <th>Updated</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@Model.Project.Title</td>
-                        @if (@Model.AssignedUser == null)
-                        {
-                            <td>Unassigned</td>
-                        }
-                        else
-                        {
-                            <td>@Model.AssignedUser.LastName</td>
-                        }
-                        <td>@Model.Created.ToString("M/d/yy")</td>
-                        @if (@Model.Updated == null)
-                        {
-                            <td>Never</td>
-                        }
-                        else
-                        {
-                            <td>@Model.Updated.Value.ToString("M/d/yy")</td>
-                        }
-                    </tr>
-                </tbody>
-            </table>
-
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-                @Html.HiddenFor(model => model.Id)
-                <div class="form-actions no-color content">
-                    <input type="submit" value="Close" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                    </div>
                 </div>
-                <h5 class="content">@Html.ActionLink("Back to Tickets", "Index")</h5>
-            }
-
-
+            </div>
         </div>
     </div>
-</div>
+
 
 
 

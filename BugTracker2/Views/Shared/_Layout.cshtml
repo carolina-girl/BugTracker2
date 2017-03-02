@@ -10,6 +10,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <!-- Bootstrap Core CSS -->
+    <link href="~/AdminTemplate/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="~/AdminTemplate/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- MetisMenu CSS -->
     <link href="~/AdminTemplate/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
@@ -85,6 +86,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     <!-- jQuery -->
     <script src="~/AdminTemplate/vendor/jquery/jquery.min.js"></script>
+    <script src="~/AdminTemplate/vendor/datatables/js/jquery.dataTables.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="~/AdminTemplate/vendor/bootstrap/js/bootstrap.min.js"></script>
     <!-- Metis Menu Plugin JavaScript -->
@@ -92,5 +94,36 @@
     <!-- Custom Theme JavaScript -->
     <script src="~/AdminTemplate/dist/js/sb-admin-2.js"></script>
     @RenderSection("scripts", required: false)
+
 </body>
 </html>
+<script>
+        $(document).ready(function(){
+            $('#mytable').DataTable({
+                columnDefs: [
+                { "width": "20%", "targets": 1 }
+                ],
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false,
+                "scrollX": true
+            });
+        });
+        $(document).ready(function () {
+            $('#table').DataTable({
+                columnDefs: [
+                { "width": "20%", "targets": 1 }
+                ],
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false,
+                "scrollX": true
+            });
+        });
+    </script>

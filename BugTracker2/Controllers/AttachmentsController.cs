@@ -21,9 +21,16 @@ namespace BugTracker2.Controllers
         // GET: Attachments
         public ActionResult Index()
         {
-            var attachment = db.Attachments.Include(a => a.User).Include(a => a.TicketsId);
-            return View(attachment.ToList());
-        }
+                var UserId = User.Identity.GetUserId();
+                var user = db.Users.Find(UserId);
+                var attachment = new List<Attachments>();
+                var ticketsId = ViewBag.TicketsId;
+                attachment = user.Attachments.ToList();
+                db.SaveChanges();
+
+                return View(attachment);
+            }
+
 
         // GET: Attachments/Details/5
         public ActionResult Details(int? id)
@@ -53,7 +60,7 @@ namespace BugTracker2.Controllers
             {
                 return HttpNotFound();
             }
-  
+
             var userId = User.Identity.GetUserId();
             ViewBag.TicketsId = id;
             return View();
@@ -66,30 +73,28 @@ namespace BugTracker2.Controllers
         {
             if (ModelState.IsValid)
             {
-                attachment.Created = DateTimeOffset.Now;
-                attachment.SubmitterId = User.Identity.GetUserId();
                 var fileName = Path.GetFileName(image.FileName);
                 var uniqueId = DateTime.Now.Ticks;
                 fileName = Regex.Replace(fileName, @"[!@#$%_\s]", "");
                 image.SaveAs(Path.Combine(Server.MapPath("~/fileUpload/"), uniqueId + fileName));
                 attachment.MediaUrl = "/fileUpload/" + uniqueId + fileName;
-                var UserId = User.Identity.GetUserId();
-                var user = db.Users.Find(UserId);
+
+                attachment.UserId = User.Identity.GetUserId();
+                attachment.Created = DateTimeOffset.Now;
                 db.Attachments.Add(attachment);
                 db.SaveChanges();
 
                 var ticket = db.Tickets.Find(attachment.TicketsId);
 
-                TicketHistory history = new TicketHistory();
-                history.Date = DateTimeOffset.Now;
-                var historyBody = "A new attachment was added to this ticket.";
-                history.Body = historyBody;
-                history.TicketId = attachment.TicketsId;
-                db.TicketHistory.Add(history);
-                db.SaveChanges();
-
-                return RedirectToAction("Details", "Tickets", new { id = attachment.TicketsId });
-            }
+        TicketHistory history = new TicketHistory();
+                    history.Date = DateTimeOffset.Now;
+                    var historyBody = "A new attachment was added to this ticket.";
+                    history.Body = historyBody;
+                    history.TicketId = attachment.TicketsId;
+                    db.TicketHistory.Add(history);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Tickets", new { id = attachment.TicketsId });
+                }
             return View();
         }
 
@@ -128,6 +133,8 @@ namespace BugTracker2.Controllers
             ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachment.TicketsId);
             return View(attachment);
         }
+
+
 
         // GET: Attachments/Delete/5
         public ActionResult Delete(int? Id)

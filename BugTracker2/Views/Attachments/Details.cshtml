@@ -1,58 +1,87 @@
 ﻿@model BugTracker2.Models.Attachments
-
+@{
+    ViewBag.Title = "Details";
+    var ticketsId = ViewBag.TicketsId;
+}
 
 <h2>@Model.Title</h2>
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Attachment Details</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12 subnav">
+                    @Html.HiddenFor(model => model.TicketsId)
+          
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Created)
+                        </dt>
+
+                        <dd>
+                            @String.Format("{0:d}", Model.Created)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Updated)
+                        </dt>
+
+                        <dd>
+                            @String.Format("{0:d}", Model.Updated)
+                        </dd>
+
+                        <dt>
+                               Submitter
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.User.FullName)
+                            </dd>
+
+                        <dt>
+                                @Html.DisplayNameFor(model => model.Tickets.OwnerId)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Tickets.Owner.FullName)
+                            </dd>
+
+                        @*<dt>
+                                @Html.DisplayNameFor(model => model.Owner.FirstName)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Owner.FirstName)
+                            </dd>*@
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.MediaUrl)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.MediaUrl)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Body)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Body)
+                        </dd>
+
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div>
-    <h4>Attachment</h4>
-    @Html.HiddenFor(model => model.TicketsId)
-    <hr />
-        <dl class="dl-horizontal">
-            @*<dt>
-                @Html.DisplayNameFor(model => model.Created)
-            </dt>
+    <input type="button" class="btn btn-primary btn-default" value="Back to list" onclick="location.href='@Url.Action("Index", "Attachments")'" />
+</div>
 
-            <dd>
-                @Html.DisplayFor(model => model.Created)
-            </dd>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.SubmitterId)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.SubmitterId)
-            </dd>*@
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Body)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Body)
-            </dd>
-
-            @*<dt>
-                @Html.DisplayNameFor(model => model.Owner.FirstName)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Owner.FirstName)
-            </dd>*@
-
-            <dt>
-                @Html.DisplayNameFor(model => model.MediaUrl)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.MediaUrl)
-            </dd>
-
-          </dl>
-     </div>
-
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
 
 

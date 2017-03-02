@@ -8,18 +8,18 @@ using System.Web.WebPages;
 
 namespace BugTracker2.Models.Helper
 {
-        public class ProjectsHelper
+    public class ProjectsHelper
+    {
+        private ApplicationDbContext db = new ApplicationDbContext();
+        private UserManager<ApplicationUser> userManager = new
+       UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+        public ProjectsHelper(ApplicationDbContext context)
         {
-            private ApplicationDbContext db = new ApplicationDbContext();
-            private UserManager<ApplicationUser> userManager = new
-           UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            public ProjectsHelper(ApplicationDbContext context)
-            {
-                this.db = context;
-            }
-            public ProjectsHelper()
-            {
-            }
+            this.db = context;
+        }
+        public ProjectsHelper()
+        {
+        }
 
 
         public void AssignedUser(string userId, int projectId)
@@ -62,26 +62,12 @@ namespace BugTracker2.Models.Helper
             return user.Projects.Select(p => p.Id).ToList();
         }
 
+
         public List<ApplicationUser> ListUsers(int projectId)
         {
             var project = db.Projects.Find(projectId);
             return project.Users.ToList();
         }
-
-        //public List<ApplicationUser> ListAbsentUsers(int projectId)
-        //{
-        //    var project = db.Projects.Find(projectId);
-        //    var users = db.Users.ToList();
-        //    var absentUsers = new List<ApplicationUser>();
-        //    foreach (var user in users)
-        //    {
-        //        if (!HasProject(user.Id, projectId))
-        //        {
-        //            absentUsers.Add(user);
-        //        }
-        //    }
-        //    return absentUsers;
-        //}
 
 
         public List<string> ListProjectManagers(int? projectId)
@@ -102,3 +88,5 @@ namespace BugTracker2.Models.Helper
     }
 
 }
+
+

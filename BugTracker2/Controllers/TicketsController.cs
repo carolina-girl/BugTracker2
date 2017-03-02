@@ -30,10 +30,40 @@ namespace BugTracker2.Controllers
             var userId = User.Identity.GetUserId();
             TicketsHelper helper = new TicketsHelper(db);
             var tickets = helper.GetUserTickets(userId);
+            //DashboardViewModel model = new DashboardViewModel();
+            //model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Open").AsNoTracking().ToList();
+            //model.PendingTickets = db.Tickets.Where(t => t.Status.Status == "Pending").AsNoTracking().ToList();
+            //model.ClosedTickets = db.Tickets.Where(t => t.Status.Status == "Closed").AsNoTracking().ToList();
 
             return View(tickets);
         }
 
+        // GET: Tickets/OpenTickets/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult OpenTickets(int? Id)
+        {
+            DashboardViewModel model = new DashboardViewModel();
+            model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Open").AsNoTracking().ToList();
+            return View(db.Tickets.Where(t => t.Status.Status == "Open").ToList());
+        }
+
+        // GET: Tickets/OpenTickets/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult PendingTickets(int? Id)
+        {
+            DashboardViewModel model = new DashboardViewModel();
+            model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Pending").AsNoTracking().ToList();
+            return View(db.Tickets.Where(t => t.Status.Status == "Pending").ToList());
+        }
+
+        // GET: Tickets/OpenTickets/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult ClosedTickets(int? Id)
+        {
+            DashboardViewModel model = new DashboardViewModel();
+            model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Closed").AsNoTracking().ToList();
+            return View(db.Tickets.Where(t => t.Status.Status == "Closed").ToList());
+        }
 
         // GET: Tickets/FullList/5
         [Authorize(Roles = "Admin")]
@@ -80,6 +110,7 @@ namespace BugTracker2.Controllers
             List<Tickets> Ticket = new List<Tickets>();
             var assignedUser = ticket.AssignedUserId;
             ViewBag.AssignedUserId = new SelectList(db.Users, "Developer", "FullName");
+            ticket.History.OrderByDescending(o => o.Date).ToList();
 
             return RedirectToAction("Index");
         }
@@ -116,7 +147,7 @@ namespace BugTracker2.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            project project = db.Projects.Find(Id);
+            Projects project = db.Projects.Find(Id);
             if (project == null)
             {
                 return HttpNotFound();
@@ -151,7 +182,7 @@ namespace BugTracker2.Controllers
 
                 TicketHistory history = new TicketHistory();
                 history.Date = ticket.Created;
-                var historyBody = "Ticket created <br> Title: " + ticket.Title + "<br> Body: " + ticket.Body + "<br> Priority: " + ticket.Priority + "<br> Type: " + ticket.Type;
+                var historyBody = "Ticket created  Title: " + ticket.Title + " Body: " + ticket.Body + " Priority: " + ticket.Priority + " Type: " + ticket.Type;
                 history.Body = historyBody;
                 history.Body = historyBody.ToString();
                 history.TicketId = ticket.Id;

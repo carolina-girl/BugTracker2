@@ -7,10 +7,10 @@ using System.Web.Mvc;
 
 namespace BugTracker2.Models
 {
-    public class AdminProjectUserAssignViewModel
-    { 
-        public ApplicationUser User { get; set; }
-        public MultiSelectList project { get; set; }
-        public int[] SelectedProjects { get; set; }
-      }
-}
+        public class AdminProjectUserAssignViewModel
+        {
+            public ApplicationUser User { get; set; }
+            public MultiSelectList Projects { get; set; }
+            public int[] SelectedProjects { get; set; }
+        }
+    }

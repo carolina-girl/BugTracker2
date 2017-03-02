@@ -3,47 +3,53 @@
     ViewBag.Title = "UserProfile";
 }
 
-<style>
-    .container {
-        font-family: 'Times New Roman', Times, serif;
-    }
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>User Profile</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12 subnav">
 
-    body {
-        margin: 0px 200px 0px 200px;
-    }
-</style>
-<br />
-<br />
-<br />
+                    <div class="col-md-12 subnav">
+                        <h4>User Name: @Model.Name</h4>
+                    </div>
 
-<div class="col-md-12 subnav">
-    <h1>User Profile: @Model.Name</h1>
-</div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 content">
+                                <h4>Email: <a href="mailto:@Model.Email">@Model.Email</a></h4>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 content">
-            <h4>Email: <a href="mailto:@Model.Email">@Model.Email</a></h4>
+                                <h4>Roles: </h4>
+                                <ul>
+                                    @foreach (var role in Model.Roles)
+                                    {
+                                        <li>@role</li>
+                                    }
+                                </ul>
 
-            <h4>Roles: </h4>
-            <ul>
-                @foreach (var role in Model.Roles)
-                {
-                    <li>@role</li>
-                }
-            </ul>
-
-            <h4>Assigned to @Model.ProjectCount projects.</h4>
-            @if (Model.Roles.Contains("Submitter"))
-            {
-                <h3>@Model.Name has submitted @Model.TicketsSubmitted total tickets.</h3>
-            }
-            @if (Model.Roles.Contains("Developer"))
-            {
-                <h3>@Model.Name is currently assigned @Model.TicketsAssigned tickets. </h3>
-            }
-            <br /><br />
-            <h5>@Html.ActionLink("Back to Project", "Details", "Projects", new { id = Model.ProjectId }, null)</h5>
+                                <h4>Assigned to @Model.ProjectCount projects.</h4>
+                                @if (Model.Roles.Contains("Submitter"))
+                                {
+                                    <h4>@Model.Name has submitted @Model.TicketsSubmitted total tickets.</h4>
+                                }
+                                @if (Model.Roles.Contains("Developer"))
+                                {
+                                    <h4>@Model.Name is currently assigned @Model.TicketsAssigned tickets. </h4>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<div>
+
+    <input type="button" class="btn btn-primary btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Projects")'" />
+</div>
+
+
+

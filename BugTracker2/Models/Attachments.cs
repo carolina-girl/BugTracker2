@@ -15,6 +15,7 @@ namespace BugTracker2.Models
         public string Title { get; set; }
         public string MediaUrl { get; set; }
         public DateTimeOffset Created { get; set; }
+        public DateTimeOffset Updated { get; set; }
         public virtual Tickets Tickets { get; set; }
         public virtual ApplicationUser User { get; set; }
     }

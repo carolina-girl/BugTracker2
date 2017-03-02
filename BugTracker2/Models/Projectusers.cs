@@ -11,7 +11,7 @@ namespace BugTracker2.Models
         public int ProjectId { get; set; }
         public string ProjectUserId { get; set; }
 
-        public virtual project Project { get; set; }
+        public virtual Projects Project { get; set; }
         public virtual ApplicationUser ProjectUser { get; set; }
 
     }

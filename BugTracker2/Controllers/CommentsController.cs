@@ -18,10 +18,15 @@ namespace BugTracker2.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Comments
-        public ActionResult Index()
+        public ActionResult Index(int? TicketsId)
         {
-            var comment = db.Comments.Include(c => c.User);
-            return View(comment.ToList());
+            var UserId = User.Identity.GetUserId();
+            var user = db.Users.Find(UserId);
+            var comment = new List<Comments>();
+            comment = user.Comments.ToList();
+            db.SaveChanges();
+
+            return View(comment);
         }
 
         // GET: Comments/Details/5
@@ -114,8 +119,11 @@ namespace BugTracker2.Controllers
         {
             if (ModelState.IsValid)
             {
+                comment.UserId = User.Identity.GetUserId();
                 db.Entry(comment).State = EntityState.Modified;
                 comment.Updated = DateTimeOffset.Now;
+                var ticket = db.Tickets.Find(comment.TicketsId);
+                var assignedUserId = ticket.AssignedUserId;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

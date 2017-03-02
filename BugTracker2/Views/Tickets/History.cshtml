@@ -23,6 +23,7 @@
         </div>
     </div>
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index", "Tickets")
-</p>
+
+<div>
+    @Html.ActionLink("Back to details", "Details", "Tickets", new { id = Model.Id }, new { @class = "btn btn-primary btn-default", @style = "color:white" })
+</div>

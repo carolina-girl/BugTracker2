@@ -2,114 +2,124 @@
 @{
     ViewBag.Title = "FullList";
 }
-<style>
-    body {
-        margin: 50px;
-    }
-</style>
-<h2>FullList of Tickets</h2>
+
 <input type="hidden" name="Body" id="Body" value="@ViewBag.Body" />
 <input type="hidden" name="OwnerId" id="OwnerId" value="@ViewBag.OwnerId" />
 <input type="hidden" name="Updated" id="Updated" value="@ViewBag.Updated" />
 
-<table id="mytable" class="data-table-xl hover row-border table-striped compact">
-    <thead>
-        <tr>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.OwnerId)
-                </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Project)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Body)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Status.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Priority.Priority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type.Type)
-            </th>
-            <th>
-                AssignedTo:
-            </th>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4> All Tickets </h4>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table id="mytable" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                @*<th>
+                        @Html.DisplayNameFor(model => model.OwnerId)
+                    </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Project)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Created)
+                                </th>
+                                @*<th>
+                        @Html.DisplayNameFor(model => model.Updated)
+                    </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Title)
+                                </th>
+                                @*<th>
+                        @Html.DisplayNameFor(model => model.Body)
+                    </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Status.Status)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Priority.Priority)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Type.Type)
+                                </th>
+                                <th>
+                                    AssignedTo:
+                                </th>
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                @*<td>
-                        @Html.DisplayFor(modelItem => item.OwnerId)
-                    </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Project.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.Updated)
-                </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.Body)
-                </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Priority.Priority)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Type.Type)
-                </td>
-                <td>
-                    @if (item.AssignedUser == null)
-                    {
-                        <span class="text-danger">Unassigned</span>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.AssignedUser.FullName)
-                    }
-                </td>
-                <td>
-                    <h5>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id })
-                        @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-                    </h5>
-                </td>
-            </tr>
-        }
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    @*<td>
+                            @Html.DisplayFor(modelItem => item.OwnerId)
+                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Project.Title)
+                                    </td>
+                                    <td>
+                                      @String.Format("{0:d}", item.Created)
+                                    </td>
+                                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Updated)
+                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </td>
+                                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Body)
+                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status.Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Priority.Priority)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Type.Type)
+                                    </td>
+                                    <td>
+                                        @if (item.AssignedUser == null)
+                                        {
+                                            <span class="text-danger">Unassigned</span>
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.AssignedUser.FullName)
+                                        }
+                                    </td>
+                                    <td>
+                                        <h5>
 
-    </tbody>
+                                            @Html.ActionLink("Edit", "Edit", "Tickets", new { id = item.Id }, new { @class = "btn btn-primary btn-sm", @style = "color:white" })
+                                            @Html.ActionLink("Details", "Details", "Tickets", new { id = item.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })
 
-</table>
-@*<h5>
-    @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
-    {
-        @Html.ActionLink("Create A New Ticket", "Create", "Tickets")
-    }
-</h5>*@
+                                        </h5>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
 <h5>
-    @Html.ActionLink("Back to Dashboard", "Index", "Home")
-</h5>
+    @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
+     {
+      @Html.ActionLink("Create A New Ticket", "Create", "Tickets", new { @class = "btn btn-success btn-default", @style = "color:white" })
+      }
+        @Html.ActionLink("Back to Dashboard", "Dashboard", "Home", new { @class = "btn btn-danger btn-default", @style = "color:white" })
+    </h5>
+</div>
 

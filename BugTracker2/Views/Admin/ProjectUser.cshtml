@@ -1,51 +1,49 @@
 ﻿@model BugTracker2.Models.AdminProjectUserAssignViewModel
 @{
     ViewBag.Title = "ProjectUser";
-
 }
 
-<style>
-    body {
-      margin: 100px 400px 0px 500px;
-    }
-    .form-group selected {
-        border: 10px;
-    }
-    .btn btn-default {
-        margin: 10px;
-    }
-</style>
-
-<h1>
-Assign Projects
-</h1>
-
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Assign projects to: @Model.User.FullName</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12 subnav">
+                    @*<h4>Ticket: @Model.Title</h4>*@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.User.Id)
 
-<div class="form-group selected">   
-    @Html.LabelFor(model => model.project, new { @class = "control-label col-sm-2" })
-    <div class="col-sm-10">
-        @Html.ListBoxFor(model => model.SelectedProjects, Model.project, new { @class = "form-control", size = 12 })
-        @Html.ValidationMessageFor(model => model.SelectedProjects, "", new { @class = "text-danger" })
+    <div class="form-group selected">
+        @Html.LabelFor(model => model.Projects, new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            @Html.ListBoxFor(model => model.SelectedProjects, Model.Projects, new { @class = "form-control", size = 12 })
+            @Html.ValidationMessageFor(model => model.SelectedProjects, "", new { @class = "text-danger" })
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" value="Save" class="btn btn-default" />
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Remove/Add" class="btn btn-default" />
+                        </div>
+                    </div>
+                     }
+
+                    <div>
+                        <input type="button" class="btn btn-primary btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Admin")'" />
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+                    @section Scripts {
+                        @Scripts.Render("~/bundles/jqueryval")
+                    }
 
 
