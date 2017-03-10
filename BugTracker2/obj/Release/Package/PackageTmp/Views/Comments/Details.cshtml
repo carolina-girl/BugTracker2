@@ -22,13 +22,13 @@
                                 @Html.DisplayFor(model => model.User.FullName)
                             </dd>
 
-                            @*<dt>
+                            <dt>
                                 @Html.DisplayNameFor(model => model.TicketsId)
                             </dt>
 
                             <dd>
                                 @Html.DisplayFor(model => model.TicketsId)
-                            </dd>*@
+                            </dd>
 
                             <dt>
                               Description
@@ -48,9 +48,9 @@
 
                             @*<dt>
                                 @Html.DisplayNameFor(model => model.UpdatedReason)
-                            </dt>
+                            </dt>*@
 
-                            <dd>
+                            @*<dd>
                                 @Html.DisplayFor(model => model.UpdatedReason)
                             </dd>*@
 
@@ -76,7 +76,6 @@
             </div>
         </div>
     </div>
-</div>
 <div>
     <input type="button" class="btn btn-primary btn-default" value="Back to list" onclick="location.href='@Url.Action("Index", "Comments")'" />
 </div>

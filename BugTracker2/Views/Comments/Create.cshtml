@@ -68,5 +68,16 @@
     </div>
 </div>
 <div>
-    <input type="button" class="btn btn-primary btn-default" value="Back to list" onclick="location.href='@Url.Action("Index", "")'" />
+    <input type="button" class="btn btn-primary btn-default" value="Back to list" onclick="location.href='@Url.Action("Index", "Tickets")'" />
 </div>
+@section scripts{
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            tinymce.init({
+                forced_root_block: "", selector: '#editor'
+            });
+        });
+    </script>
+}

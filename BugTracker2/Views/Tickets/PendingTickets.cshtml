@@ -110,7 +110,7 @@
                     <h5>
                         @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
                         {
-                            @Html.ActionLink("Create A New Ticket", "Index", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
+                            @Html.ActionLink("Create Ticket", "Index", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
                         }
 
                         <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />

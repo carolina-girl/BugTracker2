@@ -6,6 +6,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using BugTracker2.Models;
+using System.Web.Security;
+using System.Data;
 
 namespace BugTracker2.Models
 {

@@ -54,7 +54,7 @@
                                     @Html.AntiForgeryToken()
                                     @Html.HiddenFor(model => model.Id)
                                     <div class="form-actions no-color content">
-                                        <input type="submit" value="Close" class="btn btn-default" />
+                                        <input type="submit" value="Close" class="btn btn-danger btn-default" />
                                     </div>
                                     <div>
                                         <h5>@Html.ActionLink("Back to List", "Index", "Projects", new { id = Model.Id }, new { @class = "btn btn-success btn-default", @style = "color:white" })</h5>

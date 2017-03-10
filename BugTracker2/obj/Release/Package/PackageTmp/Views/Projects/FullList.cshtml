@@ -27,12 +27,12 @@
                                 <th>
                                     @Html.DisplayNameFor(model => model.Updated)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Body)
-                                </th>
                                 @*<th>
-                        @Html.DisplayNameFor(model => model.Users)
-                    </th>*@
+                                    @Html.DisplayNameFor(model => model.Body)
+                                </th>*@
+                                 <th>
+                                     Number of Tickets
+                                 </th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -49,13 +49,13 @@
                                     <td>
                                         @String.Format("{0:d}", item.Updated)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Body)
-                                    </td>
                                     @*<td>
-                            @Html.DisplayFor(modelItem => item.Users)
-                        </td>*@
+                                        @Html.DisplayFor(modelItem => item.Body)
+                                    </td>*@
                                     <td>
+                                        @item.Tickets.Count()
+                                    </td>
+                                        <td>
                                         <h5>
 
                                             @Html.ActionLink("Edit", "Edit", "Projects", new { id = item.Id }, new { @class = "btn btn-primary btn-sm", @style = "color:white" })
@@ -78,8 +78,7 @@
             {
             @Html.ActionLink("Create A New Project", "Create", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
         }
-
-        @Html.ActionLink("Back to Dashboard", "Dashboard", "Home", new { @class = "btn btn-danger btn-default", @style = "color:white" })
-    </h5>
+        <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
+        </h5>
 </div>
 

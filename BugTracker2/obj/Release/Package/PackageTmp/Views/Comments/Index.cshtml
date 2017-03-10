@@ -5,16 +5,16 @@
     var ticketsId = ViewBag.TicketsId;
 }
 
-@*<input type="hidden" name="Body" id="Body" value="@ViewBag.Body" />
+<input type="hidden" name="Body" id="Body" value="@ViewBag.Body" />
 <input type="hidden" name="Submitted" id="Submitted" value="@ViewBag.Submitted" />
 <input type="hidden" name="UpdatedReason" id="UpdatedReason" value="@ViewBag.UpdatedReason" />
-<input type="hidden" name="Updated" id="Updated" value="@ViewBag.Updated" />*@
+<input type="hidden" name="Updated" id="Updated" value="@ViewBag.Updated" />
 
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>List of your Comments</h4>
+                <h4>List all of your Comments</h4>
             </div>
             <div class="panel-body">
                 <div class="col-md-12 subnav">
@@ -22,14 +22,20 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.User.Email)
+                                   User Email
+                                </th>
+                                   <th>
+                                      Name
+                                   </th>
+                                <th>
+                                   Ticket
                                 </th>
                                 @*<th>
                                     @Html.DisplayNameFor(model => model.TicketsId)
                                 </th>*@
                                 @*<th>
                                         @Html.DisplayNameFor(model => model.Body)
-                                    </th>*@
+                                    </th>
                                 @*<th>
                                         @Html.DisplayNameFor(model => model.Submitted)
                                     </th>*@
@@ -37,10 +43,10 @@
                                         @Html.DisplayNameFor(model => model.UpdatedReason)
                                     </th>*@
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Created)
+                                    Date Created
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Updated)
+                                   Date Updated
                                 </th>
                                 <th></th>
                             </tr>
@@ -52,6 +58,12 @@
                                 <tr>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.User.Email)
+                                    </td>
+                                    <th>
+                                        @Html.DisplayFor(modelItem => item.User.FullName)
+                                    </th>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Tickets.Title)
                                     </td>
                                     @*<td>
                                         @Html.DisplayFor(modelItem => item.TicketsId)
@@ -66,10 +78,10 @@
                                             @Html.DisplayFor(modelItem => item.UpdatedReason)
                                         </td>*@
                                     <td>
-                                        @String.Format("{0:d}", item.Created)
+                                        @item.Created.ToString("M/dd/yyyy")
                                     </td>
                                     <td>
-                                        @String.Format("{0:d}", item.Updated)
+                                        @item.Updated.ToString("M/dd/yyyy")
                                     </td>
                                     <td>
                                         <h5>
@@ -88,6 +100,8 @@
 </div>
     </div>
 <div>
-    @Html.ActionLink("Create A New Comment", "Create", "Comments", new { @class = "btn btn-primary btn-default", @style = "color:white" })
-    @Html.ActionLink("Back to details", "Details", "Tickets", new { @class = "btn btn-primary btn-default", @style = "color:white" })
+    <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
+    <input type="button" class="btn btn-info btn-default" value="Back to tickets" onclick="location.href='@Url.Action("Index", "Tickets")'" />   
 </div>
+
+

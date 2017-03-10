@@ -4,26 +4,28 @@
     ViewBag.Title = "Ticket History";
 }
 
-<br />
-<br />
-<br />
-<div class="col-md-12 subnav">
-    <h1>Ticket History: @Html.ActionLink(Model.Title, "Details", new { id = Model.Id })</h1>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            @{ var ticketHistory = Model.History; }
-            @foreach (var history in ticketHistory.Reverse())
-            {
-                <h4>@history.Date.ToString("M/dd/yyyy")</h4>
-                <p>@Html.Raw(history.Body)</p>
-            }
+<div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Ticket Notifications</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12 subnav">
+                    <div class="col-md-12 subnav">
+                 <h4>Ticket History: @Html.ActionLink(Model.Title, "Details", new { id = Model.Id })</h4>
+                    @{ var ticketHistory = Model.History; }
+                     @foreach (var history in ticketHistory.Reverse())
+                     {
+                      <h5>@history.Date.ToString("M/dd/yyyy")</h5>
+                      <p>@Html.Raw(history.Body)</p>
+                      }
+                  </div>
+            </div>
         </div>
-    </div>
+   </div>
 </div>
-
-<div>
+     </div>
+  <div>
     @Html.ActionLink("Back to details", "Details", "Tickets", new { id = Model.Id }, new { @class = "btn btn-primary btn-default", @style = "color:white" })
-</div>
+ </div>

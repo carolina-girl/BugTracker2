@@ -114,9 +114,10 @@
                     </table>
  
 <h5>
-    @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
+    @if (Request.IsAuthenticated && User.IsInRole("Submitter") || User.IsInRole("Admin"))
     {
-        @Html.ActionLink("Create A New Ticket", "Index", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
+        <input type="button" class="btn btn-info btn-default" value="Create ticket" onclick="location.href='@Url.Action("Index", "Projects")'" />
+      // @Html.ActionLink("Create Ticket", "Index", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
     }
 
     <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
@@ -126,6 +127,7 @@
         @Html.ActionLink("View All Tickets", "FullList", "Tickets", new { @class = "btn btn-success btn-default", @style = "color:white" })
     }
 </h5>
+           
                 </div>
 <!-- /.table-responsive -->
             </div>

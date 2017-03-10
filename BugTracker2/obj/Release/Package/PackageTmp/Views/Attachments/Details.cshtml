@@ -25,20 +25,28 @@
                         </dd>
 
                         @*<dt>
-                                @Html.DisplayNameFor(model => model.SubmitterId)
+                            @Html.DisplayNameFor(model => model.Updated)
+                        </dt>*@
+
+                        @*<dd>
+                            @String.Format("{0:d}", Model.Updated)
+                        </dd>*@
+
+                        <dt>
+                               Submitter
                             </dt>
 
                             <dd>
-                                @Html.DisplayFor(model => model.SubmitterId)
-                            </dd>*@
+                                @Html.DisplayFor(model => model.User.FullName)
+                            </dd>
 
-                        @*<dt>
-                                @Html.DisplayNameFor(model => model.Body)
+                        <dt>
+                                @Html.DisplayNameFor(model => model.Tickets.OwnerId)
                             </dt>
 
                             <dd>
-                                @Html.DisplayFor(model => model.Body)
-                            </dd>*@
+                                @Html.DisplayFor(model => model.Tickets.Owner.FullName)
+                            </dd>
 
                         @*<dt>
                                 @Html.DisplayNameFor(model => model.Owner.FirstName)
@@ -55,6 +63,14 @@
                         <dd>
                             @Html.DisplayFor(model => model.MediaUrl)
                         </dd>
+
+                        @*<dt>
+                            @Html.DisplayNameFor(model => model.Body)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Body)
+                        </dd>*@
 
                     </dl>
                 </div>

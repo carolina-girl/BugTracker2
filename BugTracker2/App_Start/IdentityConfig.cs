@@ -6,7 +6,6 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using SendGrid;
-using SendGrid.Helpers.Mail;
 using System;
 using System.Configuration;
 using System.Net;

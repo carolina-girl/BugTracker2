@@ -31,9 +31,9 @@
                                 <th>
                             @Html.DisplayNameFor(model => model.Updated)
                         </th>
-                    @*<th>
-                        @Html.DisplayNameFor(model => model.Body)
-                    </th>*@
+                           <th>
+                               Number of Tickets
+                           </th>
                                 @*<th>
                                  @Html.DisplayNameFor(model => model.user)
                                 </th>*@
@@ -52,11 +52,11 @@
                                         @String.Format("{0:d}", item.Created)
                                     </td>
                                     <td>
-                                @String.Format("{0:d}", item.Updated)
-                            </td>
-                        @*<td>
-                            @Html.DisplayFor(modelItem => item.Body)
-                        </td>*@
+                                        @String.Format("{0:d}", item.Updated)
+                                    </td>
+                                    <td>
+                                       @item.Tickets.Count()
+                                   </td>
                                     @*<td>
                                       @Html.DisplayFor(modelItem => item.user.FullName)
                                    </td>*@
@@ -67,7 +67,9 @@
                                             @Html.ActionLink("Details", "Details", "Projects", new { id = item.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })
                                             @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
                                             {
-                                                @Html.ActionLink("Create A New Ticket", "Create", "Tickets", new { id = item.Id }, null)
+                                               // @Html.ActionLink("Create ticket", "Create", "Tickets", new { id = item.Id }, new { @class = "btn btn-warning btn-sm", @style = "color:white" })
+                                                //<input type="button" class="btn btn-info btn-sm" value="Create ticket" onclick="location.href='@Url.Action("Create", "Tickets")'" />
+                                                @Html.ActionLink("Create Ticket", "Create", "Tickets", new { id = item.Id }, new { @class = "btn btn-warning btn-sm", @style = "color:white" })
                                             }
                                         </h5>
                                     </td>
@@ -87,19 +89,19 @@
         <h5>
             @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
             {
-                @Html.ActionLink("Create A New Project", "Create", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
+                @Html.ActionLink("Create New Project", "Create", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
             }
 
             <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
 
             @if (Request.IsAuthenticated && User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
             {
-                <input type="button" class="btn btn-success btn-default" value="Assign projects to users" onclick="location.href='@Url.Action("Index", "Admin")'" />
+                <input type="button" class="btn btn-success btn-default" value="Manage users/roles" onclick="location.href='@Url.Action("Index", "Admin")'" />
             }
  
             @if (Request.IsAuthenticated && User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
             {
-                @Html.ActionLink("View All Projects", "FullList", "Projects", new { @class = "btn btn-primary btn-default", @style = "color:white" })
+                @Html.ActionLink("View All Projects", "FullList", "Projects", new { @class = "btn btn-info btn-default", @style = "color:white" })
             }
         </h5>
     </div>

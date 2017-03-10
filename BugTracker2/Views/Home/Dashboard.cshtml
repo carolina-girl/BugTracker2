@@ -210,7 +210,7 @@
                                             @Html.DisplayFor(modelItem => ticket.Project.Title)
                                         </td>
                                         <td>
-                                            @ticket.Created
+                                           @String.Format("{0:d}", ticket.Created)
                                         </td>
                                         <td>
                                             @Html.ActionLink(ticket.Title, "Details", "Tickets", new { id = ticket.Id }, null)
@@ -251,13 +251,7 @@
         </div>
   </div>
     </div>
-@*@section Scripts{
-<style>
-    #datatable > tbody > tr > th, #datatable > thead > tr > th {
-        text-align: center;
-    }
-</style>
-}*@
+
 
 
 

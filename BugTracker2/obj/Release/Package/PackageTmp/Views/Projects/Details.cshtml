@@ -143,6 +143,10 @@
         <input type="button" class="btn btn-info btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Projects")'" />
         <input type="button" class="btn btn-warning btn-default" value="User Profile" onclick="location.href='@Url.Action("UserProfile", "Home")'" />
         @Html.ActionLink("Edit", "Edit", "Projects", new { id = Model.Id }, new { @class = "btn btn-success btn-default", @style = "color:white" })
+        @if (Request.IsAuthenticated && User.IsInRole("Submitter") || User.IsInRole("Admin"))
+        {
+        @Html.ActionLink("Create ticket", "Index", "Projects", new { id = Model.Id }, new { @class = "btn btn-danger btn-default", @style = "color:white" })
+        }
     </div>
     </div>
 

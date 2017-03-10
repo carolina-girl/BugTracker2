@@ -78,7 +78,7 @@
                                 </div>
                             </div>
 
-                            @*<p>
+                            <p>
                                     @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
                                     {
                                 <div class="form-group">
@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
                                     }
-                                    </p>*@
+                                    </p>
 
                             <p>
                                 @*@if (User.IsInRole("ProjectManager") || User.IsInRole("Admin") || User.IsInRole("Submitter"))
@@ -119,7 +119,7 @@
 
                             <p>
                                 @if (User.IsInRole("ProjectManager"))
-                                   {
+                                {
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.AssignedUserId, "Assigned User", htmlAttributes: new { @class = "control-label col-md-2" })
                                         <div class="col-md-10">
@@ -132,23 +132,24 @@
 
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" value="Save" class="btn btn-default" />
-                                </div>
-                            </div>
+                                    <input type="submit" value="Save" class="btn btn-primary btn-default" />
+                            @if (Request.IsAuthenticated && User.IsInRole("Developer") || (Request.IsAuthenticated && User.IsInRole("ProjectManager")))
+                            {
+                                <h5>@Html.ActionLink("Close", "Close", "Tickets", new { id = Model.Id }, new { @class = "btn btn-danger btn-default", @style = "color:white" })</h5>
+                            }
                         </div>
+                       </div>
+                     </div>
                     }
-                    <div>
-                        @if (Request.IsAuthenticated && User.IsInRole("Developer") || (Request.IsAuthenticated && User.IsInRole("ProjectManager")))
-                        {
-                            <h5>@Html.ActionLink("Close", "Close", "Tickets", new { id = Model.Id }, new { @class = "btn btn-primary btn-sm", @style = "color:white" })</h5>
-                        }
-                        <h5>@Html.ActionLink("Back to List", "Index", "Tickets", new { id = Model.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })</h5>
-                    </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div>
+    <h5>@Html.ActionLink("Back to List", "Index", "Tickets", new { id = Model.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })</h5>
+</div>
+
 
 
 

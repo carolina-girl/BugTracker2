@@ -1,19 +1,20 @@
 ﻿@model BugTracker2.Models.Attachments
-
 @{
     ViewBag.Title = "Create";
     var ticketsId = ViewBag.TicketsId;
 }
-<div class="row">
-    <div class="col-lg-6 col-lg-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4>Add an attachment</h4>
-            </div>
-            <div class="panel-body">
-                <div class="col-md-12 subnav">
+
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Add an attachment</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12 subnav">
+                    <p>Attachments can be images (.jpeg, .png., .gif), PDF (.pdf) or Word (.doc) documents.</p>
                     @using (Html.BeginForm("Create", "Attachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
-                      {
+                    {
                         @Html.AntiForgeryToken()
 
                         <div class="form-horizontal">
@@ -21,9 +22,9 @@
                             <input type="hidden" name="TicketsId" value="@ticketsId" />
 
                             @*<div class="form-group">
-                                @Html.LabelFor(model => model.Body, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.Body, new { htmlAttributes = new { @class = "form-control", id = "editor" } })
+                                    @Html.TextAreaFor(model => model.Body, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
                                 </div>
                             </div>*@
@@ -43,12 +44,11 @@
                             </div>
                         </div>
                     }
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div>
-    <input type="button" class="btn btn-primary btn-default" value="Back to list" onclick="location.href='@Url.Action("Index", "Attachments")'" />
-</div>
-
+        <div>
+            <input type="button" class="btn btn-primary btn-default" value="Back to list" onclick="location.href='@Url.Action("Index", "Tickets")'" />
+        </div>

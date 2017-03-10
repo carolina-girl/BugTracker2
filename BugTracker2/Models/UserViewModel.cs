@@ -17,7 +17,8 @@ namespace BugTracker2.Models
         public int TicketsSubmitted { get; set; }
         public int TicketsAssigned { get; set; }
         public int TicketsResolved { get; set; }
-
+       
         public int? ProjectId { get; set; }
     }
 }
+

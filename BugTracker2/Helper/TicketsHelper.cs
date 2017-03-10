@@ -53,11 +53,12 @@ namespace BugTracker2.Models.Helper
             var user = db.Users.Find(userId);
             return user.Tickets.ToList();
         }
-       public List<Tickets> ListOpenTickets(string userId)
+        public List<Tickets> ListOpenTickets(string userId)
         {
             DashboardViewModel model = new DashboardViewModel();
-            var user = db.Users.Find(userId);
-            return model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Open").AsNoTracking().ToList();
+            model.OpenTickets = GetUserTickets(userId);
+            model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Open").AsNoTracking().ToList();
+            return model.OpenTickets.ToList();
         }
 
         public bool HasTicketPermission(string userId, int ticketId)

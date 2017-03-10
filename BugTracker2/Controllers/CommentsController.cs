@@ -20,13 +20,12 @@ namespace BugTracker2.Controllers
         // GET: Comments
         public ActionResult Index(int? TicketsId)
         {
-            var UserId = User.Identity.GetUserId();
-            var user = db.Users.Find(UserId);
-            var comment = new List<Comments>();
-            comment = user.Comments.ToList();
-            db.SaveChanges();
-
-            return View(comment);
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            var ticketsId = ViewBag.TicketsId;
+            var comments = new List<Comments>();
+            comments = user.Comments.ToList();
+            return View(comments);
         }
 
         // GET: Comments/Details/5
@@ -155,9 +154,9 @@ namespace BugTracker2.Controllers
             db.SaveChanges();
             return RedirectToAction("Details", "Tickets", new { id = comment.TicketsId });
         }
-    
 
-    protected override void Dispose(bool disposing)
+
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {

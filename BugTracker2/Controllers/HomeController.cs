@@ -20,32 +20,28 @@ namespace BugTracker2.Controllers
         private UserManager<ApplicationUser> manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
         //GET: Home/Dashboard/
-        public ActionResult Dashboard(int? Id)
+        public ActionResult Dashboard(int? Id, int? projectId)
         {
-            //object of dashboardViewModel
-            DashboardViewModel model = new DashboardViewModel();
+            DashboardViewModel model = new DashboardViewModel();              
             //get user Id
-            var UserId = User.Identity.GetUserId();
-            var user = db.Users.Find(UserId);
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
             //filter list of projects according to user role
             if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
             {
                 //list this user's projects
                 ProjectsHelper phelper = new ProjectsHelper(db);
-                var project = phelper.ListProjects(UserId).ToList();
+                var project = phelper.ListProjects(userId).ToList();
                 model.Projects = user.Projects.OrderByDescending(p => p.Created).ToList();
-
-                var userId = User.Identity.GetUserId();
+                //list this user's tickets
                 TicketsHelper helper = new TicketsHelper(db);
                 model.Tickets = helper.GetUserTickets(userId);
-            }
-            ViewBag.Message = "The dashboard shows the  elements of the projects and tickets page. Click on dashboard/tickets tab to view tickets.";
-            //return the projects and tickets model to the view               
-            model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Open").AsNoTracking().ToList();
-            model.PendingTickets = db.Tickets.Where(t => t.Status.Status == "Pending").AsNoTracking().ToList();
-            model.ClosedTickets = db.Tickets.Where(t => t.Status.Status == "Closed").AsNoTracking().ToList();
+                var ticket = helper.ListTickets(userId).ToList();
+                model.OpenTickets = user.Projects.SelectMany(p => p.Tickets).Where(t => t.Status.Status == "Open").ToList();
+                model.PendingTickets = user.Projects.SelectMany(p => p.Tickets).Where(t => t.Status.Status == "Pending").ToList();
+                model.ClosedTickets = user.Projects.SelectMany(p => p.Tickets).Where(t => t.Status.Status == "Closed").ToList();
+            }            
             return View(model);
-
         }
        
 

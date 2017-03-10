@@ -11,10 +11,13 @@ namespace BugTracker2.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
         public ApplicationUser User { get; set; }
         public MultiSelectList Roles { get; set; }
         public MultiSelectList AbsentRoles { get; set; }
+        public List<string> role { get; set; }
         public string[] SelectedRoles { get; set; }
+        public List<int> projects { get; set; }
     }
 
     public class DashboardViewModel

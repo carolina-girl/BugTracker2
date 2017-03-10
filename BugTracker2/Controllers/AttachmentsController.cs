@@ -21,19 +21,17 @@ namespace BugTracker2.Controllers
         // GET: Attachments
         public ActionResult Index()
         {
-                var UserId = User.Identity.GetUserId();
-                var user = db.Users.Find(UserId);
-                var attachment = new List<Attachments>();
-                var ticketsId = ViewBag.TicketsId;
-                attachment = user.Attachments.ToList();
-                db.SaveChanges();
-
-                return View(attachment);
-            }
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            var ticketsId = ViewBag.TicketsId;
+            var attachments = new List<Attachments>();
+            attachments = user.Attachments.ToList();
+            return View(attachments);
+        }
 
 
-        // GET: Attachments/Details/5
-        public ActionResult Details(int? id)
+    // GET: Attachments/Details/5
+    public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -49,7 +47,7 @@ namespace BugTracker2.Controllers
 
         //GET: Attachments/Create
         [Authorize]
-        public ActionResult Create(int? id)
+        public ActionResult Create(int? id, int? TicketsId)
         {
             if (id == null)
             {
@@ -69,34 +67,40 @@ namespace BugTracker2.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketsId,Body,MediaUrl")] Attachments attachment, HttpPostedFileBase image)
+        public ActionResult Create([Bind(Include = "Id,TicketsId,Body,MediaUrl,")] Attachments attachment, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
-                var fileName = Path.GetFileName(image.FileName);
-                var uniqueId = DateTime.Now.Ticks;
-                fileName = Regex.Replace(fileName, @"[!@#$%_\s]", "");
-                image.SaveAs(Path.Combine(Server.MapPath("~/fileUpload/"), uniqueId + fileName));
-                attachment.MediaUrl = "/fileUpload/" + uniqueId + fileName;
-
-                attachment.UserId = User.Identity.GetUserId();
+                if (UploadValidator.IsWebFriendlyImage(image))
+                {
+                    var fileName = Path.GetFileName(image.FileName);
+                    var uniqueId = DateTime.Now.Ticks;
+                    fileName = Regex.Replace(fileName, @"[!@#$%_\s]", "");
+                    image.SaveAs(Path.Combine(Server.MapPath("~/fileUpload/"), uniqueId + fileName));
+                    attachment.MediaUrl = "/fileUpload/" + uniqueId + fileName;
+                    }
+                    else
+                    {
+                        return View();
+                    }
                 attachment.Created = DateTimeOffset.Now;
+                attachment.UserId = User.Identity.GetUserId();
                 db.Attachments.Add(attachment);
                 db.SaveChanges();
 
-                var ticket = db.Tickets.Find(attachment.TicketsId);
-
-        TicketHistory history = new TicketHistory();
+                    TicketHistory history = new TicketHistory();
                     history.Date = DateTimeOffset.Now;
                     var historyBody = "A new attachment was added to this ticket.";
                     history.Body = historyBody;
-                    history.TicketId = attachment.TicketsId;
+                    history.TicketId = attachment.ticketsId;
                     db.TicketHistory.Add(history);
                     db.SaveChanges();
-                    return RedirectToAction("Details", "Tickets", new { id = attachment.TicketsId });
+
+                return RedirectToAction("Details", "Tickets", new { id = attachment.ticketsId });
+  
                 }
-            return View();
-        }
+               return View();
+             }
 
 
         // GET: Attachments/Edit/5
@@ -112,7 +116,7 @@ namespace BugTracker2.Controllers
                 return HttpNotFound();
             }
             ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", attachment.SubmitterId);
-            ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachment.TicketsId);
+            ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachment.Tickets);
             return View(attachment);
         }
 
@@ -121,16 +125,26 @@ namespace BugTracker2.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,TicketsId,SubmitterId,Body,MediaUrl,OwnerId,Created")] Attachments attachment)
+        public ActionResult Edit([Bind(Include = "Id,TicketsId,SubmitterId,Body,MediaUrl,OwnerId,Created,Updated")] Attachments attachment, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
+                attachment = db.Attachments.Find(image);
+                var fileName = Path.GetFileName(image.FileName);
+                var uniqueId = DateTime.Now.Ticks;
+                fileName = Regex.Replace(fileName, @"[!@#$%_\s]", "");
+                image.SaveAs(Path.Combine(Server.MapPath("~/fileUpload/"), uniqueId + fileName));
+                attachment.MediaUrl = "/fileUpload/" + uniqueId + fileName;
+                var ticket = db.Tickets.Find(attachment.Tickets);
+                attachment.UserId = User.Identity.GetUserId();
+                ticket = db.Tickets.Find(attachment.Tickets);
+                var assignedUserId = ticket.AssignedUserId;
                 db.Entry(attachment).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", attachment.SubmitterId);
-            ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachment.TicketsId);
+            ViewBag.TicketsId = new SelectList(db.Tickets, "Id", "OwnerId", attachment.Tickets);
             return View(attachment);
         }
 
@@ -159,7 +173,7 @@ namespace BugTracker2.Controllers
             Attachments attachment = db.Attachments.Find(Id);
             db.Attachments.Remove(attachment);
             db.SaveChanges();
-            return RedirectToAction("Details", "Tickets", new { id = attachment.TicketsId });
+            return RedirectToAction("Details", "Tickets", new { id = attachment.Tickets });
         }
 
         protected override void Dispose(bool disposing)

@@ -15,7 +15,6 @@ using BugTracker2.Helper;
 using System.Configuration;
 using SendGrid;
 using System.Net.Mail;
-using BugTracker2.Controllers;
 
 namespace BugTracker2.Controllers
 {
@@ -30,41 +29,63 @@ namespace BugTracker2.Controllers
             var userId = User.Identity.GetUserId();
             TicketsHelper helper = new TicketsHelper(db);
             var tickets = helper.GetUserTickets(userId);
-            //DashboardViewModel model = new DashboardViewModel();
-            //model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Open").AsNoTracking().ToList();
-            //model.PendingTickets = db.Tickets.Where(t => t.Status.Status == "Pending").AsNoTracking().ToList();
-            //model.ClosedTickets = db.Tickets.Where(t => t.Status.Status == "Closed").AsNoTracking().ToList();
-
             return View(tickets);
         }
 
         // GET: Tickets/OpenTickets/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
         public ActionResult OpenTickets(int? Id)
         {
             DashboardViewModel model = new DashboardViewModel();
-            model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Open").AsNoTracking().ToList();
-            return View(db.Tickets.Where(t => t.Status.Status == "Open").ToList());
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
+            {
+                TicketsHelper helper = new TicketsHelper(db);
+                model.Tickets = helper.GetUserTickets(userId);
+                //var ticket = helper.ListTickets(userId).ToList();
+                model.OpenTickets = user.Projects.SelectMany(p => p.Tickets).Where(t => t.Status.Status == "Open").ToList();
+                return View(model.OpenTickets.ToList());
+            }
+            return View();
         }
 
-        // GET: Tickets/OpenTickets/5
-        [Authorize(Roles = "Admin")]
+        // GET: Tickets/PendingTickets/5
+        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
         public ActionResult PendingTickets(int? Id)
         {
             DashboardViewModel model = new DashboardViewModel();
-            model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Pending").AsNoTracking().ToList();
-            return View(db.Tickets.Where(t => t.Status.Status == "Pending").ToList());
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
+            {
+                TicketsHelper helper = new TicketsHelper(db);
+                model.Tickets = helper.GetUserTickets(userId);
+                var ticket = helper.ListTickets(userId).ToList();
+                model.PendingTickets = user.Projects.SelectMany(p => p.Tickets).Where(t => t.Status.Status == "Pending").ToList();
+                return View(model.PendingTickets.ToList());
+            }
+            return View();
         }
 
-        // GET: Tickets/OpenTickets/5
-        [Authorize(Roles = "Admin")]
+        // GET: Tickets/ClosedTickets/5
+        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
         public ActionResult ClosedTickets(int? Id)
         {
             DashboardViewModel model = new DashboardViewModel();
-            model.OpenTickets = db.Tickets.Where(t => t.Status.Status == "Closed").AsNoTracking().ToList();
-            return View(db.Tickets.Where(t => t.Status.Status == "Closed").ToList());
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
+            {
+               TicketsHelper helper = new TicketsHelper(db);
+                model.Tickets = helper.GetUserTickets(userId);
+                var ticket = helper.ListTickets(userId).ToList();
+                model.ClosedTickets = user.Projects.SelectMany(p => p.Tickets).Where(t => t.Status.Status == "Closed").ToList();
+                return View(model.ClosedTickets.ToList());
+            }
+            return View();
         }
-
+    
         // GET: Tickets/FullList/5
         [Authorize(Roles = "Admin")]
         public ActionResult FullList(int? Id)
@@ -140,7 +161,7 @@ namespace BugTracker2.Controllers
         }
 
         // GET: Tickets/Create
-        [Authorize(Roles = "Submitter")]
+        [Authorize(Roles = "Admin,Submitter")]
         public ActionResult Create(int? Id, string AssignedUserId)
         {
             if (Id == null)
@@ -164,7 +185,7 @@ namespace BugTracker2.Controllers
 
 
         //POST: Tickets/Create
-        [Authorize(Roles = "Submitter")]
+        [Authorize(Roles = "Admin,Submitter")]
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -465,6 +486,29 @@ namespace BugTracker2.Controllers
             return RedirectToAction("Index");
         }
 
+        //GET: Tickets/TicketNotify/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult TicketNotify(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Tickets ticket = db.Tickets.Find(id);
+            if (ticket == null)
+            {
+                return HttpNotFound();
+            }
+            TicketsHelper ticketHelper = new TicketsHelper(db);
+            var userId = User.Identity.GetUserId();
+            if (ticketHelper.HasTicketPermission(userId, ticket.Id))
+            {
+                ViewBag.UserId = User.Identity.GetUserId();
+                return View(ticket);
+            }
+            TempData["Error"] = "Sorry, you do not have permission to view that ticket.";
+            return RedirectToAction("Index");
+        }
 
         protected override void Dispose(bool disposing)
         {

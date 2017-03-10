@@ -1,14 +1,9 @@
 ﻿using BugTracker2.Models;
 using BugTracker2.Models.Helper;
-using Microsoft.AspNet.Identity;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.IdentityModel.Protocols.WSTrust;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using SqlProviderServices = System.Data.Entity.SqlServer.SqlProviderServices;
 
 namespace BugTracker2.Controllers
 {
@@ -16,16 +11,22 @@ namespace BugTracker2.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         UserRoleAssignHelper userManager = new UserRoleAssignHelper();
-        ProjectsHelper helper = new ProjectsHelper();
-
-
+        ProjectsHelper phelper = new ProjectsHelper();
 
         // GET: Admin
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Index()
         {
-            var model = db.Users.ToList();
-            return View(model);
+            List<AdminUserViewModel> userList = new List<AdminUserViewModel>();
+            foreach (var user in db.Users.ToList())
+            {
+                var model = new AdminUserViewModel();
+                model.User = user;
+                model.role = userManager.ListUserRoles(user.Id).ToList();
+                model.projects = phelper.ListProjects(user.Id).ToList();
+                userList.Add(model);
+            }
+            return View(userList);
         }
 
 
@@ -66,7 +67,7 @@ namespace BugTracker2.Controllers
         {
             var user = db.Users.Find(Id);
             AdminProjectUserAssignViewModel model = new AdminProjectUserAssignViewModel();
-            var selected = helper.ListProjects(Id);
+            var selected = phelper.ListProjects(Id);
             model.Projects = new MultiSelectList(db.Projects, "Id", "Title", selected);
             model.User = user;
 
@@ -79,35 +80,58 @@ namespace BugTracker2.Controllers
         public ActionResult ProjectUser(string Id, AdminProjectUserAssignViewModel model)
         {
             var user = db.Users.Find(model.User.Id);
-            var currentProjects = (from p in db.Projects
-                                   where p.Users.Any(r => r.Id == user.Id)
-                                   select p.Id).ToArray();
-
-
-            foreach (var x in model.SelectedProjects)
+            foreach (var project in user.Projects.ToList())
             {
-                var project = db.Projects.Find(x);
-                project.Users.Add(user);
-            }
-            foreach (var z in currentProjects)
-            {
-                var project = db.Projects.Find(z);
-
-                foreach (var x in model.SelectedProjects)
+                if (!model.SelectedProjects.Contains(project.Id))
                 {
-                    if (x != z)
-                    {
-                        project.Users.Remove(user);
-                    }
+                    phelper.RemoveProjectFromUser(user.Id, project.Id);
                 }
             }
-
-            db.Entry(user).State = EntityState.Modified;
-            db.Users.Attach(user);
+            foreach (var projectId in model.SelectedProjects)
+            {
+                if (model.SelectedProjects.Contains(projectId))
+                {
+                    phelper.AddProjectToUser(user.Id, projectId);
+                }
+            }
+        
             db.SaveChanges();
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction("Index");
         }
 
+
+
+
+
+        //    var user = db.Users.Find(model.User.Id);
+        //    var currentProjects = (from p in db.Projects
+        //                           where p.Users.Any(r => r.Id == user.Id)
+        //                           select p.Id).ToArray();
+
+
+        //    foreach (var x in model.SelectedProjects)
+        //    {
+        //        var project = db.Projects.Find(x);
+        //        project.Users.Add(user);
+        //    }
+        //    foreach (var z in currentProjects)
+        //    {
+        //        var project = db.Projects.Find(z);
+
+        //        foreach (var x in model.SelectedProjects)
+        //        {
+        //            if (x != z)
+        //            {
+        //                project.Users.Remove(user);
+        //            }
+        //        }
+        //    }
+
+        //    db.Entry(user).State = EntityState.Modified;
+        //    db.Users.Attach(user);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index", "Admin");
+        //}
 
         protected override void Dispose(bool disposing)
         {

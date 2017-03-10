@@ -3,7 +3,6 @@
     ViewBag.Title = "Index";
 }
 
-
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -11,34 +10,34 @@
                 <h4>List all of your Attachments</h4>
             </div>
             <div class="panel-body">
-                <div class="col-md-12 subnav">
-                    <table id="mytable" class="data-table-xl hover row-border table-striped compact">
+                <div class="col-md-12 subnav">            
+                    <table id="mytable" class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>
-                                       Ticket
-                                    </th>
-                                    @*<th>
-                                        @Html.DisplayNameFor(model => model.TicketsId)
-                                    </th>*@
-                                    @*<th>
-                                        @Html.DisplayNameFor(model => model.Tickets.OwnerId)
-                                    </th>*@
+                                    Ticket
+                                </th>
                                 @*<th>
-                                        @Html.DisplayNameFor(model => model.SubmitterId)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Body)
-                                    </th>*@
+                        @Html.DisplayNameFor(model => model.Tickets)
+                    </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Tickets.Owner)
+                                </th>
+                                @*<th>
+                        @Html.DisplayNameFor(model => model.User)
+                    </th>*@
+                                @*<th>
+                        @Html.DisplayNameFor(model => model.Body)
+                    </th>*@
                                 <th>
                                     @Html.DisplayNameFor(model => model.MediaUrl)
                                 </th>
                                 <th>
-                                  Created Date
+                                    Created Date
                                 </th>
-                                <th>
-                                    Updated Date
-                                </th>
+                                @*<th>
+                        Updated Date
+                    </th>*@
                                 <th></th>
                             </tr>
                         </thead>
@@ -47,35 +46,35 @@
                             {
                                 <tr>
                                     <td>
-                                            @Html.DisplayFor(modelItem => item.Tickets.Title)
-                                        </td>
-                                       @*<td>
-                                            @Html.DisplayFor(modelItem => item.TicketsId)
-                                        </td>*@
-                                        @*<td>
-                                            @Html.DisplayFor(modelItem => item.Tickets.Owner.LastName)
-                                        </td>*@
+                                        @Html.DisplayFor(modelItem => item.Tickets.Title)
+                                    </td>
                                     @*<td>
-                                            @Html.DisplayFor(modelItem => item.SubmitterId)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Body)
-                                        </td>*@
+                            @Html.DisplayFor(modelItem => item.Tickets)
+                        </td>*@
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Tickets.Owner.LastName)
+                                    </td>
+                                    @*<td>
+                            @Html.DisplayFor(modelItem => item.User.FullName)
+                        </td>*@
+                                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Body)
+                        </td>*@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.MediaUrl)
                                     </td>
                                     <td>
-                                        @item.Created.ToString("M/dd/yyyy")
+                                       @String.Format("{0:d}", item.Created)
                                     </td>
-                                    <td>
-                                        @item.Updated.ToString("M/dd/yyyy")
-                                    </td>
-                                    <td>
-                                        <h5>
-                                            @Html.ActionLink("Edit", "Edit", "Attachments", new { id = item.Id }, new { @class = "btn btn-primary btn-sm", @style = "color:white" })
-                                            @Html.ActionLink("Details", "Details", "Attachments", new { id = item.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })
-                                        </h5>
-                                    </td>
+                                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Updated)
+                        </td>*@
+                                    @*<td>
+                            <h5>
+                                @Html.ActionLink("Edit", "Edit", "Attachments", new { id = item.Id }, new { @class = "btn btn-primary btn-sm", @style = "color:white" })
+                                @Html.ActionLink("Details", "Details", "Attachments", new { id = item.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })
+                            </h5>
+                        </td>*@
                                 </tr>
                             }
                         </tbody>

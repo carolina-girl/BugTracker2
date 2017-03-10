@@ -17,7 +17,7 @@
                         @Html.AntiForgeryToken()
 
                         <div class="form-horizontal">
-                            <h2>Create A Ticket</h2>
+                            <h4>Create A New Ticket</h4>
                             <hr />
 
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -25,40 +25,37 @@
                             <input type="hidden" name="OwnerId" id="OwnerId" value="@ViewBag.OwnerId" />
                             <input type="hidden" name="AssignedUserId" id="AssignedUserId" value="@ViewBag.AssignedUserId" />
 
+                            @*<div class="form-group">
+                                    @Html.HiddenFor(model => model.ProjectId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.HiddenFor(model => model.ProjectId, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-
+                                    <div class="form-group">
+                                        @Html.HiddenFor(model => model.OwnerId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.HiddenFor(model => model.OwnerId, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.OwnerId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>*@
 
                             @*<div class="form-group">
-                        @Html.HiddenFor(model => model.ProjectId, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.HiddenFor(model => model.ProjectId, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+                                    @Html.HiddenFor(model => model.Created, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.HiddenFor(model => model.Created, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Created, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-                        <div class="form-group">
-                            @Html.HiddenFor(model => model.OwnerId, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.HiddenFor(model => model.OwnerId, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.OwnerId, "", new { @class = "text-danger" })
-                            </div>
-                        </div>*@
-
-                            @*<div class="form-group">
-                        @Html.HiddenFor(model => model.Created, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.HiddenFor(model => model.Created, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Created, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.HiddenFor(model => model.Updated, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.HiddenFor(model => model.Updated, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Updated, "", new { @class = "text-danger" })
-                        </div>
-                    </div>*@
+                                <div class="form-group">
+                                    @Html.HiddenFor(model => model.Updated, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.HiddenFor(model => model.Updated, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Updated, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
 
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -69,7 +66,7 @@
                             </div>
 
                             <div class="form-group">
-                                @Html.LabelFor(model => model.Body, "", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.Body, "Description", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.Body, new { htmlAttributes = new { @class = "form-control", id = "editor" } })
                                     @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
@@ -79,23 +76,23 @@
                             <p>
                                 @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
                                 {
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.PriorityId, "Ticket Priority", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("PriorityId", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.PriorityId, "Ticket Priority", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownList("PriorityId", null, htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.PriorityId, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                </div>
                                 }
                                 @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
                                 {
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.TypeId, "Ticket Type", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("TypeId", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.TypeId, "Ticket Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownList("TypeId", null, htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                                        </div>
                                     </div>
-                                </div>
                                 }
                             </p>
 
@@ -106,20 +103,20 @@
                             </div>
                         </div>
                     }
-                    <div>
-                    @if (Request.IsAuthenticated && User.IsInRole("Developer") || (Request.IsAuthenticated && User.IsInRole("ProjectManager")))
-                    {
-                        <h5>@Html.ActionLink("Close", "Close", "Tickets", new { id = Model.Id }, new { @class = "btn btn-primary btn-sm", @style = "color:white" })</h5>
-                    }
-                    <h5>@Html.ActionLink("Back to List", "Index", "Tickets", new { id = Model.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })</h5>
                 </div>
-             </div>
-          </div>
-     </div>
+            </div>
+        </div>
+    </div>
 </div>
-     </div>
+    <input type="button" class="btn btn-info btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Tickets")'" />
 
- @section scripts{
+@*<div>
+    <h5>@Html.ActionLink("Back to List", "Index", "Tickets", new { id = Model.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })</h5>
+    </div>*@
+
+
+
+@section scripts{
     <script src="~/Scripts/tinymce/tinymce.min.js"></script>
     <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
     <script type="text/javascript">
@@ -129,4 +126,4 @@
             });
         });
     </script>
-} 
+}

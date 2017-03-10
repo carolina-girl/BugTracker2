@@ -13,10 +13,10 @@
             <div class="panel-body">
                 <div class="col-md-12 subnav">
 
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.HiddenFor(model => model.TicketsId)
+                   @using (Html.BeginForm())
+                           {
+                               @Html.AntiForgeryToken()
+                            @Html.HiddenFor(model => model.TicketsId)
                         <div class="form-horizontal">
 
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })

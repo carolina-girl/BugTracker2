@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using BugTracker2.Models;
 using Microsoft.AspNet.Identity;
@@ -17,19 +16,17 @@ namespace BugTracker2.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Projects
-       [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
+       //[Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
        public ActionResult Index()
         {
-
           if (User.IsInRole("Admin") || User.IsInRole("ProjectManager") || User.IsInRole("Developer") || User.IsInRole("Submitter"))
             {
-                var UserId = User.Identity.GetUserId();
-                var user = db.Users.Find(UserId);
+                var userId = User.Identity.GetUserId();
+                var user = db.Users.Find(userId);
                 var project = new List<Projects>();
                 ProjectsHelper helper = new ProjectsHelper(db);
                 project = user.Projects.ToList();
                 db.SaveChanges();
-
                 return View(project);
             }
 
@@ -95,11 +92,11 @@ namespace BugTracker2.Controllers
             if (ModelState.IsValid)
             {
                 ProjectsHelper helper = new ProjectsHelper(db);
-                var UserId = User.Identity.GetUserId();
-                var user = db.Users.Find(UserId);
+                var userId = User.Identity.GetUserId();
+                var user = db.Users.Find(userId);
                 project.Created = DateTimeOffset.Now;
                 db.Projects.Add(project);
-                helper.AssignedUser(UserId, project.Id);
+                helper.AssignedUser(userId, project.Id);
                 db.Projects.Add(project);
                 db.SaveChanges();
                 return RedirectToAction("Index");
