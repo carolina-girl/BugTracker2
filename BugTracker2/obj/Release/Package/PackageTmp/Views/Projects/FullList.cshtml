@@ -4,7 +4,15 @@
     ViewBag.Title = "FullList";
 }
 
-
+<div>
+    <h5>
+        <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
+        @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+            @Html.ActionLink("Create A New Project", "Create", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
+        } 
+    </h5>
+</div>
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-12">
@@ -72,13 +80,5 @@
             </div>
         </div>
     </div>
-<div>
-    <h5>
-        @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
-            {
-            @Html.ActionLink("Create A New Project", "Create", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
-        }
-        <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
-        </h5>
-</div>
+
 

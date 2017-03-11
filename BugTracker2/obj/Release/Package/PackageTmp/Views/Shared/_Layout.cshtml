@@ -67,19 +67,19 @@
                 </div>
             </nav>
        </div>
-    <div id="page-wrapper">
+    @*<div id="page-wrapper">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row">*@
                 <div class="col-lg-12">
-                    <h1 class="page-header"></h1>
+                    @*<h1 class="page-header"></h1>*@
                     @RenderBody()
                 </div>
                 <!-- /.col-lg-12 -->
-            </div>
+            @*</div>
             <!-- /.row -->
-        </div>
+       </div>
         <!-- /.container-fluid -->
-    </div>
+    </div>*@
 
  
     @Scripts.Render("~/bundles/jquery")
@@ -106,7 +106,7 @@
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
-                "ordering": false,
+                "ordering": true,
                 "info": true,
                 "autoWidth": false,
                 "scrollX": true
@@ -120,7 +120,7 @@
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
-                "ordering": false,
+                "ordering": true,
                 "info": true,
                 "autoWidth": false,
                 "scrollX": true

@@ -3,7 +3,11 @@
 @{
     ViewBag.Title = "Create";
 }
-
+<div>
+    <h5>
+    <input type="button" class="btn btn-primary btn-default" value="Back to list" onclick="location.href='@Url.Action("Index", "Tickets")'" />
+    </h5>
+</div>
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <div class="panel panel-default">
@@ -67,9 +71,7 @@
         </div>
     </div>
 </div>
-<div>
-    <input type="button" class="btn btn-primary btn-default" value="Back to list" onclick="location.href='@Url.Action("Index", "Tickets")'" />
-</div>
+
 @section scripts{
     <script src="~/Scripts/tinymce/tinymce.min.js"></script>
     <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>

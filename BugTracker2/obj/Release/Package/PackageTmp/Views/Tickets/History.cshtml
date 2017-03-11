@@ -3,7 +3,9 @@
 @{
     ViewBag.Title = "Ticket History";
 }
-
+<div>
+    @Html.ActionLink("Back to details", "Details", "Tickets", new { id = Model.Id }, new { @class = "btn btn-primary btn-default", @style = "color:white" })
+</div>
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <div class="panel panel-default">
@@ -26,6 +28,4 @@
    </div>
 </div>
      </div>
-  <div>
-    @Html.ActionLink("Back to details", "Details", "Tickets", new { id = Model.Id }, new { @class = "btn btn-primary btn-default", @style = "color:white" })
- </div>
+

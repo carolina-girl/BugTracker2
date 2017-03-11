@@ -1,5 +1,7 @@
 ﻿@model BugTracker2.Models.Projects
-
+<div>
+    <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
+</div>
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <div class="panel panel-default">
@@ -63,9 +65,7 @@
         </div>
     </div>
 </div>
-<div>
-    <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
-</div>
+
 
 
 @section scripts{

@@ -3,7 +3,11 @@
     ViewBag.Title = "Details";
     var ticketsId = ViewBag.TicketsId;
 }
-
+<div>
+    <h5>
+    <input type="button" class="btn btn-primary btn-default" value="Back to list" onclick="location.href='@Url.Action("Index", "Attachments")'" />
+    </h5>
+</div>
 <h2>@Model.Title</h2>
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
@@ -12,9 +16,7 @@
                 <h4>Attachment Details</h4>
             </div>
             <div class="panel-body">
-                <div class="col-md-12 subnav">
-                    @Html.HiddenFor(model => model.TicketsId)
-          
+                <div class="col-md-12 subnav">         
                     <dl class="dl-horizontal">
                         <dt>
                             @Html.DisplayNameFor(model => model.Created)
@@ -78,9 +80,7 @@
         </div>
     </div>
 </div>
-<div>
-    <input type="button" class="btn btn-primary btn-default" value="Back to list" onclick="location.href='@Url.Action("Index", "Attachments")'" />
-</div>
+
 
 
 

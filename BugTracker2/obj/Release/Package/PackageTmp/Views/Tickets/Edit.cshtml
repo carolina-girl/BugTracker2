@@ -7,9 +7,9 @@
     string[] ProjectTypes = new[] { "Bug", "Feature Request", "Documentation" };
 
 }
-
-
-
+<div>
+    <h5>@Html.ActionLink("Back to List", "Index", "Tickets", new { id = Model.Id }, new { @class = "btn btn-primary btn-default", @style = "color:white" })</h5>
+</div>
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <div class="panel panel-default">
@@ -146,9 +146,7 @@
         </div>
     </div>
 </div>
-<div>
-    <h5>@Html.ActionLink("Back to List", "Index", "Tickets", new { id = Model.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })</h5>
-</div>
+
 
 
 

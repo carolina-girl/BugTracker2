@@ -8,9 +8,19 @@
 @Html.HiddenFor(model => model.Id)
 @Html.HiddenFor(model => model.UserId)
 
-
+<div>
+    <h5>
+    <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
+    <input type="button" class="btn btn-info btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Projects")'" />
+    <input type="button" class="btn btn-warning btn-default" value="User Profile" onclick="location.href='@Url.Action("UserProfile", "Home")'" />
+    @Html.ActionLink("Edit", "Edit", "Projects", new { id = Model.Id }, new { @class = "btn btn-success btn-default", @style = "color:white" })
+    @if (Request.IsAuthenticated && User.IsInRole("Submitter") || User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Create ticket", "Index", "Projects", new { id = Model.Id }, new { @class = "btn btn-danger btn-default", @style = "color:white" })
+    }
+    </h5>
+</div>
 <div id="page-wrapper">
- 
     <div class="row">
         <div class="col-lg-6">
             <div class="panel panel-default">
@@ -50,6 +60,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- /.row -->
         <div class="col-lg-6">
@@ -138,17 +149,7 @@
             </div>
         </div>
     </div>
-    <div>
-        <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
-        <input type="button" class="btn btn-info btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Projects")'" />
-        <input type="button" class="btn btn-warning btn-default" value="User Profile" onclick="location.href='@Url.Action("UserProfile", "Home")'" />
-        @Html.ActionLink("Edit", "Edit", "Projects", new { id = Model.Id }, new { @class = "btn btn-success btn-default", @style = "color:white" })
-        @if (Request.IsAuthenticated && User.IsInRole("Submitter") || User.IsInRole("Admin"))
-        {
-        @Html.ActionLink("Create ticket", "Index", "Projects", new { id = Model.Id }, new { @class = "btn btn-danger btn-default", @style = "color:white" })
-        }
-    </div>
-    </div>
+ </div>
 
 
 

@@ -2,7 +2,9 @@
 @{
     ViewBag.Title = "EditUser";
 }
-
+<div>
+    <input type="button" class="btn btn-primary btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Admin")'" />
+</div>
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <div class="panel panel-default">
@@ -32,14 +34,10 @@
             <input type="submit" value="Save" class="btn btn-default" />
         </div>
     </div>
-}
-
-                    <div>
-                        <input type="button" class="btn btn-primary btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Admin")'" />
-                    </div>
-                    </div>
-</div>
-</div>
+  }
+   </div>
+        </div>
+             </div>
         </div>
     </div>
 

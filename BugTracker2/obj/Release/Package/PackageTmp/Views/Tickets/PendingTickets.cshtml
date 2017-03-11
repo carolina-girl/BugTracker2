@@ -9,7 +9,17 @@
 <input type="hidden" name="Id" id="Id" value="@ViewBag.Id" />
 <input type="hidden" name="TicketsId" value="@ViewBag.TicketsId" />
 <input type="hidden" name="UserId" value="@ViewBag.UserId" />
-
+<h5>
+    <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
+    @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
+    {
+        @Html.ActionLink("Create Ticket", "Index", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
+    }
+    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("View All Tickets", "FullList", "Tickets", new { @class = "btn btn-success btn-default", @style = "color:white" })
+    }
+</h5>
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-12">
@@ -106,20 +116,6 @@
                             }
                         </tbody>
                     </table>
-
-                    <h5>
-                        @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
-                        {
-                            @Html.ActionLink("Create Ticket", "Index", "Projects", new { @class = "btn btn-warning btn-default", @style = "color:white" })
-                        }
-
-                        <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
-
-                        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
-                        {
-                            @Html.ActionLink("View All Tickets", "FullList", "Tickets", new { @class = "btn btn-success btn-default", @style = "color:white" })
-                        }
-                    </h5>
                 </div>
                 <!-- /.table-responsive -->
             </div>

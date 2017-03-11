@@ -3,7 +3,11 @@
 @{
     ViewBag.Title = "Create";
 }
-
+<div>
+    <h5>
+<input type="button" class="btn btn-primary btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Tickets")'" />
+        </h5>
+    </div>
 <div class="row">
     <div class="col-lg-6 col-lg-offset-3">
         <div class="panel panel-default">
@@ -108,7 +112,7 @@
         </div>
     </div>
 </div>
-    <input type="button" class="btn btn-info btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Tickets")'" />
+   
 
 @*<div>
     <h5>@Html.ActionLink("Back to List", "Index", "Tickets", new { id = Model.Id }, new { @class = "btn btn-success btn-sm", @style = "color:white" })</h5>

@@ -4,6 +4,15 @@
 @{
     ViewBag.Title = "Details";
 }
+<div>
+    <h5>
+    <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
+    @Html.ActionLink("Edit", "Edit", "Tickets", new { id = Model.Id }, new { @class = "btn btn-success btn-default", @style = "color:white" })
+    <input type="button" class="btn btn-info btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Tickets")'" />
+    @Html.ActionLink("User Profile", "UserProfile", "Home", new { id = Model.Id }, new { @class = "btn btn-warning btn-default", @style = "color:white" })
+    @Html.ActionLink("View Full History", "History", "Tickets", new { id = Model.Id }, new { @class = "btn btn-danger btn-default", @style = "color:white" })
+    </h5>
+</div>
 
 <div id="page-wrapper">
     <div class="row">
@@ -383,13 +392,6 @@
             </div>
         </div>
 </div>
-    </div>
-    <div>
-        <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
-        @Html.ActionLink("Edit", "Edit", "Tickets", new { id = Model.Id }, new { @class = "btn btn-success btn-default", @style = "color:white" })
-        <input type="button" class="btn btn-info btn-default" value="Back To List" onclick="location.href='@Url.Action("Index", "Tickets")'" />
-        @Html.ActionLink("User Profile", "UserProfile", "Home", new { id = Model.Id }, new { @class = "btn btn-warning btn-default", @style = "color:white" })
-        @Html.ActionLink("View Full History", "History", "Tickets", new { id = Model.Id }, new { @class = "btn btn-danger btn-default", @style = "color:white" })
     </div>
           </div>
 

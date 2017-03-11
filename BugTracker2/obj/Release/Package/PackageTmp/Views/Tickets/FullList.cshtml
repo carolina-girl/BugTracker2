@@ -2,11 +2,18 @@
 @{
     ViewBag.Title = "FullList";
 }
-
+<div>
+    <h5>
 <input type="hidden" name="Body" id="Body" value="@ViewBag.Body" />
 <input type="hidden" name="OwnerId" id="OwnerId" value="@ViewBag.OwnerId" />
 <input type="hidden" name="Updated" id="Updated" value="@ViewBag.Updated" />
-
+    <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />
+        @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
+        {
+            @Html.ActionLink("Create A New Ticket", "Create", "Tickets", new { @class = "btn btn-success btn-default", @style = "color:white" })
+        }
+    </h5>
+</div>
 <!-- /.row -->
 <div class="row">
     <div class="col-lg-12">
@@ -113,15 +120,5 @@
         </div>
     </div>
 </div>
-<div>
-<h5>
-    @if (Request.IsAuthenticated && User.IsInRole("Submitter"))
-     {
-      @Html.ActionLink("Create A New Ticket", "Create", "Tickets", new { @class = "btn btn-success btn-default", @style = "color:white" })
-      }
-    </h5>
-    </div>
-<div>
-    <input type="button" class="btn btn-primary btn-default" value="Return To Dashboard" onclick="location.href='@Url.Action("Dashboard", "Home")'" />  
-</div>
+
 
