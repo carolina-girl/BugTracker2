@@ -8,15 +8,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="~/Content/btn-social/bootstrap-social.css" rel="stylesheet" />
-    <link href="~/Content/font-awesome.css" rel="stylesheet" />
-    <link href="~/Content/zocial.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>SB Admin 2 - Mary Ann Burns BugTracker Bootstrap Admin Theme</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <!-- Bootstrap Core CSS -->
+    <link href="~/AdminTemplate/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/AdminTemplate/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="~/AdminTemplate/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/AdminTemplate/dist/css/sb-admin-2.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="~/AdminTemplate/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Social Buttons CSS -->
+    <link href="~/AdminTemplate/vendor/bootstrap-social/bootstrap-social.css" rel="stylesheet">
 
     <style>
         .form-control, input.btn {
@@ -153,47 +170,52 @@
                         }
                     </div>*@
                     @Html.ActionLink("Developer", "GuestLogin", new { ReturnUrl = ViewBag.ReturnUrl, type = "Developer" }, new { @class = "btn btn-primary" })
-                    @*<div>
-                        @using (Html.BeginForm("LoginGuestDeveloper", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <input type="hidden" name="Email" value="Developer@coderfoundry.com" />
-                                    <input type="hidden" name="Password" value="blank" />
-                                    <button type="submit" class="btn btn-primary">Developer</button>
-                        }
-                    </div>*@
-
                     @Html.ActionLink("Submitter", "GuestLogin", new { ReturnUrl = ViewBag.ReturnUrl, type = "Submitter" }, new { @class = "btn btn-primary" })
-                    @*<div>
-                        @using (Html.BeginForm("LoginGuestSubmitter", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <input type="hidden" name="Email" value="submitter@coderfoundry.com" />
-                                    <input type="hidden" name="Password" value="blank" />
-                                    <button type="submit" class="btn btn-primary">Submitter</button>
-                        }
-                    </div>*@
                     @Html.ActionLink("Admin", "GuestLogin", new { ReturnUrl = ViewBag.ReturnUrl, type = "Admin" },new { @class="btn btn-primary"} )
-                    @*<div>
-                        @using (Html.BeginForm("LoginGuestAdmin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <input type="hidden" name="Email" value="mahburns@gmail.com" />
-                                    <input type="hidden" name="Password" value="blank" />
-                                    <button type="submit" class="btn btn-primary">Admin</button>
-                        }
-                    </div>*@
                 </div>
-          </div>
-    </div>
+                <h4>Contact me, Mary Ann Burns:</h4>
+                <div class="text-center">
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="https://www.linkedin.com/in/mary-ann-burns-5ab016127/">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/profile.php?id=100010497485736">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/carolina-girl/bugtracker2">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-
+   </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryval")
+    <!-- jQuery -->
+    <script src="~/AdminTemplate/vendor/jquery/jquery.min.js"></script>
+    <script src="~/AdminTemplate/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/AdminTemplate/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="~/AdminTemplate/vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/AdminTemplate/dist/js/sb-admin-2.js"></script>
 
 </body>
 </html>
